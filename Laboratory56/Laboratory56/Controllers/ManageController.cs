@@ -61,7 +61,9 @@ namespace Laboratory56.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage
+                StatusMessage = StatusMessage,
+                AvatarImagePath = user.AvatarImage,
+                Name = user.Name
             };
 
             return View(model);

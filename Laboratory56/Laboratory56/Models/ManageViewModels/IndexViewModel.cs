@@ -21,5 +21,8 @@ namespace Laboratory56.Models.ManageViewModels
         public string PhoneNumber { get; set; }
 
         public string StatusMessage { get; set; }
+
+        public string AvatarImagePath { get; set; }
+        public string Name { get; set; }
     }
 }
