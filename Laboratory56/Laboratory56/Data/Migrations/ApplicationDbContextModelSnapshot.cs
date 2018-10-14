@@ -55,7 +55,13 @@ namespace Laboratory56.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<int>("PostsCounter");
+
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("Subscriber");
+
+                    b.Property<string>("Subscribtions");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -73,6 +79,28 @@ namespace Laboratory56.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Laboratory56.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("CommentPost");
+
+                    b.Property<string>("ImagePath");
+
+                    b.Property<string>("LikePost");
+
+                    b.Property<string>("NamePost");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Post");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -181,6 +209,13 @@ namespace Laboratory56.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Laboratory56.Models.Post", b =>
+                {
+                    b.HasOne("Laboratory56.Models.ApplicationUser")
+                        .WithMany("Posts")
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
