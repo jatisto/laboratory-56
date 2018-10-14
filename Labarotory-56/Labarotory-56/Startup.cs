@@ -29,12 +29,20 @@ namespace Labarotory_56
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(
+                    options => {
+                        options.Password.RequireDigit = false;
+                        options.Password.RequiredLength = 3;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequireUppercase = false;
+                        options.Password.RequireLowercase = false;
+                    })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<FileUploadPictures>();
 
             services.AddMvc();
         }
@@ -63,6 +71,7 @@ namespace Labarotory_56
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            new InitializerRole().SeedAsync(app).GetAwaiter();
         }
     }
 }

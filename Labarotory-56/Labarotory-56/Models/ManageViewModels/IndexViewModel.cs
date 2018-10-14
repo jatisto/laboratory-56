@@ -13,7 +13,7 @@ namespace Labarotory_56.Models.ManageViewModels
         public bool IsEmailConfirmed { get; set; }
 
         [Required]
-        [EmailAddress]
+        
         public string Email { get; set; }
 
         [Phone]
@@ -21,5 +21,8 @@ namespace Labarotory_56.Models.ManageViewModels
         public string PhoneNumber { get; set; }
 
         public string StatusMessage { get; set; }
+
+        public string AvatarImagePath { get; set; }
+        public string Name { get; set; }
     }
 }

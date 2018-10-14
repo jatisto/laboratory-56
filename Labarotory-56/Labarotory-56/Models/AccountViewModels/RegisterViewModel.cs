@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Labarotory_56.Models.AccountViewModels
 {
@@ -12,6 +13,17 @@ namespace Labarotory_56.Models.AccountViewModels
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public IFormFile AvatarImage { get; set; }
+        [Display(Name = "Публикации")]
+        public int Publications { get; set; }
+        [Display(Name = "Подписчики")]
+        public int Subscriptions { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
