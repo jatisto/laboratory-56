@@ -9,6 +9,9 @@ namespace Laboratory56.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required]
+        public string Name { get; set; }
+
+        [Required]
         [EmailAddress]
         public string Email { get; set; }
 

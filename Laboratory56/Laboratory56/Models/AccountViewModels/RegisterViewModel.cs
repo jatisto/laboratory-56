@@ -14,7 +14,10 @@ namespace Laboratory56.Models.AccountViewModels
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        [Required]
+        [Display(Name = "Name")]
         public string Name { get; set; }
+
         public IFormFile AvatarImage { get; set; } //IFormFile Хранит в себе картинку  
 
         [Required]

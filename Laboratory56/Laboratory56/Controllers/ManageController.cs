@@ -82,6 +82,17 @@ namespace Laboratory56.Controllers
             if (user == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+
+            }
+
+            var name = user.Name;
+            if (model.Name != name)
+            {
+                var setNameResult = await _userManager.SetUserNameAsync(user, model.Name);
+                if (!setNameResult.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
+                }
             }
 
             var email = user.Email;
