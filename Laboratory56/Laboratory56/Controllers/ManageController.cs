@@ -88,7 +88,7 @@ namespace Laboratory56.Controllers
             var name = user.Name;
             if (model.Name != name)
             {
-                var setNameResult = await _userManager.SetUserNameAsync(user, model.Name);
+                var setNameResult = await _userManager.FindByNameAsync(user.Name = name);
                 if (!setNameResult.Succeeded)
                 {
                     throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
