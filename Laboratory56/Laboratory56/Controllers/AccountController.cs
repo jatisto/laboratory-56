@@ -75,7 +75,7 @@ namespace Laboratory56.Controllers
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(
-                    user.UserName, 
+                    model.Name, 
                     model.Password, 
                     model.RememberMe,
                     lockoutOnFailure: false);
@@ -248,7 +248,7 @@ namespace Laboratory56.Controllers
                 {
                     UserName = model.Name,
                     Email = model.Email,
-                    Name = model.Name // находим так же по имени
+                    Name = model.Name
                 };
                 var path = Path.Combine(
                     _environment.WebRootPath,

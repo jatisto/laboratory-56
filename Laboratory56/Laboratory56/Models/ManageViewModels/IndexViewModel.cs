@@ -13,7 +13,7 @@ namespace Laboratory56.Models.ManageViewModels
         public bool IsEmailConfirmed { get; set; }
 
         [Required]
-//        [EmailAddress]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Phone]
