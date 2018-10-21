@@ -12,7 +12,7 @@ namespace Laboratory56.Models.AccountViewModels
         public string Name { get; set; }
 
         [Required]
-        [EmailAddress]
+//        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
