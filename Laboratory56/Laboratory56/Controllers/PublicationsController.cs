@@ -71,10 +71,15 @@ namespace Laboratory56.Controllers
             if (ModelState.IsValid)
             {
 
-                var path = Path.Combine(_environment.WebRootPath,$"images\\{publication}\\Publication");
+                var pub = new Publication
+                {
+                    ImageUrl = publication.ImageUrl
+                };
+
+                var path = Path.Combine(_environment.WebRootPath,$"images\\{pub.Id}\\Publication");
 
                 _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
-                publication.ImageUrl = $"images/{publication}/Publication/{model.ImageUrl.FileName}";
+                pub.ImageUrl = $"images/{pub.Id}/Publication/{model.ImageUrl.FileName}";
 
                 _context.Add(publication);
                 await _context.SaveChangesAsync();

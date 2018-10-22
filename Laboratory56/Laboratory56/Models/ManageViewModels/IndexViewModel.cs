@@ -24,5 +24,6 @@ namespace Laboratory56.Models.ManageViewModels
 
         public string AvatarImagePath { get; set; }
         public string Name { get; set; }
+        public string ImageUrlPath { get; set; }
     }
 }
