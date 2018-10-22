@@ -11,9 +11,10 @@ using System;
 namespace Laboratory56.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181022061358_edit imadeUrl or imageUrl")]
+    partial class editimadeUrlorimageUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,8 +88,6 @@ namespace Laboratory56.Data.Migrations
                     b.Property<string>("ImageUrl");
 
                     b.Property<int>("Like");
-
-                    b.Property<string>("NamePublication");
 
                     b.Property<int>("RePost");
 
