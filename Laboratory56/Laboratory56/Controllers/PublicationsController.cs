@@ -70,23 +70,21 @@ namespace Laboratory56.Controllers
         {
             if (ModelState.IsValid)
             {
+                var path = Path.Combine(_environment.WebRootPath,$"images\\{publication.Id}\\Publication");
 
-//                var pathImage = new PublicationVM
-//                {
-//                    ImageUrlPath = pa
-//                };
+                _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
+                var imageUrlContent = $"images/{publication.Id}/Publication/{model.ImageUrl.FileName}";
 
                 var pub = new Publication
                 {
-                    ImageUrl = publication.ImageUrl
+                    ImageUrl = imageUrlContent,
+                    Description = publication.Description,
+                    Like = publication.Like,
+                    RePost = publication.RePost
+
                 };
 
-                var path = Path.Combine(_environment.WebRootPath,$"images\\{pub.Id}\\Publication");
-
-                _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
-                pub.ImageUrl = $"images/{pub.Id}/Publication/{model.ImageUrl.FileName}";
-
-                _context.Add(publication);
+                _context.Add(pub);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
