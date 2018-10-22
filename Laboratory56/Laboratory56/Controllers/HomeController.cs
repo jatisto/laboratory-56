@@ -3,16 +3,25 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Laboratory56.Data;
 using Microsoft.AspNetCore.Mvc;
 using Laboratory56.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Laboratory56.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            return View(_context.Publications.ToList());
         }
 
         public IActionResult About()
