@@ -71,6 +71,11 @@ namespace Laboratory56.Controllers
             if (ModelState.IsValid)
             {
 
+//                var pathImage = new PublicationVM
+//                {
+//                    ImageUrlPath = pa
+//                };
+
                 var pub = new Publication
                 {
                     ImageUrl = publication.ImageUrl
