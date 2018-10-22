@@ -78,10 +78,7 @@ namespace Laboratory56.Controllers
                 var pub = new Publication
                 {
                     ImageUrl = imageUrlContent,
-                    Description = publication.Description,
-                    Like = publication.Like,
-                    RePost = publication.RePost
-
+                    Description = publication.Description
                 };
 
                 _context.Add(pub);
@@ -94,6 +91,8 @@ namespace Laboratory56.Controllers
         // GET: Publications/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
+
             if (id == null)
             {
                 return NotFound();
@@ -112,7 +111,7 @@ namespace Laboratory56.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ImadeUrl,Description,Like,RePost")] Publication publication)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ImadeUrl,Description,Like,RePost")] Publication publication, PublicationVM model)
         {
             if (id != publication.Id)
             {
@@ -123,7 +122,18 @@ namespace Laboratory56.Controllers
             {
                 try
                 {
-                    _context.Update(publication);
+                    var path = Path.Combine(_environment.WebRootPath, $"images\\{publication.Id}\\Publication");
+
+                    _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
+                    var imageUrlContent = $"images/{publication.Id}/Publication/{model.ImageUrl.FileName}";
+
+                    var pub = new Publication
+                    {
+                        ImageUrl = imageUrlContent,
+                        Description = publication.Description
+                    };
+
+                    _context.Update(pub);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
