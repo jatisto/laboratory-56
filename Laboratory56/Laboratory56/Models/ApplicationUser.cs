@@ -10,11 +10,6 @@ namespace Laboratory56.Models
     public class ApplicationUser : IdentityUser
     {
         public string Name { get; set; }
-        public string AvatarImage { get; set; } // Путь картинки
-
-        public List<Post> Posts { get; set; }
-        public int PostsCounter { get; set; }
-        public string Subscriber { get; set; }
-        public string Subscribtions { get; set; }
+        public string AvatarImage { get; set; }
     }
 }

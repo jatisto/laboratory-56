@@ -24,8 +24,5 @@ namespace Laboratory56.Models.ManageViewModels
 
         public string AvatarImagePath { get; set; }
         public string Name { get; set; }
-
-        public int PostsCounter { get; set; }
-        public Post PostProperty { get; set; }
     }
 }

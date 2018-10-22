@@ -11,9 +11,6 @@ namespace Laboratory56.Models.AccountViewModels
         [Required]
         public string Name { get; set; }
 
-        public ApplicationUser User { get; set; }
-
-//        [Required]
         [EmailAddress]
         public string Email { get; set; }
 
