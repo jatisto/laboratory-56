@@ -11,5 +11,7 @@ namespace Laboratory56.Models
     {
         public string Name { get; set; }
         public string AvatarImage { get; set; }
+
+        public List<Publication> PublicationsList { get; set; }
     }
 }

@@ -55,13 +55,7 @@ namespace Laboratory56.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<int>("PostsCounter");
-
                     b.Property<string>("SecurityStamp");
-
-                    b.Property<string>("Subscriber");
-
-                    b.Property<string>("Subscribtions");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -81,26 +75,28 @@ namespace Laboratory56.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Laboratory56.Models.Post", b =>
+            modelBuilder.Entity("Laboratory56.Models.Publication", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<string>("CommentPost");
+                    b.Property<string>("Description");
 
-                    b.Property<string>("ImagePath");
+                    b.Property<string>("ImageUrl");
 
-                    b.Property<string>("LikePost");
+                    b.Property<int>("Like");
 
-                    b.Property<string>("NamePost");
+                    b.Property<string>("NamePublication");
+
+                    b.Property<int>("RePost");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Publications");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -211,10 +207,10 @@ namespace Laboratory56.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Laboratory56.Models.Post", b =>
+            modelBuilder.Entity("Laboratory56.Models.Publication", b =>
                 {
                     b.HasOne("Laboratory56.Models.ApplicationUser")
-                        .WithMany("Posts")
+                        .WithMany("PublicationsList")
                         .HasForeignKey("ApplicationUserId");
                 });
 

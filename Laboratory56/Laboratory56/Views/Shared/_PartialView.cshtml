@@ -1,0 +1,23 @@
+﻿@model Laboratory56.Models.Publication
+
+
+<table class="table">
+  
+    <tbody>
+        <tr>
+            <td>
+                <img src="~/@Model.ImageUrl" width="700" height="350" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Like)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.RePost)
+            </td>
+        </tr>
+
+    </tbody>
+</table>

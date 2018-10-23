@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<Laboratory56.Models.Publication>
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -104,3 +105,31 @@
         </ul>
     </div>
 </div>
+<a asp-area="" asp-controller="Publications" asp-action="Create"><h4>Создать пост</h4></a>
+
+    @foreach (var item in Model)
+    {
+           @Html.Partial("_PartialView", item) 
+    }
+
+
+
+@* <tr> *@
+@*     <td> *@
+@*         <img src="~/@item.ImageUrl" width="700" height="350" /> *@
+@*     </td> *@
+@*     <td> *@
+@*         @Html.DisplayFor(modelItem => item.Description) *@
+@*     </td> *@
+@*     <td> *@
+@*         @Html.DisplayFor(modelItem => item.Like) *@
+@*     </td> *@
+@*     <td> *@
+@*         @Html.DisplayFor(modelItem => item.RePost) *@
+@*     </td> *@
+@*     <td> *@
+@*         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@
+@*         <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
+@*         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> *@
+@*     </td> *@
+@* </tr> *@
