@@ -2,7 +2,7 @@
 
 
 <table class="table">
-  
+
     <thead>
     <tr>
         <th>
@@ -12,25 +12,29 @@
             Описание
         </th>
         <th>
-            <a href="#">Like</a>
+            Нравиться
         </th>
-       
         <th></th>
     </tr>
     </thead>
-
+    
     <tbody>
-        <tr>
-            <td>
-                <img src="~/@Model.ImageUrl" width="700" height="350" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.Like)
-            </td>
-        </tr>
-
+    <tr>
+        <td>
+            <img src="~/@Model.ImageUrl" width="700" height="350" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.Like)
+        </td>
+    </tr>
+   
     </tbody>
+   
 </table>
+
+<input id="LikeId" type="submit" value="Like" class="btn btn-default" />
+
+<hr/>

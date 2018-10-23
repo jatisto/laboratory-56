@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "Searching";
+}
+
+<h2>Searching</h2>
+
+<div class="row">
+    <div class="col-lg-pull-4">
+        <input type="text" name="searchingKey" id="search"/>
+        <input type="button" id="submit" value="Наити"/>
+        <div class="col-lg-8" id="result"></div>
+    </div>
+</div>
+
+@section Scripts{ 
+    <script>
+        $(document).ready(function() {
+            $('#submit').click(function(e) {
+                e.preventDefault();
+                var str = $('#search').val();
+                str = encodeURIComponent(str);
+                $('#result').load('@Url.Action("SearchingResult", "Home")?key=' + str);
+            });
+        });
+    </script>
+}

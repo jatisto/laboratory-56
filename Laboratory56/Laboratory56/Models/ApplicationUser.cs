@@ -13,5 +13,6 @@ namespace Laboratory56.Models
         public string AvatarImage { get; set; }
 
         public List<Publication> PublicationsList { get; set; }
+        public List<Comment> CommentsList { get; set; }
     }
 }

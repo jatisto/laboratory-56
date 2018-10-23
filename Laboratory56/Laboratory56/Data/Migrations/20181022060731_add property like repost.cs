@@ -13,22 +13,12 @@ namespace Laboratory56.Data.Migrations
                 table: "Publications",
                 nullable: false,
                 defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "RePost",
-                table: "Publications",
-                nullable: false,
-                defaultValue: 0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
                 name: "Like",
-                table: "Publications");
-
-            migrationBuilder.DropColumn(
-                name: "RePost",
                 table: "Publications");
         }
     }

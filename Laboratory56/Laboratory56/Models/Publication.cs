@@ -13,8 +13,7 @@ namespace Laboratory56.Models
         public string ImageUrl { get; set; }
         [Display(Name = "Описание")]
         public string Description { get; set; }
-
+        [Display(Name = "Нравиться!")]
         public int Like { get; set; }
-        public int RePost { get; set; }
     }
 }
