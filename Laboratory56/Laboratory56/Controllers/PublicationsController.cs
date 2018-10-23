@@ -35,7 +35,9 @@ namespace Laboratory56.Controllers
         // GET: Publications
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Publications.ToListAsync());
+            var sort = await _context.Publications.ToListAsync();
+
+            return View(sort.OrderByDescending(s => s.Id));
         }
 
         #region Details
@@ -122,19 +124,27 @@ namespace Laboratory56.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("Id,ImadeUrl,Description,Like,RePost")]
             Publication publication, PublicationVM model)
         {
+
             if (id != publication.Id)
             {
                 return NotFound();
             }
 
+            var searching = await _context.Publications.SingleOrDefaultAsync(s => s.Id == id);
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Метод Publication
-                    var pub = Publication(publication, model);
-                    // -----------------------------------------
-                    _context.Update(pub);
+                    var path = Path.Combine(_environment.WebRootPath, $"images\\{_userManager.GetUserName(User)}\\Publication");
+
+                    _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
+                    var imageUrlContent = $"images/{_userManager.GetUserName(User)}/Publication/{model.ImageUrl.FileName}";
+
+                    searching.Description = publication.Description;
+                    searching.ImageUrl = imageUrlContent;
+
+                    _context.Update(searching);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
