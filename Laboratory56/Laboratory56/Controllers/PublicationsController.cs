@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Laboratory56.Data;
 using Laboratory56.Models;
 using Laboratory56.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 
@@ -16,7 +17,8 @@ namespace Laboratory56.Controllers
 {
     public class PublicationsController : Controller
     {
-        public PublicationsController(ApplicationDbContext context, IHostingEnvironment environment, FileUploadService fileUploadService, UserManager<ApplicationUser> userManager)
+        public PublicationsController(ApplicationDbContext context, IHostingEnvironment environment,
+            FileUploadService fileUploadService, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _environment = environment;
@@ -29,13 +31,14 @@ namespace Laboratory56.Controllers
         private readonly IHostingEnvironment _environment;
         private readonly FileUploadService _fileUploadService;
 
-       
 
         // GET: Publications
         public async Task<IActionResult> Index()
         {
             return View(await _context.Publications.ToListAsync());
         }
+
+        #region Details
 
         // GET: Publications/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -55,7 +58,12 @@ namespace Laboratory56.Controllers
             return View(publication);
         }
 
+        #endregion
+
+        #region Create
+
         // GET: Publications/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -65,34 +73,32 @@ namespace Laboratory56.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ImadeUrl,Description,Like,RePost")] Publication publication,  PublicationVM model)
+        public async Task<IActionResult> Create([Bind("Id,ImadeUrl,Description,Like,RePost")]
+            Publication publication, PublicationVM model)
         {
             if (ModelState.IsValid)
             {
-                var path = Path.Combine(_environment.WebRootPath,$"images\\{publication.Id}\\Publication");
-
-                _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
-                var imageUrlContent = $"images/{publication.Id}/Publication/{model.ImageUrl.FileName}";
-
-                var pub = new Publication
-                {
-                    ImageUrl = imageUrlContent,
-                    Description = publication.Description
-                };
-
+                // Метод Publication
+                var pub = Publication(publication, model);
+                //---------------------------------------------
                 _context.Add(pub);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(publication);
         }
 
+        #endregion
+
+        #region Edit
+
         // GET: Publications/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
-
-
             if (id == null)
             {
                 return NotFound();
@@ -103,6 +109,7 @@ namespace Laboratory56.Controllers
             {
                 return NotFound();
             }
+
             return View(publication);
         }
 
@@ -111,7 +118,9 @@ namespace Laboratory56.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ImadeUrl,Description,Like,RePost")] Publication publication, PublicationVM model)
+        [Authorize]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ImadeUrl,Description,Like,RePost")]
+            Publication publication, PublicationVM model)
         {
             if (id != publication.Id)
             {
@@ -122,17 +131,9 @@ namespace Laboratory56.Controllers
             {
                 try
                 {
-                    var path = Path.Combine(_environment.WebRootPath, $"images\\{publication.Id}\\Publication");
-
-                    _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
-                    var imageUrlContent = $"images/{publication.Id}/Publication/{model.ImageUrl.FileName}";
-
-                    var pub = new Publication
-                    {
-                        ImageUrl = imageUrlContent,
-                        Description = publication.Description
-                    };
-
+                    // Метод Publication
+                    var pub = Publication(publication, model);
+                    // -----------------------------------------
                     _context.Update(pub);
                     await _context.SaveChangesAsync();
                 }
@@ -147,12 +148,55 @@ namespace Laboratory56.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(publication);
         }
 
+        #endregion
+
+        #region PublicationUpload
+
+        private Publication Publication(Publication publication, PublicationVM model)
+        {
+            var path = Path.Combine(_environment.WebRootPath, $"images\\{_userManager.GetUserName(User)}\\Publication");
+
+            _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
+            var imageUrlContent = $"images/{_userManager.GetUserName(User)}/Publication/{model.ImageUrl.FileName}";
+
+            var pub = new Publication
+            {
+                ImageUrl = imageUrlContent,
+                Description = publication.Description
+            };
+            return pub;
+        }
+
+//        // для тестов
+//        private Publication PublicationEdit(Publication publication, PublicationVM model)
+//        {
+//            var path = Path.Combine(_environment.WebRootPath, $"images\\{_userManager.GetUserName(User)}\\Publication");
+//
+//            _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
+//            var imageUrlContent = $"images/{_userManager.GetUserName(User)}/Publication/{model.ImageUrl.FileName}";
+//
+//            var pub = new Publication
+//            {
+//                ImageUrl = imageUrlContent,
+//                Description = publication.Description
+//            };
+//            return pub;
+//        }
+
+        #endregion
+
+        #region Delete
+
         // GET: Publications/Delete/5
+        // [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -172,6 +216,7 @@ namespace Laboratory56.Controllers
 
         // POST: Publications/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -185,5 +230,7 @@ namespace Laboratory56.Controllers
         {
             return _context.Publications.Any(e => e.Id == id);
         }
+
+        #endregion
     }
 }
