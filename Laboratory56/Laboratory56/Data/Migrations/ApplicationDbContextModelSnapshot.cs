@@ -75,6 +75,28 @@ namespace Laboratory56.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Laboratory56.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<DateTime>("CommentDate");
+
+                    b.Property<string>("PostId");
+
+                    b.Property<int?>("PostId1");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("PostId1");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("Laboratory56.Models.Publication", b =>
                 {
                     b.Property<int>("Id")
@@ -87,10 +109,6 @@ namespace Laboratory56.Data.Migrations
                     b.Property<string>("ImageUrl");
 
                     b.Property<int>("Like");
-
-                    b.Property<string>("NamePublication");
-
-                    b.Property<int>("RePost");
 
                     b.HasKey("Id");
 
@@ -205,6 +223,17 @@ namespace Laboratory56.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Laboratory56.Models.Comment", b =>
+                {
+                    b.HasOne("Laboratory56.Models.ApplicationUser")
+                        .WithMany("CommentsList")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Laboratory56.Models.Publication", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId1");
                 });
 
             modelBuilder.Entity("Laboratory56.Models.Publication", b =>

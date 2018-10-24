@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Laboratory56.Controllers.HomeController.UserListElements>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Анкета пользователя</h2>
+
+<table class="table" width="350">
+    <thead>
+        <tr>
+
+            <th>
+                Аватар
+            </th>
+            <th>
+                Id
+            </th>
+            <th>
+                Имя
+            </th>
+            <th>
+                E-mail
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/@item.AvatarImages" width="100" height="100" />
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
