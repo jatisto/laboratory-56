@@ -63,7 +63,7 @@ namespace Laboratory56.Controllers
                 .Select(u => new UserListElements
                 {
                     Id = u.Id,
-                    Name = u.Name,
+                    Name = u.UserName,
                     Email = u.Email,
                     AvatarImages = u.AvatarImage
                 }).ToList();
