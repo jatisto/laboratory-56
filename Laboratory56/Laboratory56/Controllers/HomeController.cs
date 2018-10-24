@@ -80,5 +80,16 @@ namespace Laboratory56.Controllers
         }
 
         #endregion
+
+        #region AllUser
+
+        public ActionResult UsersList()
+        {
+            return View(_context.Users.ToList());
+        }
+
+        #endregion
     }
+
+
 }
