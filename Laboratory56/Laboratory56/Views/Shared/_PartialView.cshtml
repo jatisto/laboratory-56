@@ -14,6 +14,9 @@
         <th>
             Нравиться
         </th>
+        <th>
+            Кол. Коментарии
+        </th>
         <th></th>
     </tr>
     </thead>
@@ -29,6 +32,9 @@
         <td>
             @Html.DisplayFor(modelItem => Model.Like)
         </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.ComentCount)
+        </td>
     </tr>
    
     </tbody>
@@ -38,3 +44,32 @@
 <input id="LikeId" type="submit" value="Like" class="btn btn-default" />
 
 <hr/>
+
+<div>
+    Комментарии (@Model.ComentCount)<br/>
+    <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer">Оставить комментарий</a>
+</div>
+<div id="postdiv-@Model.Id" style="display:none">
+    <textarea id="posttext-@Model.Id"></textarea>
+    <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.Description')" value="Отправить"/>
+</div>
+
+@section Scripts{ 
+    <script>
+        function openCommentForm(publicationId) {
+            $('#postdiv-' + publicationId).show();
+        }
+
+        function sendComment(publicationId, applicationUserId) {
+            $.ajax({
+                url: '@Url.Action("Comment", "Comments")',
+                type: 'POST',
+                data: { 'publicationId': publicationId, 'ApplicationUserId': applicationUserId, 'content': $('#posttext-' + publicationId).val() },
+                success: console.log('все ок'),
+                error: console.log('Ошибка во время отправки комментария')
+            });
+        }
+
+
+    </script>
+}

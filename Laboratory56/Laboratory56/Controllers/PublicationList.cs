@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Laboratory56.Models
+namespace Laboratory56.Controllers
 {
-    public class Publication
+    internal class PublicationList
     {
         public int Id { get; set; }
         [Display(Name = "Изображение")]
