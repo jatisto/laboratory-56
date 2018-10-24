@@ -1,0 +1,61 @@
+﻿@model Laboratory56.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ApplicationUser</h4>
+    <hr/>
+    <dl class="dl-horizontal">
+
+        <dt>
+            <img src="~/@Model.AvatarImage" width="350" height="250" />
+        </dt>
+        
+        @* <dt> *@
+        @*     Имя: *@
+        @* </dt> *@
+        <dd>
+            <h2>@Html.DisplayFor(model => model.UserName)</h2>
+        </dd>
+
+        <dt>
+            Почта:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            Телефонный номер:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LockoutEnd)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LockoutEnd)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LockoutEnabled)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LockoutEnabled)
+        </dd>
+        <dt>
+            Путь:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AvatarImage)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
