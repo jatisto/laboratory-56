@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,17 +8,32 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Laboratory56.Data;
 using Laboratory56.Models;
+using Laboratory56.Models.AccountViewModels;
+using Laboratory56.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 
 namespace Laboratory56.Controllers
 {
     public class ApplicationUsersController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public ApplicationUsersController(ApplicationDbContext context)
+        public ApplicationUsersController(
+            ApplicationDbContext context, 
+            IHostingEnvironment environment, 
+            FileUploadService fileUploadService,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _environment = environment;
+            _fileUploadService = fileUploadService;
+            _userManager = userManager;
         }
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
+        private readonly IHostingEnvironment _environment;
+        private readonly FileUploadService _fileUploadService;
+
+       
 
         #region AllUser
 
@@ -95,18 +111,30 @@ namespace Laboratory56.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,AvatarImage,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Edit(string id, [Bind("Name,AvatarImage,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser, RegisterViewModel model)
         {
             if (id != applicationUser.Id)
             {
                 return NotFound();
             }
-
+            var applicationUserList = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(applicationUser);
+                    var path = Path.Combine(
+                        _environment.WebRootPath,
+                        $"images\\{_userManager.GetUserName(User)}\\avatar");
+                    _fileUploadService.Upload(path, model.AvatarImage.FileName, model.AvatarImage);
+                    var avatarImageVar = $"images/{_userManager.GetUserName(User)}/avatar/{model.AvatarImage.FileName}";
+
+                    applicationUserList.AvatarImage = avatarImageVar;
+                    applicationUserList.UserName = applicationUser.UserName;
+                    applicationUserList.Email = applicationUser.Email;
+                    applicationUserList.PhoneNumber = applicationUser.PhoneNumber;
+
+
+                    _context.Update(applicationUserList);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
