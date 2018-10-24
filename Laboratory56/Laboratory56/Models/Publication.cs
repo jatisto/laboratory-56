@@ -15,7 +15,7 @@ namespace Laboratory56.Models
         public string Description { get; set; }
         [Display(Name = "Нравиться!")]
         public int Like { get; set; }
-        [Display(Name = "Колличество комментариев")]
+        [Display(Name = "Количество  комментариев")]
         public int ComentCount { get; set; }
     }
 }

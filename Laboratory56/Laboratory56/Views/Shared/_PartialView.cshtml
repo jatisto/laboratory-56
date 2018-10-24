@@ -4,72 +4,75 @@
 <table class="table">
 
     <thead>
-    <tr>
-        <th>
-            Изображение
-        </th>
-        <th>
-            Описание
-        </th>
-        <th>
-            Нравиться
-        </th>
-        <th>
-            Кол. Коментарии
-        </th>
-        <th></th>
-    </tr>
+        <tr>
+            <th>
+                Изображение
+            </th>
+            <th>
+                Описание
+            </th>
+            <th>
+                Нравиться
+            </th>
+            <th>
+                Кол. Коментарии
+            </th>
+            <th></th>
+        </tr>
     </thead>
-    
+
     <tbody>
-    <tr>
-        <td>
-            <img src="~/@Model.ImageUrl" width="700" height="350" />
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => Model.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => Model.Like)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => Model.ComentCount)
-        </td>
-    </tr>
-   
+        <tr>
+            <td>
+                <img src="~/@Model.ImageUrl" width="700" height="350" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Like)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.ComentCount)
+            </td>
+        </tr>
+
     </tbody>
-   
+
 </table>
 
 <input id="LikeId" type="submit" value="Like" class="btn btn-default" />
 
-<hr/>
+<a asp-area="" asp-controller="Comments" asp-action="Index" title="Comment">Оставить комментарий</a>
 
-<div>
-    Комментарии (@Model.ComentCount)<br/>
-    <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer">Оставить комментарий</a>
-</div>
-<div id="postdiv-@Model.Id" style="display:none">
-    <textarea id="posttext-@Model.Id"></textarea>
-    <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.Description')" value="Отправить"/>
-</div>
+<hr />
 
-@section Scripts{ 
-    <script>
-        function openCommentForm(publicationId) {
-            $('#postdiv-' + publicationId).show();
-        }
+@*<div>
+        Комментарии (@Model.ComentCount)<br/>
+        <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer">Оставить комментарий</a>
+    </div>
+    <div id="postdiv-@Model.Id" style="display:none">
+        <textarea id="posttext-@Model.Id"></textarea>
+        <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.Description')" value="Отправить"/>
+    </div>
 
-        function sendComment(publicationId, applicationUserId) {
-            $.ajax({
-                url: '@Url.Action("Comment", "Comments")',
-                type: 'POST',
-                data: { 'publicationId': publicationId, 'ApplicationUserId': applicationUserId, 'content': $('#posttext-' + publicationId).val() },
-                success: console.log('все ок'),
-                error: console.log('Ошибка во время отправки комментария')
-            });
-        }
+    @section Scripts{
+        <script>
+            function openCommentForm(publicationId) {
+                $('#postdiv-' + publicationId).show();
+            }
+
+            function sendComment(publicationId, applicationUserId) {
+                $.ajax({
+                    url: '@Url.Action("Comment", "Comments")',
+                    type: 'POST',
+                    data: { 'publicationId': publicationId, 'ApplicationUserId': applicationUserId, 'content': $('#posttext-' + publicationId).val() },
+                    success: console.log('все ок'),
+                    error: console.log('Ошибка во время отправки комментария')
+                });
+            }
 
 
-    </script>
-}
+        </script>
+    }*@
+

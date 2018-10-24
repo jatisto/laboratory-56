@@ -11,9 +11,10 @@ using System;
 namespace Laboratory56.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181024160139_int to string and name")]
+    partial class inttostringandname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,23 +81,19 @@ namespace Laboratory56.Data.Migrations
                     b.Property<string>("CommentId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CommentDate");
+                    b.Property<string>("ApplicationUserId");
 
-                    b.Property<string>("Content");
+                    b.Property<DateTime>("CommentDate");
 
                     b.Property<string>("PostId");
 
                     b.Property<int?>("PostId1");
 
-                    b.Property<int>("UserId");
-
-                    b.Property<string>("UserId1");
-
                     b.HasKey("CommentId");
 
-                    b.HasIndex("PostId1");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("PostId1");
 
                     b.ToTable("Comments");
                 });
@@ -233,13 +230,13 @@ namespace Laboratory56.Data.Migrations
 
             modelBuilder.Entity("Laboratory56.Models.Comment", b =>
                 {
+                    b.HasOne("Laboratory56.Models.ApplicationUser")
+                        .WithMany("CommentsList")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("Laboratory56.Models.Publication", "Post")
                         .WithMany()
                         .HasForeignKey("PostId1");
-
-                    b.HasOne("Laboratory56.Models.ApplicationUser", "User")
-                        .WithMany("CommentsList")
-                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("Laboratory56.Models.Publication", b =>

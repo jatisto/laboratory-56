@@ -7,27 +7,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Laboratory56.Data;
 using Laboratory56.Models;
-using Laboratory56.Services;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 
 namespace Laboratory56.Controllers
 {
     public class CommentsController : Controller
     {
-        public CommentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment environment, FileUploadService fileUploadService)
+        private readonly ApplicationDbContext _context;
+
+        public CommentsController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
-            _environment = environment;
-            _fileUploadService = fileUploadService;
         }
-
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IHostingEnvironment _environment;
-        private readonly FileUploadService _fileUploadService;
-
 
         // GET: Comments
         public async Task<IActionResult> Index()
@@ -35,16 +25,20 @@ namespace Laboratory56.Controllers
             return View(await _context.Comments.ToListAsync());
         }
 
+        #region Details
+
         // GET: Comments/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
+            ViewBag.Comment = _context.Comments.Where(c => c.PostId == id);
+
             if (id == null)
             {
                 return NotFound();
             }
 
             var comment = await _context.Comments
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.CommentId == id);
             if (comment == null)
             {
                 return NotFound();
@@ -52,6 +46,10 @@ namespace Laboratory56.Controllers
 
             return View(comment);
         }
+
+        #endregion
+
+        #region Create
 
         // GET: Comments/Create
         public IActionResult Create()
@@ -64,7 +62,7 @@ namespace Laboratory56.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PostId,CommentDate")] Comment comment)
+        public async Task<IActionResult> Create([Bind("CommentId,PostId,CommentDate")] Comment comment)
         {
             if (ModelState.IsValid)
             {
@@ -72,33 +70,39 @@ namespace Laboratory56.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(comment);
         }
 
         // GET: Comments/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var comment = await _context.Comments.SingleOrDefaultAsync(m => m.Id == id);
+            var comment = await _context.Comments.SingleOrDefaultAsync(m => m.CommentId == id);
             if (comment == null)
             {
                 return NotFound();
             }
+
             return View(comment);
         }
+
+        #endregion
+
+        #region Edit
 
         // POST: Comments/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,CommentDate")] Comment comment)
+        public async Task<IActionResult> Edit(string id, [Bind("CommentId,PostId,CommentDate")] Comment comment)
         {
-            if (id != comment.Id)
+            if (id != comment.CommentId)
             {
                 return NotFound();
             }
@@ -112,7 +116,7 @@ namespace Laboratory56.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CommentExists(comment.Id))
+                    if (!CommentExists(comment.CommentId))
                     {
                         return NotFound();
                     }
@@ -121,13 +125,19 @@ namespace Laboratory56.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(comment);
         }
 
+        #endregion
+
+        #region Delete
+
         // GET: Comments/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -135,7 +145,7 @@ namespace Laboratory56.Controllers
             }
 
             var comment = await _context.Comments
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.CommentId == id);
             if (comment == null)
             {
                 return NotFound();
@@ -147,33 +157,48 @@ namespace Laboratory56.Controllers
         // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var comment = await _context.Comments.SingleOrDefaultAsync(m => m.Id == id);
+            var comment = await _context.Comments.SingleOrDefaultAsync(m => m.CommentId == id);
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CommentExists(int id)
+        private bool CommentExists(string id)
         {
-            return _context.Comments.Any(e => e.Id == id);
+            return _context.Comments.Any(e => e.CommentId == id);
         }
 
+        #endregion
+
+        #region Comment
+
+        #region version 1
+
         [HttpPost]
-        public async Task<IActionResult> Comment(int publicationId, string applicationUserId, string content)
+        public async Task<IActionResult> Comment(string publicationId, int applicationUserId, string content)
         {
-            var applicationUserList = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == applicationUserId);
+//            Comment comment = new Comment();
+            var comment = _context.Comments.SingleOrDefault(c => c.UserId == applicationUserId);
             if (ModelState.IsValid)
             {
-                
+                comment.UserId = applicationUserId;
+                comment.PostId = publicationId;
+                comment.CommentDate = DateTime.Now;
+                comment.Content = content;
 
-                _context.Add(applicationUserList);
+                _context.Add(comment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(applicationUserList);
+
+            return View(comment);
+
         }
 
+        #endregion
+
+        #endregion
     }
 }
