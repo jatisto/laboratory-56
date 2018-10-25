@@ -12,13 +12,9 @@ namespace Laboratory56.Models
 
         [Display(Name = "Изображение")] public string ImageUrl { get; set; }
         [Display(Name = "Описание")] public string Description { get; set; }
-        [Display(Name = "Нравиться!")] public int Like { get; set; }
 
-//        public int UserId { get; set; }
-//        public ApplicationUser User { get; set; }
-
-//        public int CommentId { get; set; }
-//        public Comment Comment { get; set; }
+        public int LikeId { get; set; }
+        public Like Like { get; set; }
 
         [Display(Name = "Количество  комментариев")]
         public int ComentCount { get; set; }

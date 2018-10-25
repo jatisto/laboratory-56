@@ -10,7 +10,7 @@ namespace Laboratory56.Models
     {
         [Key] public string CommentId { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; }
         public string PostId { get; set; }
         public Publication Post { get; set; }

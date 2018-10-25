@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Laboratory56.Data;
 using Laboratory56.Models;
+using Laboratory56.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 
 namespace Laboratory56.Controllers
 {
@@ -14,12 +17,20 @@ namespace Laboratory56.Controllers
     {
         #region Conection and ctor
 
-        private readonly ApplicationDbContext _context;
-
-        public CommentsController(ApplicationDbContext context)
+        public CommentsController(ApplicationDbContext context, IHostingEnvironment environment,
+            FileUploadService fileUploadService, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _environment = environment;
+            _fileUploadService = fileUploadService;
+            _userManager = userManager;
         }
+
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
+        private readonly IHostingEnvironment _environment;
+        private readonly FileUploadService _fileUploadService;
+
 
         #endregion
 
@@ -185,10 +196,11 @@ namespace Laboratory56.Controllers
         #region version 1
 
         [HttpPost]
-        public async Task<IActionResult> Comment(string postId, int userId, string content)
+        public async Task<IActionResult> Comment(string postId, string userId, string content)
         {
 //            Comment comment = new Comment();
-            var comment = _context.Comments.SingleOrDefault(c => c.UserId == userId);
+//            var comment = _context.Comments.SingleOrDefault(c => c.UserId == userId);
+            Comment comment = _context.Comments.SingleOrDefault(c => c.UserId == userId);
             if (ModelState.IsValid)
             {
                 comment.UserId = userId;
@@ -201,7 +213,7 @@ namespace Laboratory56.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(comment);
+            return View((IEnumerable<Comment>) comment);
 
         }
 

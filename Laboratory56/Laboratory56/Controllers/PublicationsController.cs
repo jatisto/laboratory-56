@@ -252,16 +252,15 @@ namespace Laboratory56.Controllers
         #endregion
 
         #region LikeMethod
-
-        public ActionResult LikeMethod(int like, int userId, string postId)
+        [HttpPost]
+        public ActionResult LikeMethod(int like, string postId)
         {
             var userLike = _userManager.Users.Where(u => u.Id == postId);
             if (ModelState.IsValid)
             {
                 var post = new Publication
             {
-                Like = like + 1,
-                Id = userId
+                Like = like + 1
             };
                 
                 _context.Add(post);

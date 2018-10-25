@@ -12,6 +12,7 @@ namespace Laboratory56.Data
     {
         public DbSet<Publication> Publications { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Like> Likes { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
