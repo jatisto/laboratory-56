@@ -212,7 +212,7 @@ namespace Laboratory56.Controllers
                 };
                 comm.UserId = user.Id;
                 comm.ComentCount = comm.ComentCount + 1;
-                _context.Update(comm);
+                _context.Add(comm);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
