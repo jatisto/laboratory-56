@@ -9,7 +9,12 @@ namespace Laboratory56.Models
     public class Like
     {
         [Key]
-        public int  LikeId { get; set; }
+        public int Id { get; set; }
+
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
+        public string PostId { get; set; }
+        public Publication Post { get; set; }
 
         [Display(Name = "Нравиться!")] public int LikeProperty { get; set; }
     }

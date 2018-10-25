@@ -260,7 +260,7 @@ namespace Laboratory56.Controllers
             {
                 var post = new Publication
             {
-                Like = like + 1
+                
             };
                 
                 _context.Add(post);
