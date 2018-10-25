@@ -2,7 +2,6 @@
 
 
 <table class="table">
-
     <thead>
     <tr>
         <th>
@@ -67,7 +66,6 @@
     function openCommentForm(postId) {
         $('#postdiv-' + postId).show();
     }
-
     function sendComment(postId, userId) {
         $.ajax({
             url: '@Url.Action("Comment", "Comments")',
@@ -80,7 +78,6 @@
             error: function() { 
                 console.log('Ошибка во время отправки комментария', this);
             }
-
         });
     }
 </script>
