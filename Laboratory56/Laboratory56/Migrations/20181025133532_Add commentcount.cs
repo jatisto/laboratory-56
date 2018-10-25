@@ -2,15 +2,15 @@
 using System;
 using System.Collections.Generic;
 
-namespace Laboratory56.Data.Migrations
+namespace Laboratory56.Migrations
 {
-    public partial class addpropertylikerepost : Migration
+    public partial class Addcommentcount : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "Like",
-                table: "Publications",
+                name: "ComentCount",
+                table: "Comments",
                 nullable: false,
                 defaultValue: 0);
         }
@@ -18,8 +18,8 @@ namespace Laboratory56.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Like",
-                table: "Publications");
+                name: "ComentCount",
+                table: "Comments");
         }
     }
 }
