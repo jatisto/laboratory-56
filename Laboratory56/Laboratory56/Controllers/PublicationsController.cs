@@ -92,7 +92,6 @@ namespace Laboratory56.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 var pub = Publication(publication, model);
                 pub.UserId = user.Id;
-                pub.Id = publication.Id;
                 _context.Add(pub);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

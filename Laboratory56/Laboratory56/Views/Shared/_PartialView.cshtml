@@ -60,33 +60,18 @@
 @* <a asp-area="" asp-controller="Comments" asp-action="Comment">Оставить комментарий</a> *@
 <br/><br/>
 
+<form asp-controller="Publications" 
+      asp-action="LikeMethod" 
+      asp-route-Like="@Model.Like" 
+      asp-route-UserId="@Model.UserId" 
+      asp-route-Id="@Model.Id">
+    <input id="LikeId" type="submit" value="Like" class="btn btn-default" />
+</form>
 
-<input
-     id="LikeId"
-     type="submit"
-     value="Like"
-     class="btn btn-default"
-     onclick="location.href = '@Url.Action("LikeMethod", "Publications", new {Model.Like, Model.UserId, Model.Id}, null)'"/>
 
-@* <input *@
-@*     id="LikeId" *@
-@*     type="submit" *@
-@*     value="Like" *@
-@*     class="btn btn-default"/> *@
 
 <hr/>
 
-
-@*  <script> *@
-@*         $(document).ready(function() { *@
-@*             $('#submit').click(function(e) { *@
-@*                 e.preventDefault(); *@
-@*                 var str = $('#LikeId').val(); *@
-@*                 str = encodeURIComponent(str); *@
-@*                 $('#result').load('@Url.Action("LikeMethod", "Publications")?like, PostId, userId'); *@
-@*             }); *@
-@*         }); *@
-@* </script> *@
 
 
 <script>
