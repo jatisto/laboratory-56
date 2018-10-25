@@ -2,22 +2,23 @@
 using System;
 using System.Collections.Generic;
 
-namespace Laboratory56.Data.Migrations
+namespace Laboratory56.Migrations
 {
-    public partial class addpropertyContent : Migration
+    public partial class Addcommentcount : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Content",
+            migrationBuilder.AddColumn<int>(
+                name: "ComentCount",
                 table: "Comments",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Content",
+                name: "ComentCount",
                 table: "Comments");
         }
     }

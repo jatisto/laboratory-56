@@ -253,8 +253,34 @@ namespace Laboratory56.Controllers
 
         #region LikeMethod
 
-        
-        public ActionResult LikeMethod(string userId, int postId)
+        #region MyVarLikeMethod
+
+        //       public ActionResult LikeMethod(string userId, int postId)
+//        {
+//            var userLike = _context.Publications.FirstOrDefault(u => u.UserId == userId);
+//            if (ModelState.IsValid)
+//            {
+//                if (userLike != null)
+//                {
+//                   userLike.Like = userLike.Like + 1;
+//                    userLike.UserId = userId;
+//                    userLike.Id = postId;
+//
+//                    _context.Add(userLike);
+//                    _context.SaveChangesAsync();
+//                    return RedirectToAction(nameof(Index));
+//
+//                }
+//                
+//            }
+//
+//            return View();
+//        }
+
+        #endregion
+
+
+        public ActionResult LikeMethod(int like, string userId, int postId)
         {
             var userLike = _context.Publications.FirstOrDefault(u => u.UserId == userId);
             if (ModelState.IsValid)
@@ -265,17 +291,17 @@ namespace Laboratory56.Controllers
                     userLike.UserId = userId;
                     userLike.Id = postId;
 
-                    _context.Add(userLike);
+                    _context.Update(userLike);
                     _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
-
                 }
-                
+
+
             }
 
             return View();
-        }
 
-        #endregion
+            #endregion
+        }
     }
 }

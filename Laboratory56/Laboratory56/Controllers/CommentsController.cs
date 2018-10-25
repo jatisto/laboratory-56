@@ -211,7 +211,8 @@ namespace Laboratory56.Controllers
                     CommentDate = DateTime.Now
                 };
                 comm.UserId = user.Id;
-                _context.Add(comm);
+                comm.ComentCount = comm.ComentCount + 1;
+                _context.Update(comm);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

@@ -65,11 +65,12 @@
 @*   asp-route-UserId="@Model.UserId"*@
 @*   asp-route-Id="@Model.Id">Like</a>*@
 
-<form asp-controller="Publications" 
-      asp-action="LikeMethod" 
-      asp-route-UserId="@Model.UserId" 
-      asp-route-postId="@Model.Id">
-    <input id="LikeId" type="submit" value="Like" class="btn btn-default" />
+<form asp-controller="Publications" asp-action="LikeMethod"  asp-route-postId="@Model.Id" asp-route-userId="@Model.UserId">
+    <input id="LikeId"
+           type="submit"
+           value="Like"
+           class="btn btn-default"
+    />
 </form>
 
 
@@ -87,7 +88,7 @@
         $.ajax({
             url: '@Url.Action("Comment", "Comments")',
             type: 'POST',
-            data: { 'postId': postId, 'userId': userId, 'content': $('#posttext-' + postId).val() },
+            data: { 'postId': postId, 'userId': userId,'content': $('#posttext-' + postId).val() },
             success: function(data) {
                 console.log('все ок', data);
             },

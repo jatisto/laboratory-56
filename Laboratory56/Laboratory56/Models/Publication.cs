@@ -18,10 +18,11 @@ namespace Laboratory56.Models
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
-//        public int CommentId { get; set; }
-//        public Comment Comment { get; set; }
+        //        public int CommentId { get; set; }
+        //        public Comment Comment { get; set; }
 
         [Display(Name = "Количество  комментариев")]
         public int ComentCount { get; set; }
+
     }
 }

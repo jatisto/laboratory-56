@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace Laboratory56.Data.Migrations
+namespace Laboratory56.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181025080342_Add UserId2")]
-    partial class AddUserId2
+    [Migration("20181025133532_Add commentcount")]
+    partial class Addcommentcount
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,6 +81,8 @@ namespace Laboratory56.Data.Migrations
                     b.Property<string>("CommentId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("ComentCount");
+
                     b.Property<DateTime>("CommentDate");
 
                     b.Property<string>("Content");
@@ -89,15 +91,13 @@ namespace Laboratory56.Data.Migrations
 
                     b.Property<int?>("PostId1");
 
-                    b.Property<int>("UserId");
-
-                    b.Property<string>("UserId1");
+                    b.Property<string>("UserId");
 
                     b.HasKey("CommentId");
 
                     b.HasIndex("PostId1");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -240,7 +240,7 @@ namespace Laboratory56.Data.Migrations
 
                     b.HasOne("Laboratory56.Models.ApplicationUser", "User")
                         .WithMany("CommentsList")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Laboratory56.Models.Publication", b =>

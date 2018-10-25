@@ -1,20 +1,23 @@
 ﻿@model IEnumerable<Laboratory56.Models.Comment>
 
 @{
-    ViewData["Title"] = "Comment";
+    Layout = null;
 }
 
-<h2>Comment</h2>
+<!DOCTYPE html>
 
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Comment</title>
+</head>
+<body>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserId)
-                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.PostId)
                 </th>
@@ -24,15 +27,18 @@
                 <th>
                     @Html.DisplayNameFor(model => model.CommentDate)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ComentCount)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PostId)
             </td>
@@ -43,6 +49,12 @@
                 @Html.DisplayFor(modelItem => item.CommentDate)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.ComentCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.CommentId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.CommentId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.CommentId">Delete</a>
@@ -51,3 +63,5 @@
 }
     </tbody>
 </table>
+</body>
+</html>

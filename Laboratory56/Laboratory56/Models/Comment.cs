@@ -17,5 +17,8 @@ namespace Laboratory56.Models
         public string Content { get; set; }
         public DateTime CommentDate { get; set; }
 
+        [Display(Name = "Количество  комментариев")]
+        public int ComentCount { get; set; }
+
     }
 }
