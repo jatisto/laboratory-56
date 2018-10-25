@@ -27,11 +27,8 @@
                 <th>
                     @Html.DisplayNameFor(model => model.CommentDate)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ComentCount)
-                </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                @Html.DisplayNameFor(model => model.UserId)
             </th>
             <th></th>
         </tr>
@@ -49,10 +46,7 @@
                 @Html.DisplayFor(modelItem => item.CommentDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ComentCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.UserId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CommentId">Edit</a> |

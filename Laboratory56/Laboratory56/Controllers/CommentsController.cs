@@ -38,7 +38,8 @@ namespace Laboratory56.Controllers
         // GET: Comments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Comments.ToListAsync());
+            var comments = await _context.Comments.OrderByDescending(c => c.PostId).ToListAsync();
+            return View(comments);
         }
 
         #endregion
