@@ -254,7 +254,7 @@ namespace Laboratory56.Controllers
         #region LikeMethod
 
         
-        public ActionResult LikeMethod(int like, string userId, int postId)
+        public ActionResult LikeMethod(string userId, int postId)
         {
             var userLike = _context.Publications.FirstOrDefault(u => u.UserId == userId);
             if (ModelState.IsValid)

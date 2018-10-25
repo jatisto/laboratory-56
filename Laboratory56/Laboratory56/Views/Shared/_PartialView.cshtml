@@ -60,11 +60,15 @@
 @* <a asp-area="" asp-controller="Comments" asp-action="Comment">Оставить комментарий</a> *@
 <br/><br/>
 
+@*<a asp-controller="Publications"*@
+@*   asp-action="LikeMethod"*@
+@*   asp-route-UserId="@Model.UserId"*@
+@*   asp-route-Id="@Model.Id">Like</a>*@
+
 <form asp-controller="Publications" 
       asp-action="LikeMethod" 
-      asp-route-Like="@Model.Like" 
       asp-route-UserId="@Model.UserId" 
-      asp-route-Id="@Model.Id">
+      asp-route-postId="@Model.Id">
     <input id="LikeId" type="submit" value="Like" class="btn btn-default" />
 </form>
 
