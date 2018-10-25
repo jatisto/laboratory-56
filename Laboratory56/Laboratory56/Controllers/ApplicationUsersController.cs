@@ -17,6 +17,8 @@ namespace Laboratory56.Controllers
 {
     public class ApplicationUsersController : Controller
     {
+        #region Conect and ctor
+
         public ApplicationUsersController(
             ApplicationDbContext context, 
             IHostingEnvironment environment, 
@@ -32,8 +34,9 @@ namespace Laboratory56.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment _environment;
         private readonly FileUploadService _fileUploadService;
+        
 
-       
+        #endregion
 
         #region AllUser
 
@@ -44,11 +47,17 @@ namespace Laboratory56.Controllers
 
         #endregion
 
+        #region Index
+
         // GET: ApplicationUsers
         public async Task<IActionResult> Index()
         {
             return View(await _context.ApplicationUser.ToListAsync());
         }
+
+        #endregion
+
+        #region Details
 
         // GET: ApplicationUsers/Details/5
         public async Task<IActionResult> Details(string id)
@@ -67,6 +76,12 @@ namespace Laboratory56.Controllers
 
             return View(applicationUser);
         }
+        
+
+
+        #endregion
+
+        #region Create
 
         // GET: ApplicationUsers/Create
         public IActionResult Create()
@@ -89,6 +104,11 @@ namespace Laboratory56.Controllers
             }
             return View(applicationUser);
         }
+        
+
+        #endregion
+
+        #region Edit
 
         // GET: ApplicationUsers/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -152,6 +172,11 @@ namespace Laboratory56.Controllers
             }
             return View(applicationUser);
         }
+        
+
+        #endregion
+
+        #region Delete
 
         // GET: ApplicationUsers/Delete/5
         public async Task<IActionResult> Delete(string id)
@@ -186,5 +211,7 @@ namespace Laboratory56.Controllers
         {
             return _context.ApplicationUser.Any(e => e.Id == id);
         }
+
+        #endregion
     }
 }

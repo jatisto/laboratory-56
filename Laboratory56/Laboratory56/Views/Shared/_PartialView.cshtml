@@ -2,7 +2,6 @@
 
 
 <table class="table">
-
     <thead>
     <tr>
         <th>
@@ -27,7 +26,7 @@
     <tbody>
     <tr>
         <td>
-            <img src="~/@Model.ImageUrl" width="700" height="350"/>
+            <img src="~/@Model.ImageUrl" width="700" height="450"/>
         </td>
         <td>
             @Html.DisplayFor(modelItem => Model.User.Name)
@@ -48,56 +47,37 @@
 </table>
 
 <div>
-    Комментарии (@Model.ComentCount)
-    <br/>
+    @* Комментарии (@Model.ComentCount) *@
+    @* <br/> *@
     <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer">Оставить комментарий</a>
 </div>
 <div id="postdiv-@Model.Id" style="display: none">
     <textarea id="posttext-@Model.Id"></textarea>
     <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.UserId')" value="Отправить"/>
 </div>
-
-@* <a asp-area="" asp-controller="Comments" asp-action="Comment">Оставить комментарий</a> *@
-<br/><br/>
-
-@*<a asp-controller="Publications"*@
-@*   asp-action="LikeMethod"*@
-@*   asp-route-UserId="@Model.UserId"*@
-@*   asp-route-Id="@Model.Id">Like</a>*@
-
+<br/>
 <form asp-controller="Publications" asp-action="LikeMethod"  asp-route-postId="@Model.Id" asp-route-userId="@Model.UserId">
-    <input id="LikeId"
-           type="submit"
-           value="Like"
-           class="btn btn-default"
-    />
+    <input id="LikeId" type="submit" value="Like" class="btn btn-default" />
 </form>
 
-
-
 <hr/>
-
-
 
 <script>
     function openCommentForm(postId) {
         $('#postdiv-' + postId).show();
     }
-
     function sendComment(postId, userId) {
         $.ajax({
             url: '@Url.Action("Comment", "Comments")',
             type: 'POST',
             data: { 'postId': postId, 'userId': userId,'content': $('#posttext-' + postId).val() },
             success: function(data) {
-                console.log('все ок', data);
+//                alert('Ваш коментарий добавлен!!!', data);
+                setTimeout(function () { alert('Ваш комментарий ' + '(' + $('#posttext-' + postId).val() + ')' + ' добавлен!!!', data) }, 500);
             },
             error: function() { 
                 console.log('Ошибка во время отправки комментария', this);
             }
-
         });
     }
-
-
 </script>
