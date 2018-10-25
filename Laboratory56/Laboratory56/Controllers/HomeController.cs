@@ -26,7 +26,8 @@ namespace Laboratory56.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Publications.OrderByDescending(p => p.Id).ToList());
+            var publish = _context.Publications.OrderByDescending(p => p.Id).ToList();
+            return View(publish);
         }
 
         public IActionResult About()

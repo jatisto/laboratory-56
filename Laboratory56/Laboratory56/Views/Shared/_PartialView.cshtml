@@ -9,6 +9,9 @@
             Изображение
         </th>
         <th>
+            Имя
+        </th>
+        <th>
             Описание
         </th>
         <th>
@@ -25,6 +28,9 @@
     <tr>
         <td>
             <img src="~/@Model.ImageUrl" width="700" height="350"/>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.User.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => Model.Description)
@@ -48,7 +54,7 @@
 </div>
 <div id="postdiv-@Model.Id" style="display: none">
     <textarea id="posttext-@Model.Id"></textarea>
-    <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.Id')" value="Отправить"/>
+    <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.UserId')" value="Отправить"/>
 </div>
 
 @* <a asp-area="" asp-controller="Comments" asp-action="Comment">Оставить комментарий</a> *@
@@ -56,14 +62,33 @@
 
 
 <input
-    id="LikeId"
-    type="submit"
-    value="Like"
-    class="btn btn-default"
-    onclick="location.href = '@Url.Action("LikeMethod", "Publications", new {Model.Like, Model.UserId, Model.Id})'"/>
+     id="LikeId"
+     type="submit"
+     value="Like"
+     class="btn btn-default"
+     onclick="location.href = '@Url.Action("LikeMethod", "Publications", new {Model.Like, Model.UserId, Model.Id}, null)'"/>
+
+@* <input *@
+@*     id="LikeId" *@
+@*     type="submit" *@
+@*     value="Like" *@
+@*     class="btn btn-default"/> *@
 
 <hr/>
-    
+
+
+@*  <script> *@
+@*         $(document).ready(function() { *@
+@*             $('#submit').click(function(e) { *@
+@*                 e.preventDefault(); *@
+@*                 var str = $('#LikeId').val(); *@
+@*                 str = encodeURIComponent(str); *@
+@*                 $('#result').load('@Url.Action("LikeMethod", "Publications")?like, PostId, userId'); *@
+@*             }); *@
+@*         }); *@
+@* </script> *@
+
+
 <script>
     function openCommentForm(postId) {
         $('#postdiv-' + postId).show();
@@ -77,9 +102,10 @@
             success: function(data) {
                 console.log('все ок', data);
             },
-            error: function() {
+            error: function() { 
                 console.log('Ошибка во время отправки комментария', this);
             }
+
         });
     }
 

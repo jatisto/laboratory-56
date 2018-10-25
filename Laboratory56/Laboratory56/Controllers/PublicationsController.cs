@@ -89,9 +89,10 @@ namespace Laboratory56.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Метод Publication
+                var user = await _userManager.GetUserAsync(User);
                 var pub = Publication(publication, model);
-                //---------------------------------------------
+                pub.UserId = user.Id;
+                pub.Id = publication.Id;
                 _context.Add(pub);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -256,16 +257,16 @@ namespace Laboratory56.Controllers
         
         public ActionResult LikeMethod(int like, string userId, int postId)
         {
-            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+            var userLike = _context.Publications.FirstOrDefault(u => u.UserId == userId);
             if (ModelState.IsValid)
             {
                 if (userLike != null)
                 {
-                    userLike.Like = userLike.Like + like;
+                    userLike.Like = userLike.Like + 1;
                     userLike.UserId = userId;
                     userLike.Id = postId;
 
-                    _context.Update(userLike);
+                    _context.Add(userLike);
                     _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
 
