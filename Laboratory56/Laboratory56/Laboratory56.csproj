@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-Laboratory56-794C3F6A-BA5F-4A68-9D4A-86D1CD241298</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20181025063108_Add like.cs" />
+    <Compile Remove="Data\Migrations\20181025063108_Add like.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />

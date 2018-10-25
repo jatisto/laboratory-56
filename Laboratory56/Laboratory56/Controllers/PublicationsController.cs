@@ -44,7 +44,6 @@ namespace Laboratory56.Controllers
 
             return View(sort.OrderByDescending(s => s.Id));
         }
-        
 
         #endregion
 
@@ -132,7 +131,6 @@ namespace Laboratory56.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("Id,ImadeUrl,Description,Like,RePost")]
             Publication publication, PublicationVM model)
         {
-
             if (id != publication.Id)
             {
                 return NotFound();
@@ -144,10 +142,12 @@ namespace Laboratory56.Controllers
             {
                 try
                 {
-                    var path = Path.Combine(_environment.WebRootPath, $"images\\{_userManager.GetUserName(User)}\\Publication");
+                    var path = Path.Combine(_environment.WebRootPath,
+                        $"images\\{_userManager.GetUserName(User)}\\Publication");
 
                     _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
-                    var imageUrlContent = $"images/{_userManager.GetUserName(User)}/Publication/{model.ImageUrl.FileName}";
+                    var imageUrlContent =
+                        $"images/{_userManager.GetUserName(User)}/Publication/{model.ImageUrl.FileName}";
 
                     searching.Description = publication.Description;
                     searching.ImageUrl = imageUrlContent;
@@ -253,26 +253,29 @@ namespace Laboratory56.Controllers
 
         #region LikeMethod
 
-        public ActionResult LikeMethod(int like, int userId, string postId)
+        
+        public ActionResult LikeMethod(int like, string userId, int postId)
         {
-            var userLike = _userManager.Users.Where(u => u.Id == postId);
+            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
             if (ModelState.IsValid)
             {
-                var post = new Publication
-            {
-                Like = like + 1,
-                Id = userId
-            };
+                if (userLike != null)
+                {
+                    userLike.Like = userLike.Like + like;
+                    userLike.UserId = userId;
+                    userLike.Id = postId;
+
+                    _context.Update(userLike);
+                    _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+
+                }
                 
-                _context.Add(post);
-                _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
 
-            return View(userLike);
+            return View();
         }
 
         #endregion
- 
     }
 }

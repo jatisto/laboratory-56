@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,8 +15,8 @@ namespace Laboratory56.Models
         [Display(Name = "Описание")] public string Description { get; set; }
         [Display(Name = "Нравиться!")] public int Like { get; set; }
 
-//        public int UserId { get; set; }
-//        public ApplicationUser User { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
 
 //        public int CommentId { get; set; }
 //        public Comment Comment { get; set; }
