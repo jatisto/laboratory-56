@@ -41,38 +41,53 @@
 
 </table>
 
-<input id="LikeId" type="submit" value="Like" class="btn btn-default" />
+<div>
+    Комментарии (@Model.ComentCount)
+    <br/>
+    <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer">Оставить комментарий</a>
+</div>
+<div id="postdiv-@Model.Id" style="display:none">
+    <textarea id="posttext-@Model.Id"></textarea>
+    <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.Id')" value="Отправить"/>
+</div>
 
-<a asp-area="" asp-controller="Comments" asp-action="Index" title="Comment">Оставить комментарий</a>
+@* <a asp-area="" asp-controller="Comments" asp-action="Comment">Оставить комментарий</a> *@
+<br/><br/>
+
+
+
+<input 
+    id="LikeId" 
+    type="submit" 
+    value="Like" 
+    class="btn btn-default" 
+    onclick="location.href = '@Url.Action("LikeMethod", "Publications")'" />
 
 <hr />
 
-@*<div>
-        Комментарии (@Model.ComentCount)<br/>
-        <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer">Оставить комментарий</a>
-    </div>
-    <div id="postdiv-@Model.Id" style="display:none">
-        <textarea id="posttext-@Model.Id"></textarea>
-        <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.Description')" value="Отправить"/>
-    </div>
+
 
     @section Scripts{
         <script>
-            function openCommentForm(publicationId) {
-                $('#postdiv-' + publicationId).show();
+            function openCommentForm(postId) {
+                $('#postdiv-' + postId).show();
             }
 
-            function sendComment(publicationId, applicationUserId) {
+            function sendComment(postId, userId) {
                 $.ajax({
                     url: '@Url.Action("Comment", "Comments")',
                     type: 'POST',
-                    data: { 'publicationId': publicationId, 'ApplicationUserId': applicationUserId, 'content': $('#posttext-' + publicationId).val() },
-                    success: console.log('все ок'),
-                    error: console.log('Ошибка во время отправки комментария')
+                    data: { 'postId': postId, 'userId': userId, 'content': $('#posttext-' + postId).val() },
+                    success: function(data) {
+                        console.log('все ок', data);
+                    },
+                    error: function() { 
+                        console.log('Ошибка во время отправки комментария', this);
+                    }
                 });
             }
 
 
         </script>
-    }*@
+    }
 

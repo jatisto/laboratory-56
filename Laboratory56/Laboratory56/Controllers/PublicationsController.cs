@@ -17,6 +17,8 @@ namespace Laboratory56.Controllers
 {
     public class PublicationsController : Controller
     {
+        #region Conections and Constructor
+
         public PublicationsController(ApplicationDbContext context, IHostingEnvironment environment,
             FileUploadService fileUploadService, UserManager<ApplicationUser> userManager)
         {
@@ -31,6 +33,9 @@ namespace Laboratory56.Controllers
         private readonly IHostingEnvironment _environment;
         private readonly FileUploadService _fileUploadService;
 
+        #endregion
+
+        #region Index
 
         // GET: Publications
         public async Task<IActionResult> Index()
@@ -39,6 +44,9 @@ namespace Laboratory56.Controllers
 
             return View(sort.OrderByDescending(s => s.Id));
         }
+        
+
+        #endregion
 
         #region Details
 
@@ -242,5 +250,29 @@ namespace Laboratory56.Controllers
         }
 
         #endregion
+
+        #region LikeMethod
+
+        public ActionResult LikeMethod(int like, int userId, string postId)
+        {
+            var userLike = _userManager.Users.Where(u => u.Id == postId);
+            if (ModelState.IsValid)
+            {
+                var post = new Publication
+            {
+                Like = like + 1,
+                Id = userId
+            };
+                
+                _context.Add(post);
+                _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(userLike);
+        }
+
+        #endregion
+ 
     }
 }

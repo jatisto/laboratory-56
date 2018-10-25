@@ -12,6 +12,8 @@ namespace Laboratory56.Controllers
 {
     public class CommentsController : Controller
     {
+        #region Conection and ctor
+
         private readonly ApplicationDbContext _context;
 
         public CommentsController(ApplicationDbContext context)
@@ -19,11 +21,17 @@ namespace Laboratory56.Controllers
             _context = context;
         }
 
+        #endregion
+
+        #region Index
+
         // GET: Comments
         public async Task<IActionResult> Index()
         {
             return View(await _context.Comments.ToListAsync());
         }
+
+        #endregion
 
         #region Details
 
@@ -177,14 +185,14 @@ namespace Laboratory56.Controllers
         #region version 1
 
         [HttpPost]
-        public async Task<IActionResult> Comment(string publicationId, int applicationUserId, string content)
+        public async Task<IActionResult> Comment(string postId, int userId, string content)
         {
 //            Comment comment = new Comment();
-            var comment = _context.Comments.SingleOrDefault(c => c.UserId == applicationUserId);
+            var comment = _context.Comments.SingleOrDefault(c => c.UserId == userId);
             if (ModelState.IsValid)
             {
-                comment.UserId = applicationUserId;
-                comment.PostId = publicationId;
+                comment.UserId = userId;
+                comment.PostId = postId;
                 comment.CommentDate = DateTime.Now;
                 comment.Content = content;
 
@@ -200,5 +208,6 @@ namespace Laboratory56.Controllers
         #endregion
 
         #endregion
+
     }
 }
