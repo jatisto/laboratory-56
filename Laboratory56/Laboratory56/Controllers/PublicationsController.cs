@@ -40,9 +40,11 @@ namespace Laboratory56.Controllers
         // GET: Publications
         public async Task<IActionResult> Index()
         {
-            var sort = await _context.Publications.ToListAsync();
+            var sort = await _context.Publications.Include(s => s.User)
+                .OrderByDescending(s => s.Id)
+                .ToListAsync();
 
-            return View(sort.OrderByDescending(s => s.Id));
+            return View(sort);
         }
 
         #endregion
@@ -252,34 +254,6 @@ namespace Laboratory56.Controllers
         #endregion
 
         #region LikeMethod
-
-        #region MyVarLikeMethod
-
-        //       public ActionResult LikeMethod(string userId, int postId)
-//        {
-//            var userLike = _context.Publications.FirstOrDefault(u => u.UserId == userId);
-//            if (ModelState.IsValid)
-//            {
-//                if (userLike != null)
-//                {
-//                   userLike.Like = userLike.Like + 1;
-//                    userLike.UserId = userId;
-//                    userLike.Id = postId;
-//
-//                    _context.Add(userLike);
-//                    _context.SaveChangesAsync();
-//                    return RedirectToAction(nameof(Index));
-//
-//                }
-//                
-//            }
-//
-//            return View();
-//        }
-
-        #endregion
-
-
         public ActionResult LikeMethod(int like, string userId, int postId)
         {
             var userLike = _context.Publications.FirstOrDefault(u => u.UserId == userId);
@@ -295,13 +269,13 @@ namespace Laboratory56.Controllers
                     _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-
-
             }
 
             return View();
-
-            #endregion
         }
-    }
+        #endregion
+
+
+
+    } 
 }

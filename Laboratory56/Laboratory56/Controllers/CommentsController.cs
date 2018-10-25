@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,10 @@ namespace Laboratory56.Controllers
         // GET: Comments
         public async Task<IActionResult> Index()
         {
-            var comments = await _context.Comments.OrderByDescending(c => c.PostId).ToListAsync();
+            var comments = await _context.Comments
+                .Include(c => c.User)
+                .Include(c => c.Post)
+                .OrderByDescending(c => c.PostId).ToListAsync();
             return View(comments);
         }
 
@@ -196,14 +200,15 @@ namespace Laboratory56.Controllers
         #region version 1
 
         [HttpPost]
-        public async Task<IActionResult> Comment(string postId, string userId, string content)
+        public async Task<IActionResult> Comment(
+            string postId,
+            string userId,
+            string content)
         {
-            //            Comment comment = new Comment();
-//            var comment = _context.Comments.FirstOrDefaultAsync(c => c.UserId == userId);
             if (ModelState.IsValid)
             {
-                var user = await _userManager.GetUserAsync(User);
 
+                var user = await _userManager.GetUserAsync(User);
                 var comm = new Comment
                 {
                     UserId = userId,
@@ -211,8 +216,22 @@ namespace Laboratory56.Controllers
                     Content = content,
                     CommentDate = DateTime.Now
                 };
+
+                #region Foto Upload not Work
+
+                //                CommentVM model = new CommentVM();
+                //                var path = Path.Combine(_environment.WebRootPath,
+                //                $"images\\{_userManager.GetUserName(User)}\\Publication");
+                //
+                //                _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
+                //                var imageUrlContent = $"images/{_userManager.GetUserName(User)}
+                //                /Publication/{model.ImageUrl.FileName}";
+
+                //                comm.ImageUrl = imageUrlContent;
+
+                #endregion
+
                 comm.UserId = user.Id;
-                comm.ComentCount = comm.ComentCount + 1;
                 _context.Add(comm);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -222,6 +241,29 @@ namespace Laboratory56.Controllers
         }
 
         #endregion
+
+        #endregion
+
+
+        #region CommentUpload
+
+        private Comment Comment(Comment comment, CommentVM model)
+        {
+            var path = Path.Combine(_environment.WebRootPath, $"images\\{_userManager.GetUserName(User)}\\Publication");
+
+            _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
+            var imageUrlContent = $"images/{_userManager.GetUserName(User)}/Publication/{model.ImageUrl.FileName}";
+
+            var comm = new Comment
+            {
+                ImageUrl = imageUrlContent,
+                UserId = comment.UserId,
+                PostId = comment.PostId,
+                Content = comment.Content,
+                CommentDate = DateTime.Now
+            };
+            return comm;
+        }
 
         #endregion
     }
