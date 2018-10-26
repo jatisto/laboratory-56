@@ -14,7 +14,8 @@
             @Html.DisplayNameFor(model => model.PostId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PostId)
+            @* @Html.DisplayFor(model => model.PostId) *@
+            <img src="~/@Model.ImageUrl" width="350" height="250" />
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.CommentDate)
@@ -29,10 +30,10 @@
             @Html.DisplayFor(model => model.Content)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.UserId)
+            @Html.DisplayNameFor(model => model.User.Name)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.UserId)
+            @Html.DisplayFor(model => model.User.Name)
         </dd>
     </dl>
 </div>

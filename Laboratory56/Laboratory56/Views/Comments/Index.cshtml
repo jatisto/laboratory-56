@@ -1,61 +1,63 @@
 ﻿@model IEnumerable<Laboratory56.Models.Comment>
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Index";
 }
+    <p>
+        Все комментарии
+    </p>
 
-<!DOCTYPE html>
+    <a asp-area="" asp-controller="Comments" asp-action="Create"><h4>Создать</h4></a>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.PostId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Content)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CommentDate)
-                </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CommentDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CommentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CommentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CommentId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-</body>
-</html>
+<form asp-action="Index" method="post" enctype="multipart/form-data">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Изображение
+                    </th>
+                    <th>
+                       Комментарий
+                    </th>
+                    <th>
+                       Дата
+                    </th>
+                    <th>
+                        Имя
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PostId)
+                            @* <img src="~/@item.ImageUrl" width="250" height="150" /> *@
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CommentDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.Name)
+                        </td>
+                        <td>
+                            @* <a asp-action="Edit" asp-route-id="@item.CommentId">Edit</a> | *@
+                            <a asp-action="Details" asp-route-id="@item.CommentId">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.CommentId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+        <div>
+            <a asp-action="Index" asp-controller="Home">Back to List</a>
+        </div>
+    </form>
+

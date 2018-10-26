@@ -26,7 +26,9 @@ namespace Laboratory56.Controllers
 
         public IActionResult Index()
         {
-            var publish = _context.Publications.OrderByDescending(p => p.Id).ToList();
+            var publish = _context.Publications
+                .Include(p => p.User)
+                .OrderByDescending(p => p.Id).ToList();
             return View(publish);
         }
 
@@ -91,6 +93,4 @@ namespace Laboratory56.Controllers
 
         #endregion
     }
-
-
 }

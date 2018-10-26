@@ -77,24 +77,22 @@ namespace Laboratory56.Migrations
 
             modelBuilder.Entity("Laboratory56.Models.Comment", b =>
                 {
-                    b.Property<string>("CommentId")
+                    b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ComentCount");
 
                     b.Property<DateTime>("CommentDate");
 
                     b.Property<string>("Content");
 
-                    b.Property<string>("PostId");
+                    b.Property<string>("ImageUrl");
 
-                    b.Property<int?>("PostId1");
+                    b.Property<int>("PostId");
 
                     b.Property<string>("UserId");
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("PostId1");
+                    b.HasIndex("PostId");
 
                     b.HasIndex("UserId");
 
@@ -113,6 +111,8 @@ namespace Laboratory56.Migrations
                     b.Property<string>("ImageUrl");
 
                     b.Property<int>("Like");
+
+                    b.Property<int>("Subscription");
 
                     b.Property<string>("UserId");
 
@@ -234,8 +234,9 @@ namespace Laboratory56.Migrations
             modelBuilder.Entity("Laboratory56.Models.Comment", b =>
                 {
                     b.HasOne("Laboratory56.Models.Publication", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId1");
+                        .WithMany("CommentsList")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Laboratory56.Models.ApplicationUser", "User")
                         .WithMany("CommentsList")

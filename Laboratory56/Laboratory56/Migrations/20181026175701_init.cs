@@ -166,6 +166,7 @@ namespace Laboratory56.Migrations
                     Description = table.Column<string>(nullable: true),
                     ImageUrl = table.Column<string>(nullable: true),
                     Like = table.Column<int>(nullable: false),
+                    Subscription = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -183,22 +184,23 @@ namespace Laboratory56.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    CommentId = table.Column<string>(nullable: false),
+                    CommentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CommentDate = table.Column<DateTime>(nullable: false),
                     Content = table.Column<string>(nullable: true),
-                    PostId = table.Column<string>(nullable: true),
-                    PostId1 = table.Column<int>(nullable: true),
+                    ImageUrl = table.Column<string>(nullable: true),
+                    PostId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.CommentId);
                     table.ForeignKey(
-                        name: "FK_Comments_Publications_PostId1",
-                        column: x => x.PostId1,
+                        name: "FK_Comments_Publications_PostId",
+                        column: x => x.PostId,
                         principalTable: "Publications",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comments_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -247,9 +249,9 @@ namespace Laboratory56.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_PostId1",
+                name: "IX_Comments_PostId",
                 table: "Comments",
-                column: "PostId1");
+                column: "PostId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_UserId",
