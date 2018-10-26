@@ -11,8 +11,8 @@ using System;
 namespace Laboratory56.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181025174026_Add proerty ImageUrl for Comments")]
-    partial class AddproertyImageUrlforComments
+    [Migration("20181026102208_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,7 +78,7 @@ namespace Laboratory56.Migrations
 
             modelBuilder.Entity("Laboratory56.Models.Comment", b =>
                 {
-                    b.Property<string>("CommentId")
+                    b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CommentDate");
@@ -87,15 +87,13 @@ namespace Laboratory56.Migrations
 
                     b.Property<string>("ImageUrl");
 
-                    b.Property<string>("PostId");
-
-                    b.Property<int?>("PostId1");
+                    b.Property<int>("PostId");
 
                     b.Property<string>("UserId");
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("PostId1");
+                    b.HasIndex("PostId");
 
                     b.HasIndex("UserId");
 
@@ -235,8 +233,9 @@ namespace Laboratory56.Migrations
             modelBuilder.Entity("Laboratory56.Models.Comment", b =>
                 {
                     b.HasOne("Laboratory56.Models.Publication", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId1");
+                        .WithMany("CommentsList")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Laboratory56.Models.ApplicationUser", "User")
                         .WithMany("CommentsList")

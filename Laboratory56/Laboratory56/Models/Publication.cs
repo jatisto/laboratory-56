@@ -26,5 +26,7 @@ namespace Laboratory56.Models
         [Display(Name = "Количество  комментариев")]
         public int ComentCount { get; set; }
 
+        public List<Comment> CommentsList { get; set; }
+
     }
 }
