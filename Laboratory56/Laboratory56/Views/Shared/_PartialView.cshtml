@@ -61,13 +61,37 @@
     </div>
     </tbody>
 </table>
+@* *@
+@* <br/> *@
+@* <form asp-controller="Publications" asp-action="LikeMethod" asp-route-postId="@Model.Id" asp-route-userId="@Model.UserId"> *@
+@*     <input id="LikeId" type="submit" value="Like" class="btn btn-default" onclick="sendLike('@Model.Id', '@Model.UserId')"/> *@
+@* </form> *@
 
 <br/>
-<form asp-controller="Publications" asp-action="LikeMethod" asp-route-postId="@Model.Id" asp-route-userId="@Model.UserId">
-    <input id="LikeId" type="submit" value="Like" class="btn btn-default"/>
-</form>
+<div id="postdiv-@Model.Id">
+    <form >
+        <input id="LikeId" type="button" value="Like" class="btn btn-default" onclick="sendLike('@Model.UserId', '@Model.Id')"/>
+    </form></div>
 
 <hr/>
+
+<script>
+    function sendLike(userId, postId) {
+        $.ajax({
+            url: '@Url.Action("LikeMethod", "Publications")',
+            type: 'POST',
+            data: { 'postId': postId, 'userId': userId},
+            success: function(data) {
+                setTimeout(function() {
+                    alert('Вы поставили Like!', data)},
+                    500);
+            },
+            error: function() {
+                console.log('Ошибка во время отправки комментария', this);
+            }
+        });
+    }
+</script>
 
 <script>
     function openCommentForm(postId) {

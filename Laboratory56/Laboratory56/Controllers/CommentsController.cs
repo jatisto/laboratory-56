@@ -69,13 +69,13 @@ namespace Laboratory56.Controllers
             }
 
             // Почему не работает???
-            var path = Path.Combine(_environment.WebRootPath,
-                $"images\\{_userManager.GetUserName(User)}\\Publication");
-
-            _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
-            var imageUrlShow = $"images/{_userManager.GetUserName(User)}/Publication/ {model.ImageUrl.FileName}";
-
-            comment.Post.ImageUrl = imageUrlShow;
+//            var path = Path.Combine(_environment.WebRootPath,
+//                $"images\\{_userManager.GetUserName(User)}\\Publication");
+//
+//            _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
+//            var imageUrlShow = $"images/{_userManager.GetUserName(User)}/Publication/ {model.ImageUrl.FileName}";
+//
+//            comment.Post.ImageUrl = imageUrlShow;
 
             return View(comment);
         }
