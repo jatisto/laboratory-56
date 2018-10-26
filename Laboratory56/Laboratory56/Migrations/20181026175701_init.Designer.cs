@@ -11,7 +11,7 @@ using System;
 namespace Laboratory56.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181026102208_init")]
+    [Migration("20181026175701_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -112,6 +112,8 @@ namespace Laboratory56.Migrations
                     b.Property<string>("ImageUrl");
 
                     b.Property<int>("Like");
+
+                    b.Property<int>("Subscription");
 
                     b.Property<string>("UserId");
 

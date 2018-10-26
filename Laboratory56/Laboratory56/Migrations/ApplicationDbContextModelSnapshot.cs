@@ -112,6 +112,8 @@ namespace Laboratory56.Migrations
 
                     b.Property<int>("Like");
 
+                    b.Property<int>("Subscription");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
