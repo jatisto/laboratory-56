@@ -54,13 +54,14 @@
             @* <br/> *@
             <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer">Оставить комментарий</a>
         </div>
-        <div class="col-md-12" id="postdiv-@Model.Id" style="display: none">
+        <div class="col-md-12" id="postdiv-@Model.Id" style="display: none; color:brown;">
             <textarea id="posttext-@Model.Id"></textarea> <br/>
             <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.UserId')" value="Отправить"/>
         </div>
     </div>
     </tbody>
 </table>
+
 @* *@
 @* <br/> *@
 @* <form asp-controller="Publications" asp-action="LikeMethod" asp-route-postId="@Model.Id" asp-route-userId="@Model.UserId"> *@
@@ -70,10 +71,21 @@
 <br/>
 <div id="postdiv-@Model.Id">
     <form>
+<<<<<<< HEAD
         <input id="LikeId" type="button" value="Like" class="btn btn-default" onclick="sendLike('@Model.UserId', '@Model.Id')" />
         <input id="DisLikeId" type="button" value="Dislike" class="btn btn-default" onclick="sendDislike('@Model.UserId', '@Model.Id')" />
         <input id="subscribers" type="button" value="Subscribers" class="btn btn-default" onclick="SubScribers('@Model.UserId', '@Model.Id')" />
         <input id="unsubscribers" type="button" value="UnSubscribers" class="btn btn-default" onclick="UnSubScribers('@Model.UserId', '@Model.Id')" />
+=======
+        <input id="LikeId" type="button" value="Like" class="btn btn-default" onclick="sendLike('@Model.UserId', '@Model.Id')"
+               style="color:aliceblue;background-color:darksalmon;"/>
+        <input id="DisLikeId" type="button" value="Dislike" class="btn btn-default" onclick="sendDislike('@Model.UserId', '@Model.Id')"
+               style="color:aliceblue;background-color:darksalmon;"/>
+        <input id="subscribers-@Model.User" type="button" value="Subscribers" class="btn btn-default" onclick="SubScribers('@Model.UserId', '@Model.Id')"
+               style="color:aliceblue;background-color:cadetblue;"/>
+        <input id="unsubscribers-@Model.User" type="button" value="UnSubscribers" class="btn btn-default" onclick="UnSubScribers('@Model.UserId', '@Model.Id')"
+               style="color:aliceblue;background-color:cadetblue;"/>
+>>>>>>> uploadPictures
     </form>
     
 </div>
@@ -95,7 +107,11 @@
             data: { 'postId': postId, 'userId': userId },
             success: function(data) {
                 setTimeout(function() {
+<<<<<<< HEAD
                     alert('Вы подписались на ' + '(' + $('#subscribers' + postId).val() + ')' , data)
+=======
+                    alert('Вы подписались :)' , data)
+>>>>>>> uploadPictures
                     },
                     500);
             },
@@ -114,7 +130,11 @@
             data: { 'postId': postId, 'userId': userId },
             success: function(data) {
                 setTimeout(function() {
+<<<<<<< HEAD
                     alert('Вы отписались на ' + '(' + $('#subscribers' + postId).val() + ')' , data)
+=======
+                    alert('Вы отписались :(' , data)
+>>>>>>> uploadPictures
                     },
                     500);
             },
