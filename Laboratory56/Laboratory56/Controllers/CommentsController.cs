@@ -51,7 +51,7 @@ namespace Laboratory56.Controllers
         #region Details
 
         // GET: Comments/Details/5
-        public async Task<IActionResult> Details(string id, CommentVM model)
+        public async Task<IActionResult> Details(string id, PublicationVM model)
         {
             ViewBag.Comment = _context.Comments.Where(c => c.PostId == id);
 
@@ -59,10 +59,6 @@ namespace Laboratory56.Controllers
             {
                 return NotFound();
             }
-
-            
-
-
             var comment = await _context.Comments
                 .Include(c => c.Post)
                 .Include(c => c.User)
@@ -72,11 +68,14 @@ namespace Laboratory56.Controllers
                 return NotFound();
             }
 
-//            var path = Path.Combine(_environment.WebRootPath,
-//                $"images\\{_userManager.GetUserName(User)}\\Publication");
-//
-//            _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
-//            comment.ImageUrl = $"images/{_userManager.GetUserName(User)}/Publication/ {model.ImageUrl.FileName}";
+            // Почему не работает???
+            var path = Path.Combine(_environment.WebRootPath,
+                $"images\\{_userManager.GetUserName(User)}\\Publication");
+
+            _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
+            var imageUrlShow = $"images/{_userManager.GetUserName(User)}/Publication/ {model.ImageUrl.FileName}";
+
+            comment.Post.ImageUrl = imageUrlShow;
 
             return View(comment);
         }
