@@ -166,6 +166,7 @@ namespace Laboratory56.Migrations
                     Description = table.Column<string>(nullable: true),
                     ImageUrl = table.Column<string>(nullable: true),
                     Like = table.Column<int>(nullable: false),
+                    Subscription = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

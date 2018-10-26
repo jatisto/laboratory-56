@@ -17,7 +17,7 @@
             Нравиться
         </th>
         <th>
-            Кол. Коментарии
+            Подписки
         </th>
         <th></th>
     </tr>
@@ -38,7 +38,7 @@
             @Html.DisplayFor(modelItem => Model.Like)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => Model.ComentCount)
+            @Html.DisplayFor(modelItem => Model.Subscription)
         </td>
     </tr>
 
@@ -70,11 +70,60 @@
 <br/>
 <div id="postdiv-@Model.Id">
     <form>
-        <input id="LikeId" type="button" value="Like" class="btn btn-default" onclick="sendLike('@Model.UserId', '@Model.Id')"/>
+        <input id="LikeId" type="button" value="Like" class="btn btn-default" onclick="sendLike('@Model.UserId', '@Model.Id')" />
+        <input id="DisLikeId" type="button" value="Dislike" class="btn btn-default" onclick="sendDislike('@Model.UserId', '@Model.Id')" />
+        <input id="subscribers" type="button" value="Subscribers" class="btn btn-default" onclick="SubScribers('@Model.UserId', '@Model.Id')" />
+        <input id="unsubscribers" type="button" value="UnSubscribers" class="btn btn-default" onclick="UnSubScribers('@Model.UserId', '@Model.Id')" />
     </form>
+    
 </div>
 
+<br/>
+ 
+
+
+
+
+
 <hr/>
+
+<script>
+    function SubScribers(userId, postId) {
+        $.ajax({
+            url: '@Url.Action("SubscriptionMethod", "Publications")',
+            type: 'POST',
+            data: { 'postId': postId, 'userId': userId },
+            success: function(data) {
+                setTimeout(function() {
+                    alert('Вы подписались на ' + '(' + $('#subscribers' + postId).val() + ')' , data)
+                    },
+                    500);
+            },
+            error: function() {
+                console.log('Ошибка во время отправки комментария', this);
+            }
+        });
+    }
+</script>
+
+<script>
+    function UnSubScribers(userId, postId) {
+        $.ajax({
+            url: '@Url.Action("UnSubscriptionMethod", "Publications")',
+            type: 'POST',
+            data: { 'postId': postId, 'userId': userId },
+            success: function(data) {
+                setTimeout(function() {
+                    alert('Вы отписались на ' + '(' + $('#subscribers' + postId).val() + ')' , data)
+                    },
+                    500);
+            },
+            error: function() {
+                console.log('Ошибка во время отправки комментария', this);
+            }
+        });
+    }
+</script>
 
 <script>
     function sendLike(userId, postId) {
@@ -85,6 +134,25 @@
             success: function(data) {
                 setTimeout(function() {
                         alert('Вы поставили Like!', data)
+                    },
+                    500);
+            },
+            error: function() {
+                console.log('Ошибка во время отправки комментария', this);
+            }
+        });
+    }
+</script>
+
+<script>
+    function sendDislike(userId, postId) {
+        $.ajax({
+            url: '@Url.Action("DisLikeMethod", "Publications")',
+            type: 'POST',
+            data: { 'postId': postId, 'userId': userId },
+            success: function(data) {
+                setTimeout(function() {
+                        alert('Вы поставили Disike!', data)
                     },
                     500);
             },
