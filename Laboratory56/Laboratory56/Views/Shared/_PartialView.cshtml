@@ -46,18 +46,25 @@
 
 </table>
 
-<div>
-    @* Комментарии (@Model.ComentCount) *@
-    @* <br/> *@
-    <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer">Оставить комментарий</a>
-</div>
-<div id="postdiv-@Model.Id" style="display: none">
-    <textarea id="posttext-@Model.Id"></textarea>
-    <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.UserId')" value="Отправить"/>
-</div>
+<table >
+    <tbody >
+    <div class="row">
+        <div class="col-lg-12">
+            @* Комментарии (@Model.ComentCount) *@
+            @* <br/> *@
+            <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer">Оставить комментарий</a>
+        </div>
+        <div class="col-md-12" id="postdiv-@Model.Id" style="display: none">
+            <textarea id="posttext-@Model.Id"></textarea> <br/>
+            <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.UserId')" value="Отправить"/>
+        </div>
+    </div>
+    </tbody>
+</table>
+
 <br/>
-<form asp-controller="Publications" asp-action="LikeMethod"  asp-route-postId="@Model.Id" asp-route-userId="@Model.UserId">
-    <input id="LikeId" type="submit" value="Like" class="btn btn-default" />
+<form asp-controller="Publications" asp-action="LikeMethod" asp-route-postId="@Model.Id" asp-route-userId="@Model.UserId">
+    <input id="LikeId" type="submit" value="Like" class="btn btn-default"/>
 </form>
 
 <hr/>
@@ -66,16 +73,19 @@
     function openCommentForm(postId) {
         $('#postdiv-' + postId).show();
     }
+
     function sendComment(postId, userId) {
         $.ajax({
             url: '@Url.Action("Comment", "Comments")',
             type: 'POST',
-            data: { 'postId': postId, 'userId': userId,'content': $('#posttext-' + postId).val() },
+            data: { 'postId': postId, 'userId': userId, 'content': $('#posttext-' + postId).val() },
             success: function(data) {
-//                alert('Ваш коментарий добавлен!!!', data);
-                setTimeout(function () { alert('Ваш комментарий ' + '(' + $('#posttext-' + postId).val() + ')' + ' добавлен!!!', data) }, 500);
+                setTimeout(function() {
+                        alert('Ваш комментарий ' + '(' + $('#posttext-' + postId).val() + ')' + ' добавлен!!!', data)
+                    },
+                    500);
             },
-            error: function() { 
+            error: function() {
                 console.log('Ошибка во время отправки комментария', this);
             }
         });

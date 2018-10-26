@@ -51,7 +51,7 @@ namespace Laboratory56.Controllers
         #region Details
 
         // GET: Comments/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string id, CommentVM model)
         {
             ViewBag.Comment = _context.Comments.Where(c => c.PostId == id);
 
@@ -60,12 +60,23 @@ namespace Laboratory56.Controllers
                 return NotFound();
             }
 
+            
+
+
             var comment = await _context.Comments
+                .Include(c => c.Post)
+                .Include(c => c.User)
                 .SingleOrDefaultAsync(m => m.CommentId == id);
             if (comment == null)
             {
                 return NotFound();
             }
+
+//            var path = Path.Combine(_environment.WebRootPath,
+//                $"images\\{_userManager.GetUserName(User)}\\Publication");
+//
+//            _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
+//            comment.ImageUrl = $"images/{_userManager.GetUserName(User)}/Publication/ {model.ImageUrl.FileName}";
 
             return View(comment);
         }
@@ -74,15 +85,15 @@ namespace Laboratory56.Controllers
 
         #region Create
 
-        // GET: Comments/Create
+// GET: Comments/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Comments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+// POST: Comments/Create
+// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CommentId,PostId,CommentDate")] Comment comment)
@@ -97,7 +108,7 @@ namespace Laboratory56.Controllers
             return View(comment);
         }
 
-        // GET: Comments/Edit/5
+// GET: Comments/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -118,9 +129,9 @@ namespace Laboratory56.Controllers
 
         #region Edit
 
-        // POST: Comments/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+// POST: Comments/Edit/5
+// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("CommentId,PostId,CommentDate")] Comment comment)
@@ -159,7 +170,7 @@ namespace Laboratory56.Controllers
 
         #region Delete
 
-        // GET: Comments/Delete/5
+// GET: Comments/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -177,7 +188,7 @@ namespace Laboratory56.Controllers
             return View(comment);
         }
 
-        // POST: Comments/Delete/5
+// POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -207,7 +218,6 @@ namespace Laboratory56.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 var user = await _userManager.GetUserAsync(User);
                 var comm = new Comment
                 {
@@ -219,15 +229,15 @@ namespace Laboratory56.Controllers
 
                 #region Foto Upload not Work
 
-                //                CommentVM model = new CommentVM();
-                //                var path = Path.Combine(_environment.WebRootPath,
-                //                $"images\\{_userManager.GetUserName(User)}\\Publication");
-                //
-                //                _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
-                //                var imageUrlContent = $"images/{_userManager.GetUserName(User)}
-                //                /Publication/{model.ImageUrl.FileName}";
+//                CommentVM model = new CommentVM();
+//                var path = Path.Combine(_environment.WebRootPath,
+//                $"images\\{_userManager.GetUserName(User)}\\Publication");
+//
+//                _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
+//                var imageUrlContent = $"images/{_userManager.GetUserName(User)}
+//                /Publication/{model.ImageUrl.FileName}";
 
-                //                comm.ImageUrl = imageUrlContent;
+//                comm.ImageUrl = imageUrlContent;
 
                 #endregion
 
@@ -244,16 +254,13 @@ namespace Laboratory56.Controllers
 
         #endregion
 
-
         #region CommentUpload
 
         private Comment Comment(Comment comment, CommentVM model)
         {
             var path = Path.Combine(_environment.WebRootPath, $"images\\{_userManager.GetUserName(User)}\\Publication");
-
             _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
             var imageUrlContent = $"images/{_userManager.GetUserName(User)}/Publication/{model.ImageUrl.FileName}";
-
             var comm = new Comment
             {
                 ImageUrl = imageUrlContent,
