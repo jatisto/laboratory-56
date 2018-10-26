@@ -20,11 +20,9 @@
             </th>
             <th>
                Like
-                @* <a href="#" id="likeId">Like</a> *@
             </th>
             <th>
-               Комментарии
-                @* <a href="#" id="likeId">Like</a> *@
+               Подписки
             </th>
             <th></th>
         </tr>
@@ -47,7 +45,7 @@
                 @Html.DisplayFor(modelItem => item.Like)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ComentCount)
+                @Html.DisplayFor(modelItem => item.Subscription)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

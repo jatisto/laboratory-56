@@ -17,7 +17,7 @@
             Нравиться
         </th>
         <th>
-            Кол. Коментарии
+            Подписки
         </th>
         <th></th>
     </tr>
@@ -38,7 +38,7 @@
             @Html.DisplayFor(modelItem => Model.Like)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => Model.ComentCount)
+            @Html.DisplayFor(modelItem => Model.Subscription)
         </td>
     </tr>
 
@@ -46,15 +46,15 @@
 
 </table>
 
-<table >
-    <tbody >
+<table>
+    <tbody>
     <div class="row">
         <div class="col-lg-12">
             @* Комментарии (@Model.ComentCount) *@
             @* <br/> *@
-            <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer">Оставить комментарий</a>
+            <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer; color: darkslategray;">Оставить комментарий</a>
         </div>
-        <div class="col-md-12" id="postdiv-@Model.Id" style="display: none">
+        <div class="col-md-12" id="postdiv-@Model.Id" style="display: none; color: darkslategray;">
             <textarea id="posttext-@Model.Id"></textarea> <br/>
             <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.UserId')" value="Отправить"/>
         </div>
@@ -62,12 +62,105 @@
     </tbody>
 </table>
 
+@* *@
+@* <br/> *@
+@* <form asp-controller="Publications" asp-action="LikeMethod" asp-route-postId="@Model.Id" asp-route-userId="@Model.UserId"> *@
+@*     <input id="LikeId" type="submit" value="Like" class="btn btn-default" onclick="sendLike('@Model.Id', '@Model.UserId')"/> *@
+@* </form> *@
+
 <br/>
-<form asp-controller="Publications" asp-action="LikeMethod" asp-route-postId="@Model.Id" asp-route-userId="@Model.UserId">
-    <input id="LikeId" type="submit" value="Like" class="btn btn-default"/>
-</form>
+<div id="postdiv-@Model.Id">
+    <form>
+        <input id="LikeId" type="button" value="Like" class="btn btn-default" onclick="sendLike('@Model.UserId', '@Model.Id')"
+               style="color: aliceblue; background-color: darksalmon;"/>
+        <input id="DisLikeId" type="button" value="Dislike" class="btn btn-default" onclick="sendDislike('@Model.UserId', '@Model.Id')"
+               style="color: aliceblue; background-color: darksalmon;"/>
+        <input id="subscribers-@Model.User" type="button" value="Subscribers" class="btn btn-default" onclick="SubScribers('@Model.UserId', '@Model.Id')"
+               style="color: aliceblue; background-color: cadetblue;"/>
+        <input id="unsubscribers-@Model.User" type="button" value="UnSubscribers" class="btn btn-default" onclick="UnSubScribers('@Model.UserId', '@Model.Id')"
+               style="color: aliceblue; background-color: cadetblue;"/>
+    </form>
+
+</div>
+
+<br/>
+
 
 <hr/>
+
+<script>
+    function SubScribers(userId, postId) {
+        $.ajax({
+            url: '@Url.Action("SubscriptionMethod", "Publications")',
+            type: 'POST',
+            data: { 'postId': postId, 'userId': userId },
+            success: function(data) {
+                setTimeout(function() {
+                        alert('Вы подписались :)', data)},
+                    500);
+            },
+            error: function() {
+                console.log('Ошибка во время отправки комментария', this);
+            }
+        });
+    }
+</script>
+
+<script>
+    function UnSubScribers(userId, postId) {
+        $.ajax({
+            url: '@Url.Action("UnSubscriptionMethod", "Publications")',
+            type: 'POST',
+            data: { 'postId': postId, 'userId': userId },
+            success: function(data) {
+                setTimeout(function() {
+                        alert('Вы отписались :(', data)},
+                    500);
+            },
+            error: function() {
+                console.log('Ошибка во время отправки комментария', this);
+            }
+        });
+    }
+</script>
+
+<script>
+    function sendLike(userId, postId) {
+        $.ajax({
+            url: '@Url.Action("LikeMethod", "Publications")',
+            type: 'POST',
+            data: { 'postId': postId, 'userId': userId },
+            success: function(data) {
+                setTimeout(function() {
+                        alert('Вы поставили Like!', data)
+                    },
+                    500);
+            },
+            error: function() {
+                console.log('Ошибка во время отправки комментария', this);
+            }
+        });
+    }
+</script>
+
+<script>
+    function sendDislike(userId, postId) {
+        $.ajax({
+            url: '@Url.Action("DisLikeMethod", "Publications")',
+            type: 'POST',
+            data: { 'postId': postId, 'userId': userId },
+            success: function(data) {
+                setTimeout(function() {
+                        alert('Вы поставили Disike!', data)
+                    },
+                    500);
+            },
+            error: function() {
+                console.log('Ошибка во время отправки комментария', this);
+            }
+        });
+    }
+</script>
 
 <script>
     function openCommentForm(postId) {
@@ -81,7 +174,8 @@
             data: { 'postId': postId, 'userId': userId, 'content': $('#posttext-' + postId).val() },
             success: function(data) {
                 setTimeout(function() {
-                        alert('Ваш комментарий ' + '(' + $('#posttext-' + postId).val() + ')' + ' добавлен!!!', data)
+                        alert('Ваш комментарий ' + '(' + $('#posttext-' + postId).val() + ')' + ' добавлен!!!',
+                            data)
                     },
                     500);
             },
