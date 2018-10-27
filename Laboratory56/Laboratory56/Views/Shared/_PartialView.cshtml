@@ -28,8 +28,10 @@
         <td>
             <img src="~/@Model.ImageUrl" width="700" height="450"/>
         </td>
+        @* <td>@Html.DisplayFor(modelItem => Model.User.Name)</td> *@
+        @* <td>@Model.User.Name</td> *@
         <td>
-            @Html.DisplayFor(modelItem => Model.User.Name)
+            <a href="#" data-toggle="popover" datafld-trigger="hover" id="@Model.User.Id">@Model.User.Name</a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => Model.Description)
@@ -50,8 +52,6 @@
     <tbody>
     <div class="row">
         <div class="col-lg-12">
-            @* Комментарии (@Model.ComentCount) *@
-            @* <br/> *@
             <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer; color: darkslategray;">Оставить комментарий</a>
         </div>
         <div class="col-md-12" id="postdiv-@Model.Id" style="display: none; color: darkslategray;">
@@ -61,12 +61,6 @@
     </div>
     </tbody>
 </table>
-
-@* *@
-@* <br/> *@
-@* <form asp-controller="Publications" asp-action="LikeMethod" asp-route-postId="@Model.Id" asp-route-userId="@Model.UserId"> *@
-@*     <input id="LikeId" type="submit" value="Like" class="btn btn-default" onclick="sendLike('@Model.Id', '@Model.UserId')"/> *@
-@* </form> *@
 
 <br/>
 <div id="postdiv-@Model.Id">
@@ -82,11 +76,39 @@
     </form>
 
 </div>
-
 <br/>
-
-
 <hr/>
+
+
+<script src="~/Scripts/jQuery 3.3.1.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="popover"]').popover({
+            title: setData,
+            html: true,
+            placement: 'right'
+        });
+
+        function setData(id) {
+            var set_data = '';
+            var element = $(this);
+            var id = element.attr("id");
+            $.ajax({
+                url: "/Home/UsersList?id" + id,
+                method: "post",
+                async: false,
+                data: { id: id },
+                success: function(data) {
+                    set_data = data;
+                }
+            });
+            return set_data;
+        }
+    });
+</script>
+
 
 <script>
     function SubScribers(userId, postId) {
@@ -96,7 +118,8 @@
             data: { 'postId': postId, 'userId': userId },
             success: function(data) {
                 setTimeout(function() {
-                        alert('Вы подписались :)', data)},
+                        alert('Вы подписались :)', data)
+                    },
                     500);
             },
             error: function() {
@@ -114,7 +137,8 @@
             data: { 'postId': postId, 'userId': userId },
             success: function(data) {
                 setTimeout(function() {
-                        alert('Вы отписались :(', data)},
+                        alert('Вы отписались :(', data)
+                    },
                     500);
             },
             error: function() {

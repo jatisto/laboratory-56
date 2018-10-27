@@ -80,22 +80,7 @@ namespace Laboratory56.Controllers
             return View();
         }
 
-// POST: Comments/Create
-// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-        //        public async Task<IActionResult> Create([Bind("CommentId,PostId,CommentDate")] Comment comment)
-        //        {
-        //            if (ModelState.IsValid)
-        //            {
-        //                _context.Add(comment);
-        //                await _context.SaveChangesAsync();
-        //                return RedirectToAction(nameof(Index));
-        //            }
-        //
-        //            return View(comment);
-        //        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -115,6 +100,13 @@ namespace Laboratory56.Controllers
             return View(comment);
         }
 
+
+
+        #endregion
+
+        #region Edit
+
+
         // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
@@ -132,13 +124,9 @@ namespace Laboratory56.Controllers
             return View(comment);
         }
 
-        #endregion
-
-        #region Edit
-
-// POST: Comments/Edit/5
-// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Comments/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CommentId,PostId,CommentDate")] Comment comment)

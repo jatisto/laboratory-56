@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Laboratory56.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "UsersInfo";
+}
+
+<div class="container">
+    <h4 style="text-align: center; border-bottom: 1px solid #808080">UsersInfo</h4>
+    @foreach (var item in Model)
+    {
+        <p><label>Avatar: </label>@item.AvatarImage</p>
+        <p><label>Name: </label>@item.Name</p>
+        <p><label>Email: </label>@item.Email</p>
+        <p><label>PhoneNumber: </label>@item.PhoneNumber</p>
+    }
+</div>

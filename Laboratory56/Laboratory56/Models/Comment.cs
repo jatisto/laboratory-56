@@ -18,6 +18,5 @@ namespace Laboratory56.Models
         public DateTime CommentDate { get; set; }
 
         [Display(Name = "Изображение")] public string ImageUrl { get; set; }
-
     }
 }

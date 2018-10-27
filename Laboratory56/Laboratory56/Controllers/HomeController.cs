@@ -92,5 +92,17 @@ namespace Laboratory56.Controllers
         }
 
         #endregion
+
+        #region UsersInfo
+
+        public ActionResult UsersInfo(string id)
+        {
+            List<ApplicationUser> userInfo = _context.ApplicationUser
+                .Where(u => u.Id == id).ToList();
+
+            return View(userInfo);
+        }
+
+        #endregion
     }
 }
