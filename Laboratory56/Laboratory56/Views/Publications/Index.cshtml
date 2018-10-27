@@ -19,43 +19,72 @@
                 Описание
             </th>
             <th>
-               Like
+                Like
             </th>
             <th>
-               Подписки
+                Подписки
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                <img src="~/@item.ImageUrl" width="700" height="450" />
-            </td>
-                
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Like)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subscription)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/@item.ImageUrl" width="700" height="450" />
+                </td>
+                <td>
+
+                    <a asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.User.Id" data-toggle="popover" data-trigger="hover" id="@item.Id">@item.User.Name</a>
+
+                    @* <a href="#" data-toggle="popover" data-trigger="hover" id="@item.Id">@item.User.Name</a> *@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Like)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Subscription)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 
 </table>
 
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle="popover"]').popover({
+                title: setData,
+                html: true,
+                placement: 'right'
+            });
+
+            function setData(id) {
+                var set_data = '';
+                var element = $(this);
+                var id = element.attr("id");
+                $.ajax({
+                    url: "/Home/UsersInfo?id" + id,
+                    method: "post",
+                    async: false,
+                    data: { id: id },
+                    success: function(data) {
+                        set_data = data;
+                    }
+                });
+                return set_data;
+            }
+        });
+    </script>
+}
 

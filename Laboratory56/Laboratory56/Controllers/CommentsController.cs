@@ -236,25 +236,37 @@ namespace Laboratory56.Controllers
 
         #endregion
 
-        #endregion
+        #region version 2
 
-        #region CommentUpload
-
-        private Comment Comment(Comment comment, CommentVM model)
+        /*[HttpPost]
+        public async Task<IActionResult> Comment(int postId, string userId, string content, Comment comment)
         {
-            var path = Path.Combine(_environment.WebRootPath, $"images\\{_userManager.GetUserName(User)}\\Publication");
-            _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
-            var imageUrlContent = $"images/{_userManager.GetUserName(User)}/Publication/{model.ImageUrl.FileName}";
-            var comm = new Comment
+            var publ = _context.Publications.FirstOrDefault(c => c.Id == comment.PostId);
+
+            if (publ == null) return NotFound();
+
+            if (ModelState.IsValid)
             {
-                ImageUrl = imageUrlContent,
-                UserId = comment.UserId,
-                PostId = comment.PostId,
-                Content = comment.Content,
-                CommentDate = DateTime.Now
-            };
-            return comm;
-        }
+                var user = await _userManager.GetUserAsync(User);
+                var comm = new Comment
+                {
+                    UserId = userId,
+                    PostId = postId,
+                    Content = content,
+//                    ImageUrl = publ != null ? publ.ImageUrl : null,
+                    ImageUrl = publ.ImageUrl,
+                    CommentDate = DateTime.Now
+                };
+                comm.UserId = user.Id;
+                _context.Add(comm);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View();
+        }*/
+
+        #endregion
 
         #endregion
     }

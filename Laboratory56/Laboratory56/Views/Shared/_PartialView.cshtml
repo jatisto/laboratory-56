@@ -1,11 +1,6 @@
 ﻿@model Laboratory56.Models.Publication
 
-
-@{
-    ViewBag.Title = "PartialView";
-}
-
-<table class="table">
+<table class="table table-bordered">
     <thead>
     <tr>
         <th>
@@ -23,19 +18,21 @@
         <th>
             Подписки
         </th>
-        <th></th>
+   
     </tr>
     </thead>
 
     <tbody>
     <tr>
         <td>
-            <img src="~/@Model.ImageUrl" width="700" height="450"/>
+            <a href="#" data-toggle="popover" data-trigger="hover" id="@Model.Id">
+                <img src="~/@Model.ImageUrl" width="700" height="450"/>
+            </a>
         </td>
-        @* <td>@Html.DisplayFor(modelItem => Model.User.Name)</td> *@
-        @* <td>@Model.User.Name</td> *@
         <td>
-            <a asp-controller="Publications" asp-action="Details" data-toggle="popover" data-trigger="hover" id="@Model.Id">@Model.User.Name</a>
+
+            <a asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@Model.User.Id" data-toggle="popover" data-trigger="hover" id="@Model.Id">@Model.User.Name</a>
+            @* <a href="#" data-toggle="popover" data-trigger="hover" id="@Model.Id">@Model.User.Name</a> *@
         </td>
         <td>
             @Html.DisplayFor(modelItem => Model.Description)
@@ -83,36 +80,6 @@
 <br/>
 <hr/>
 
-
-<script src="~/Scripts/jQuery 3.3.1.js">
-</script>
-
-
-<script>
-    $(document).ready(function() {
-        $('[data-toggle="popover"]').popover({
-            title: setData,
-            html: true,
-            placement: 'right'
-        });
-
-        function setData(id) {
-            var set_data = '';
-            var element = $(this);
-            var id = element.attr("id");
-            $.ajax({
-                url: "/Home/UsersInfo?id" + id,
-                method: "post",
-                async: false,
-                data: { id: id },
-                success: function(data) {
-                    set_data = data;
-                }
-            });
-            return set_data;
-        }
-    });
-</script>
 
 
 <script>
