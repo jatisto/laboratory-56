@@ -1,6 +1,10 @@
 ﻿@model Laboratory56.Models.Publication
 
 
+@{
+    ViewBag.Title = "PartialView";
+}
+
 <table class="table">
     <thead>
     <tr>
@@ -31,7 +35,7 @@
         @* <td>@Html.DisplayFor(modelItem => Model.User.Name)</td> *@
         @* <td>@Model.User.Name</td> *@
         <td>
-            <a href="#" data-toggle="popover" datafld-trigger="hover" id="@Model.User.Id">@Model.User.Name</a>
+            <a asp-controller="Publications" asp-action="Details" data-toggle="popover" data-trigger="hover" id="@Model.Id">@Model.User.Name</a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => Model.Description)
@@ -80,7 +84,8 @@
 <hr/>
 
 
-<script src="~/Scripts/jQuery 3.3.1.js"></script>
+<script src="~/Scripts/jQuery 3.3.1.js">
+</script>
 
 
 <script>
@@ -96,7 +101,7 @@
             var element = $(this);
             var id = element.attr("id");
             $.ajax({
-                url: "/Home/UsersList?id" + id,
+                url: "/Home/UsersInfo?id" + id,
                 method: "post",
                 async: false,
                 data: { id: id },

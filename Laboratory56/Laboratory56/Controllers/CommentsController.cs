@@ -214,8 +214,6 @@ namespace Laboratory56.Controllers
         public async Task<IActionResult> Comment(int postId, string userId, string content, Comment comment)
         {
             var publ = _context.Publications.FirstOrDefault(c => c.Id == comment.PostId);
-            if (publ != null) comment.ImageUrl = publ.ImageUrl;
-
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -224,6 +222,7 @@ namespace Laboratory56.Controllers
                     UserId = userId,
                     PostId = postId,
                     Content = content,
+                    ImageUrl = publ?.ImageUrl,
                     CommentDate = DateTime.Now
                 };
                 comm.UserId = user.Id;

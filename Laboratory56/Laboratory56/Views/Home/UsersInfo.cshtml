@@ -5,10 +5,11 @@
 }
 
 <div class="container">
-    <h4 style="text-align: center; border-bottom: 1px solid #808080">UsersInfo</h4>
+    @* <h4 style="text-align: center; border-bottom: 1px solid #808080">UsersInfo</h4><br/> *@
+    
     @foreach (var item in Model)
     {
-        <p><label>Avatar: </label>@item.AvatarImage</p>
+        <p><img src="~/@item.AvatarImage" width="100" height="100" /></p>
         <p><label>Name: </label>@item.Name</p>
         <p><label>Email: </label>@item.Email</p>
         <p><label>PhoneNumber: </label>@item.PhoneNumber</p>

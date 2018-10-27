@@ -256,14 +256,12 @@ namespace Laboratory56.Controllers
         #region LikeMethod
         public ActionResult LikeMethod(string userId, int postId)
         {
-            var userLike = _context.Publications.FirstOrDefault(u => u.UserId == userId);
+            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
             if (ModelState.IsValid)
             {
                 if (userLike != null)
                 {
                     userLike.Like = userLike.Like + 1;
-                    userLike.UserId = userId;
-                    userLike.Id = postId;
 
                     _context.Update(userLike);
                     _context.SaveChangesAsync();
@@ -278,14 +276,13 @@ namespace Laboratory56.Controllers
         #region DisLikeMethod
         public ActionResult DisLikeMethod(string userId, int postId)
         {
-            var userLike = _context.Publications.FirstOrDefault(u => u.UserId == userId);
+            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
             if (ModelState.IsValid)
             {
                 if (userLike != null)
                 {
                     userLike.Like = userLike.Like - 1;
-                    userLike.UserId = userId;
-                    userLike.Id = postId;
+                    
 
                     _context.Update(userLike);
                     _context.SaveChangesAsync();
@@ -300,14 +297,12 @@ namespace Laboratory56.Controllers
         #region SubscriptionMethod
         public ActionResult SubscriptionMethod(string userId, int postId)
         {
-            var userLike = _context.Publications.FirstOrDefault(u => u.UserId == userId);
+            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
             if (ModelState.IsValid)
             {
                 if (userLike != null)
                 {
                     userLike.Subscription = userLike.Subscription + 1;
-                    userLike.UserId = userId;
-                    userLike.Id = postId;
 
                     _context.Update(userLike);
                     _context.SaveChangesAsync();
@@ -322,14 +317,12 @@ namespace Laboratory56.Controllers
         #region UnSubscriptionMethod
         public ActionResult UnSubscriptionMethod(string userId, int postId)
         {
-            var userLike = _context.Publications.FirstOrDefault(u => u.UserId == userId);
+            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
             if (ModelState.IsValid)
             {
                 if (userLike != null)
                 {
                     userLike.Subscription = userLike.Subscription - 1;
-                    userLike.UserId = userId;
-                    userLike.Id = postId;
 
                     _context.Update(userLike);
                     _context.SaveChangesAsync();
