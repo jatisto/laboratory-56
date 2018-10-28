@@ -17,6 +17,8 @@ namespace Laboratory56.Controllers
 {
     public class PublicationsController : Controller
     {
+        #region Conections and Constructor
+
         public PublicationsController(ApplicationDbContext context, IHostingEnvironment environment,
             FileUploadService fileUploadService, UserManager<ApplicationUser> userManager)
         {
@@ -31,14 +33,37 @@ namespace Laboratory56.Controllers
         private readonly IHostingEnvironment _environment;
         private readonly FileUploadService _fileUploadService;
 
+        #endregion
+
+        #region Index
 
         // GET: Publications
         public async Task<IActionResult> Index()
         {
-            var sort = await _context.Publications.ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
 
-            return View(sort.OrderByDescending(s => s.Id));
+            if (user != null)
+            {
+                var sort = await _context.Publications
+                    .Include(s => s.User)
+                    .Where(p => p.UserId == user.Id)
+                    .OrderByDescending(s => s.Id)
+                    .ToListAsync();
+
+                return View(sort);
+            }
+            else
+            {
+                var sort = await _context.Publications
+                    .Include(s => s.User)
+                    .OrderByDescending(s => s.Id)
+                    .ToListAsync();
+
+                return View(sort);
+            }
         }
+
+        #endregion
 
         #region Details
 
@@ -82,9 +107,9 @@ namespace Laboratory56.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Метод Publication
+                var user = await _userManager.GetUserAsync(User);
                 var pub = Publication(publication, model);
-                //---------------------------------------------
+                pub.UserId = user.Id;
                 _context.Add(pub);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -124,7 +149,6 @@ namespace Laboratory56.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("Id,ImadeUrl,Description,Like,RePost")]
             Publication publication, PublicationVM model)
         {
-
             if (id != publication.Id)
             {
                 return NotFound();
@@ -136,10 +160,12 @@ namespace Laboratory56.Controllers
             {
                 try
                 {
-                    var path = Path.Combine(_environment.WebRootPath, $"images\\{_userManager.GetUserName(User)}\\Publication");
+                    var path = Path.Combine(_environment.WebRootPath,
+                        $"images\\{_userManager.GetUserName(User)}\\Publication");
 
                     _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
-                    var imageUrlContent = $"images/{_userManager.GetUserName(User)}/Publication/{model.ImageUrl.FileName}";
+                    var imageUrlContent =
+                        $"images/{_userManager.GetUserName(User)}/Publication/{model.ImageUrl.FileName}";
 
                     searching.Description = publication.Description;
                     searching.ImageUrl = imageUrlContent;
@@ -239,6 +265,95 @@ namespace Laboratory56.Controllers
         private bool PublicationExists(int id)
         {
             return _context.Publications.Any(e => e.Id == id);
+        }
+
+        #endregion
+
+        #region LikeMethod
+
+        public ActionResult LikeMethod(string userId, int postId)
+        {
+            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+            if (ModelState.IsValid)
+            {
+                if (userLike != null)
+                {
+                    userLike.Like = userLike.Like + 1;
+
+                    _context.Update(userLike);
+                    _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            return View();
+        }
+
+        #endregion
+
+        #region DisLikeMethod
+
+        public ActionResult DisLikeMethod(string userId, int postId)
+        {
+            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+            if (ModelState.IsValid)
+            {
+                if (userLike != null)
+                {
+                    userLike.Like = userLike.Like - 1;
+
+
+                    _context.Update(userLike);
+                    _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            return View();
+        }
+
+        #endregion
+
+        #region SubscriptionMethod
+
+        public ActionResult SubscriptionMethod(string userId, int postId)
+        {
+            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+            if (ModelState.IsValid)
+            {
+                if (userLike != null)
+                {
+                    userLike.Subscription = userLike.Subscription + 1;
+
+                    _context.Update(userLike);
+                    _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            return View();
+        }
+
+        #endregion
+
+        #region UnSubscriptionMethod
+
+        public ActionResult UnSubscriptionMethod(string userId, int postId)
+        {
+            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+            if (ModelState.IsValid)
+            {
+                if (userLike != null)
+                {
+                    userLike.Subscription = userLike.Subscription - 1;
+
+                    _context.Update(userLike);
+                    _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            return View();
         }
 
         #endregion

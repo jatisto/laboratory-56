@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace Laboratory56.Data.Migrations
+namespace Laboratory56.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181022061358_edit imadeUrl or imageUrl")]
-    partial class editimadeUrlorimageUrl
+    [Migration("20181027170105_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,6 +56,8 @@ namespace Laboratory56.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<int>("PublishId");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -76,12 +78,36 @@ namespace Laboratory56.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Laboratory56.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CommentDate");
+
+                    b.Property<string>("Content");
+
+                    b.Property<string>("ImageUrl");
+
+                    b.Property<int>("PostId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("Laboratory56.Models.Publication", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<int>("ComentCount");
 
                     b.Property<string>("Description");
 
@@ -89,11 +115,13 @@ namespace Laboratory56.Data.Migrations
 
                     b.Property<int>("Like");
 
-                    b.Property<int>("RePost");
+                    b.Property<int>("Subscription");
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Publications");
                 });
@@ -206,11 +234,23 @@ namespace Laboratory56.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Laboratory56.Models.Comment", b =>
+                {
+                    b.HasOne("Laboratory56.Models.Publication", "Post")
+                        .WithMany("CommentsList")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Laboratory56.Models.ApplicationUser", "User")
+                        .WithMany("CommentsList")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Laboratory56.Models.Publication", b =>
                 {
-                    b.HasOne("Laboratory56.Models.ApplicationUser")
+                    b.HasOne("Laboratory56.Models.ApplicationUser", "User")
                         .WithMany("PublicationsList")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

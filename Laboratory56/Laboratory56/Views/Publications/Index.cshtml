@@ -13,11 +13,16 @@
                 @Html.DisplayNameFor(model => model.ImageUrl)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Имя
             </th>
             <th>
-               Like
-                @* <a href="#" id="likeId">Like</a> *@
+                Описание
+            </th>
+            <th>
+                Like
+            </th>
+            <th>
+                Подписки
             </th>
             <th></th>
         </tr>
@@ -27,14 +32,22 @@
         {
             <tr>
                 <td>
-                    <img src="~/@item.ImageUrl" width="700" height="350"/>
+                    <img src="~/@item.ImageUrl" width="700" height="450" />
                 </td>
+                <td>
 
+                    <a asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.User.Id" data-toggle="popover" data-trigger="hover" id="@item.Id">@item.User.Name</a>
+
+                    @* <a href="#" data-toggle="popover" data-trigger="hover" id="@item.Id">@item.User.Name</a> *@
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Like)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Subscription)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -44,7 +57,34 @@
             </tr>
         }
     </tbody>
+
 </table>
 
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle="popover"]').popover({
+                title: setData,
+                html: true,
+                placement: 'right'
+            });
 
+            function setData(id) {
+                var set_data = '';
+                var element = $(this);
+                var id = element.attr("id");
+                $.ajax({
+                    url: "/Home/UsersInfo?id" + id,
+                    method: "post",
+                    async: false,
+                    data: { id: id },
+                    success: function(data) {
+                        set_data = data;
+                    }
+                });
+                return set_data;
+            }
+        });
+    </script>
+}
 
