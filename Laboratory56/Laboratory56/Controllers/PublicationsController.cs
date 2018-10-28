@@ -41,13 +41,26 @@ namespace Laboratory56.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            var sort = await _context.Publications
-                .Include(s => s.User)
-                .Where(p => p.UserId == user.Id)
-                .OrderByDescending(s => s.Id)
-                .ToListAsync();
 
-            return View(sort);
+            if (user != null)
+            {
+                var sort = await _context.Publications
+                    .Include(s => s.User)
+                    .Where(p => p.UserId == user.Id)
+                    .OrderByDescending(s => s.Id)
+                    .ToListAsync();
+
+                return View(sort);
+            }
+            else
+            {
+                var sort = await _context.Publications
+                    .Include(s => s.User)
+                    .OrderByDescending(s => s.Id)
+                    .ToListAsync();
+
+                return View(sort);
+            }
         }
 
         #endregion
@@ -257,6 +270,7 @@ namespace Laboratory56.Controllers
         #endregion
 
         #region LikeMethod
+
         public ActionResult LikeMethod(string userId, int postId)
         {
             var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
@@ -274,9 +288,11 @@ namespace Laboratory56.Controllers
 
             return View();
         }
+
         #endregion
 
         #region DisLikeMethod
+
         public ActionResult DisLikeMethod(string userId, int postId)
         {
             var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
@@ -285,7 +301,7 @@ namespace Laboratory56.Controllers
                 if (userLike != null)
                 {
                     userLike.Like = userLike.Like - 1;
-                    
+
 
                     _context.Update(userLike);
                     _context.SaveChangesAsync();
@@ -295,9 +311,11 @@ namespace Laboratory56.Controllers
 
             return View();
         }
+
         #endregion
 
         #region SubscriptionMethod
+
         public ActionResult SubscriptionMethod(string userId, int postId)
         {
             var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
@@ -315,9 +333,11 @@ namespace Laboratory56.Controllers
 
             return View();
         }
+
         #endregion
 
         #region UnSubscriptionMethod
+
         public ActionResult UnSubscriptionMethod(string userId, int postId)
         {
             var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
@@ -335,8 +355,7 @@ namespace Laboratory56.Controllers
 
             return View();
         }
-        #endregion
 
-        
+        #endregion
     }
 }

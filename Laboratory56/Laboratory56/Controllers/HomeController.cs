@@ -27,11 +27,25 @@ namespace Laboratory56.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            var publish = _context.Publications
-                .Include(p => p.User)
-                .Where(p => p.UserId != user.Id)
-                .OrderByDescending(p => p.Id).ToList();
-            return View(publish);
+
+            if (user != null)
+            {
+                var publish = _context.Publications
+                    .Include(p => p.User)
+                    .Where(p => p.UserId != user.Id)
+                    .OrderByDescending(p => p.Id).ToList();
+                return View(publish);
+            }
+            else
+            {
+                var publish = _context.Publications
+                    .Include(p => p.User)
+                    .OrderByDescending(p => p.Id).ToList();
+                return View(publish);
+            }
+
+
+            
         }
 
         public IActionResult About()

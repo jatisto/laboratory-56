@@ -40,12 +40,25 @@ namespace Laboratory56.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            var comments = await _context.Comments
-                .Include(c => c.User)
-                .Include(c => c.Post)
-                .Where(p => p.UserId == user.Id)
-                .OrderByDescending(c => c.PostId).ToListAsync();
-            return View(comments);
+
+            if (user != null)
+            {
+                var comments = await _context.Comments
+                    .Include(c => c.User)
+                    .Include(c => c.Post)
+                    .Where(p => p.UserId == user.Id)
+                    .OrderByDescending(c => c.PostId).ToListAsync();
+                return View(comments);
+            }
+            else
+            {
+                var comments = await _context.Comments
+                    .Include(c => c.User)
+                    .Include(c => c.Post)
+                    .OrderByDescending(c => c.PostId).ToListAsync();
+                return View(comments);
+            }
+            
         }
 
         #endregion
