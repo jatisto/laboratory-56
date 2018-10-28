@@ -30,14 +30,14 @@ namespace Laboratory56.Controllers
         // а вместо  _logger = logger; сделать так  _logger = logger.CreateLogger("My logger");
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender, IHostingEnvironment environment, ILoggerFactory logger,
+            IEmailSender emailSender, IHostingEnvironment environment, ILogger<AccountController> logger,
             FileUploadService fileUploadService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _environment = environment;
-            _logger = logger.CreateLogger("My logger");
+            _logger = logger;
             ;
             _fileUploadService = fileUploadService;
         }

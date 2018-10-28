@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -15,6 +16,13 @@ namespace Laboratory56.Models
 
         [Display(Name = "Путь")]
         public string AvatarImage { get; set; }
+
+
+       
+        public int PublishId { get; set; }
+        [NotMapped]
+        public Publication Publish { get; set; }
+
 
         public List<Publication> PublicationsList { get; set; }
         public List<Comment> CommentsList { get; set; }

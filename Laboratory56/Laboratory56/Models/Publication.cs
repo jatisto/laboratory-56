@@ -11,7 +11,6 @@ namespace Laboratory56.Models
     {
         public int Id { get; set; }
 
-
         [Display(Name = "Изображение")] public string ImageUrl { get; set; }
         [Display(Name = "Описание")] public string Description { get; set; }
         [Display(Name = "Нравиться!")] public int Like { get; set; }
@@ -19,10 +18,6 @@ namespace Laboratory56.Models
 
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
-
-        //        public int CommentId { get; set; }
-        //        public Comment Comment { get; set; }
-
 
         [Display(Name = "Количество  комментариев")]
         public int ComentCount { get; set; }
