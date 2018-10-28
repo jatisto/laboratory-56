@@ -273,8 +273,11 @@ namespace Laboratory56.Controllers
 
         public ActionResult LikeMethod(string userId, int postId)
         {
+<<<<<<< HEAD
             //            var users = await _userManager.GetUserAsync(User);
 
+=======
+>>>>>>> 5bf64463721f994a9938ee5b067dca0ebcbcb701
             var userLike = _context.Publications
                 .Where(l => l.Like == 0)
                 .FirstOrDefault(u => u.Id == postId);
