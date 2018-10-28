@@ -49,10 +49,13 @@
 
 </table>
 
-@*@foreach (var item in ViewBag.Comment) 
+@foreach (var item in Model.CommentsList)
 {
-    <p >@item</p>  
-}*@
+<a asp-controller="ApplicationUsers"
+   asp-action="Details"
+   asp-route-id="@Model.User.Id">@item.User.Name :</a><p>@item.Content</p>
+   
+}
 
 <table>
     <tbody>

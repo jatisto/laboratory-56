@@ -32,6 +32,7 @@ namespace Laboratory56.Controllers
             {
                 var publish = _context.Publications
                     .Include(p => p.User)
+                    .Include(p => p.CommentsList)
                     .Where(p => p.UserId != user.Id)
                     .OrderByDescending(p => p.Id).ToList();
                 return View(publish);
@@ -40,6 +41,7 @@ namespace Laboratory56.Controllers
             {
                 var publish = _context.Publications
                     .Include(p => p.User)
+                    .Include(p => p.CommentsList)
                     .OrderByDescending(p => p.Id).ToList();
                 return View(publish);
             }
