@@ -55,6 +55,8 @@ namespace Laboratory56.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<int>("PublishId");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");

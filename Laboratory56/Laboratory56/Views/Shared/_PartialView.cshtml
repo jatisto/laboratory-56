@@ -1,7 +1,6 @@
 ﻿@model Laboratory56.Models.Publication
 
-
-<table class="table">
+<table class="table table-bordered">
     <thead>
     <tr>
         <th>
@@ -19,17 +18,21 @@
         <th>
             Подписки
         </th>
-        <th></th>
+   
     </tr>
     </thead>
 
     <tbody>
     <tr>
         <td>
-            <img src="~/@Model.ImageUrl" width="700" height="450"/>
+            <a href="#" data-toggle="popover" data-trigger="hover" id="@Model.Id">
+                <img src="~/@Model.ImageUrl" width="700" height="450"/>
+            </a>
         </td>
         <td>
-            @Html.DisplayFor(modelItem => Model.User.Name)
+
+            <a asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@Model.User.Id" data-toggle="popover" data-trigger="hover" id="@Model.Id">@Model.User.Name</a>
+            @* <a href="#" data-toggle="popover" data-trigger="hover" id="@Model.Id">@Model.User.Name</a> *@
         </td>
         <td>
             @Html.DisplayFor(modelItem => Model.Description)
@@ -46,12 +49,15 @@
 
 </table>
 
+@*@foreach (var item in ViewBag.Comment) 
+{
+    <p >@item</p>  
+}*@
+
 <table>
     <tbody>
     <div class="row">
         <div class="col-lg-12">
-            @* Комментарии (@Model.ComentCount) *@
-            @* <br/> *@
             <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer; color: darkslategray;">Оставить комментарий</a>
         </div>
         <div class="col-md-12" id="postdiv-@Model.Id" style="display: none; color: darkslategray;">
@@ -61,12 +67,6 @@
     </div>
     </tbody>
 </table>
-
-@* *@
-@* <br/> *@
-@* <form asp-controller="Publications" asp-action="LikeMethod" asp-route-postId="@Model.Id" asp-route-userId="@Model.UserId"> *@
-@*     <input id="LikeId" type="submit" value="Like" class="btn btn-default" onclick="sendLike('@Model.Id', '@Model.UserId')"/> *@
-@* </form> *@
 
 <br/>
 <div id="postdiv-@Model.Id">
@@ -82,11 +82,10 @@
     </form>
 
 </div>
-
 <br/>
-
-
 <hr/>
+
+
 
 <script>
     function SubScribers(userId, postId) {
@@ -96,7 +95,8 @@
             data: { 'postId': postId, 'userId': userId },
             success: function(data) {
                 setTimeout(function() {
-                        alert('Вы подписались :)', data)},
+                        alert('Вы подписались :)', data)
+                    },
                     500);
             },
             error: function() {
@@ -114,7 +114,8 @@
             data: { 'postId': postId, 'userId': userId },
             success: function(data) {
                 setTimeout(function() {
-                        alert('Вы отписались :(', data)},
+                        alert('Вы отписались :(', data)
+                    },
                     500);
             },
             error: function() {

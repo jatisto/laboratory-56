@@ -11,7 +11,7 @@ using System;
 namespace Laboratory56.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181026175701_init")]
+    [Migration("20181027170105_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,6 +55,8 @@ namespace Laboratory56.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<int>("PublishId");
 
                     b.Property<string>("SecurityStamp");
 

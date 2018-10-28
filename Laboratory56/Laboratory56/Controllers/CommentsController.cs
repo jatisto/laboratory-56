@@ -39,11 +39,26 @@ namespace Laboratory56.Controllers
         // GET: Comments
         public async Task<IActionResult> Index()
         {
-            var comments = await _context.Comments
-                .Include(c => c.User)
-                .Include(c => c.Post)
-                .OrderByDescending(c => c.PostId).ToListAsync();
-            return View(comments);
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user != null)
+            {
+                var comments = await _context.Comments
+                    .Include(c => c.User)
+                    .Include(c => c.Post)
+                    .Where(p => p.UserId == user.Id)
+                    .OrderByDescending(c => c.PostId).ToListAsync();
+                return View(comments);
+            }
+            else
+            {
+                var comments = await _context.Comments
+                    .Include(c => c.User)
+                    .Include(c => c.Post)
+                    .OrderByDescending(c => c.PostId).ToListAsync();
+                return View(comments);
+            }
+            
         }
 
         #endregion
@@ -80,22 +95,7 @@ namespace Laboratory56.Controllers
             return View();
         }
 
-// POST: Comments/Create
-// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-        //        public async Task<IActionResult> Create([Bind("CommentId,PostId,CommentDate")] Comment comment)
-        //        {
-        //            if (ModelState.IsValid)
-        //            {
-        //                _context.Add(comment);
-        //                await _context.SaveChangesAsync();
-        //                return RedirectToAction(nameof(Index));
-        //            }
-        //
-        //            return View(comment);
-        //        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -115,6 +115,13 @@ namespace Laboratory56.Controllers
             return View(comment);
         }
 
+
+
+        #endregion
+
+        #region Edit
+
+
         // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
@@ -132,13 +139,9 @@ namespace Laboratory56.Controllers
             return View(comment);
         }
 
-        #endregion
-
-        #region Edit
-
-// POST: Comments/Edit/5
-// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Comments/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CommentId,PostId,CommentDate")] Comment comment)
@@ -226,8 +229,6 @@ namespace Laboratory56.Controllers
         public async Task<IActionResult> Comment(int postId, string userId, string content, Comment comment)
         {
             var publ = _context.Publications.FirstOrDefault(c => c.Id == comment.PostId);
-            if (publ != null) comment.ImageUrl = publ.ImageUrl;
-
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -236,8 +237,12 @@ namespace Laboratory56.Controllers
                     UserId = userId,
                     PostId = postId,
                     Content = content,
+                    ImageUrl = publ?.ImageUrl,
                     CommentDate = DateTime.Now
                 };
+
+                ViewBag.Comment = comm; 
+
                 comm.UserId = user.Id;
                 _context.Add(comm);
                 await _context.SaveChangesAsync();
@@ -249,25 +254,37 @@ namespace Laboratory56.Controllers
 
         #endregion
 
-        #endregion
+        #region version 2
 
-        #region CommentUpload
-
-        private Comment Comment(Comment comment, CommentVM model)
+        /*[HttpPost]
+        public async Task<IActionResult> Comment(int postId, string userId, string content, Comment comment)
         {
-            var path = Path.Combine(_environment.WebRootPath, $"images\\{_userManager.GetUserName(User)}\\Publication");
-            _fileUploadService.Upload(path, model.ImageUrl.FileName, model.ImageUrl);
-            var imageUrlContent = $"images/{_userManager.GetUserName(User)}/Publication/{model.ImageUrl.FileName}";
-            var comm = new Comment
+            var publ = _context.Publications.FirstOrDefault(c => c.Id == comment.PostId);
+
+            if (publ == null) return NotFound();
+
+            if (ModelState.IsValid)
             {
-                ImageUrl = imageUrlContent,
-                UserId = comment.UserId,
-                PostId = comment.PostId,
-                Content = comment.Content,
-                CommentDate = DateTime.Now
-            };
-            return comm;
-        }
+                var user = await _userManager.GetUserAsync(User);
+                var comm = new Comment
+                {
+                    UserId = userId,
+                    PostId = postId,
+                    Content = content,
+//                    ImageUrl = publ != null ? publ.ImageUrl : null,
+                    ImageUrl = publ.ImageUrl,
+                    CommentDate = DateTime.Now
+                };
+                comm.UserId = user.Id;
+                _context.Add(comm);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View();
+        }*/
+
+        #endregion
 
         #endregion
     }

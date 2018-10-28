@@ -24,12 +24,28 @@ namespace Laboratory56.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var publish = _context.Publications
-                .Include(p => p.User)
-                .OrderByDescending(p => p.Id).ToList();
-            return View(publish);
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user != null)
+            {
+                var publish = _context.Publications
+                    .Include(p => p.User)
+                    .Where(p => p.UserId != user.Id)
+                    .OrderByDescending(p => p.Id).ToList();
+                return View(publish);
+            }
+            else
+            {
+                var publish = _context.Publications
+                    .Include(p => p.User)
+                    .OrderByDescending(p => p.Id).ToList();
+                return View(publish);
+            }
+
+
+            
         }
 
         public IActionResult About()
@@ -89,6 +105,18 @@ namespace Laboratory56.Controllers
         public ActionResult UsersList()
         {
             return View(_context.Users.ToList());
+        }
+
+        #endregion
+
+        #region UsersInfo
+
+        public ActionResult UsersInfo(string id)
+        {
+            List<ApplicationUser> userInfo = _context.ApplicationUser
+                .Where(u => u.Id == id).ToList();
+
+            return View(userInfo);
         }
 
         #endregion
