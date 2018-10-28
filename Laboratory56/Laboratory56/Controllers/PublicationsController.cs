@@ -273,8 +273,6 @@ namespace Laboratory56.Controllers
 
         public async Task<ActionResult> LikeMethod(string userId, int postId)
         {
-//            var users = await _userManager.GetUserAsync(User);
-
             var userLike = _context.Publications
                 .Where(l => l.Like == 0)
                 .FirstOrDefault(u => u.Id == postId);
@@ -300,7 +298,9 @@ namespace Laboratory56.Controllers
 
         public ActionResult DisLikeMethod(string userId, int postId)
         {
-            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+            var userLike = _context.Publications
+                .Where(l => l.Like != 0)
+                .FirstOrDefault(u => u.Id == postId);
             if (ModelState.IsValid)
             {
                 if (userLike != null)
