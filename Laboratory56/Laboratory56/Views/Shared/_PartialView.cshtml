@@ -49,13 +49,25 @@
 
 </table>
 
-@foreach (var item in Model.CommentsList)
+@if (Model.CommentsList.Count <= 0)
 {
-<a asp-controller="ApplicationUsers"
-   asp-action="Details"
-   asp-route-id="@Model.User.Id">@item.User.Name :</a><p>@item.Content</p>
-   
+    <tr>
+        <td>
+            No Comment
+        </td>
+    </tr>
 }
+else
+{
+    foreach (var item in Model.CommentsList)
+     {
+         <a asp-controller="ApplicationUsers"
+            asp-action="Details"
+            asp-route-id="@item.User.Id">@item.User.Name :</a><p>@item.Content</p>
+     }
+}
+
+
 
 <table>
     <tbody>

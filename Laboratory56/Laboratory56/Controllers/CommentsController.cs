@@ -144,18 +144,22 @@ namespace Laboratory56.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CommentId,PostId,CommentDate")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("CommentId,PostId,CommentDate,Content")] Comment comment)
         {
             if (id != comment.CommentId)
             {
                 return NotFound();
             }
+            var searching = await _context.Comments.SingleOrDefaultAsync(s => s.CommentId == id);
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(comment);
+                    
+                    searching.Content = comment.Content;
+
+                    _context.Update(searching);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -188,10 +192,10 @@ namespace Laboratory56.Controllers
         // GET: Comments/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
+            /*if (id == null)
             {
                 return NotFound();
-            }
+            }*/
 
             var comment = await _context.Comments
                 .SingleOrDefaultAsync(m => m.CommentId == id);
