@@ -271,10 +271,9 @@ namespace Laboratory56.Controllers
 
         #region LikeMethod
 
-        public async Task<ActionResult> LikeMethod(string userId, int postId)
+        public ActionResult LikeMethod(string userId, int postId)
         {
-            var users = await _userManager.GetUserAsync(User);
-
+            //            var users = await _userManager.GetUserAsync(User);
 
             var userLike = _context.Publications
                 .Where(l => l.Like == 0)
@@ -287,7 +286,7 @@ namespace Laboratory56.Controllers
                     userLike.Like = userLike.Like + 1;
 
                     _context.Update(userLike);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                     return RedirectToAction(nameof(Index));
                 }
             }

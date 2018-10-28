@@ -49,19 +49,6 @@
 
 </table>
 
-<div id="postdiv-@Model.Id">
-    <form>
-        <input id="LikeId" type="button" value="Like" class="btn btn-default" onclick="sendLike('@Model.UserId', '@Model.Id')"
-               style="color: aliceblue; background-color: darksalmon;" />
-        <input id="DisLikeId" type="button" value="Dislike" class="btn btn-default" onclick="sendDislike('@Model.UserId', '@Model.Id')"
-               style="color: aliceblue; background-color: darksalmon;" />
-        <input id="subscribers-@Model.User" type="button" value="Subscribers" class="btn btn-default" onclick="SubScribers('@Model.UserId', '@Model.Id')"
-               style="color: aliceblue; background-color: cadetblue;" />
-        <input id="unsubscribers-@Model.User" type="button" value="UnSubscribers" class="btn btn-default" onclick="UnSubScribers('@Model.UserId', '@Model.Id')"
-               style="color: aliceblue; background-color: cadetblue;" />
-    </form>
-
-</div>
 <hr />
 
 @if (Model.CommentsList.Count <= 0)
@@ -97,10 +84,22 @@ else
         </div>
     </tbody>
 </table>
-
 <br />
+<div id="postdiv-@Model.Id">
+    <form>
+        <input id="LikeId" type="button" value="Like" class="btn btn-default" onclick="sendLike('@Model.UserId', '@Model.Id')"
+               style="color: aliceblue; background-color: darksalmon;" />
+        <input id="DisLikeId" type="button" value="Dislike" class="btn btn-default" onclick="sendDislike('@Model.UserId', '@Model.Id')"
+               style="color: aliceblue; background-color: darksalmon;" />
+        <input id="subscribers-@Model.User" type="button" value="Subscribers" class="btn btn-default" onclick="SubScribers('@Model.UserId', '@Model.Id')"
+               style="color: aliceblue; background-color: cadetblue;" />
+        <input id="unsubscribers-@Model.User" type="button" value="UnSubscribers" class="btn btn-default" onclick="UnSubScribers('@Model.UserId', '@Model.Id')"
+               style="color: aliceblue; background-color: cadetblue;" />
+    </form>
 
-
+</div>
+<hr />
+<br />
 
 
 <script>
@@ -113,16 +112,14 @@ else
                 setTimeout(function() {
                         alert('Вы подписались :)', data)
                     },
-                    500);
+                    100);
             },
             error: function() {
                 console.log('Ошибка во время отправки комментария', this);
             }
         });
     }
-</script>
 
-<script>
     function UnSubScribers(userId, postId) {
         $.ajax({
             url: '@Url.Action("UnSubscriptionMethod", "Publications")',
@@ -132,16 +129,14 @@ else
                 setTimeout(function() {
                         alert('Вы отписались :(', data)
                     },
-                    500);
+                    100);
             },
             error: function() {
                 console.log('Ошибка во время отправки комментария', this);
             }
         });
     }
-</script>
 
-<script>
     function sendLike(userId, postId) {
         $.ajax({
             url: '@Url.Action("LikeMethod", "Publications")',
@@ -150,16 +145,14 @@ else
             success: function(data) {
                 setTimeout(function() {
                         alert('Вы поставили Like!', data)},
-                    50);
+                    100);
             },
             error: function() {
                 console.log('Ошибка во время отправки комментария', this);
             }
         });
     }
-</script>
 
-<script>
     function sendDislike(userId, postId) {
         $.ajax({
             url: '@Url.Action("DisLikeMethod", "Publications")',
@@ -168,16 +161,15 @@ else
             success: function(data) {
                 setTimeout(function() {
                         alert('Вы поставили Disike!', data)},
-                    500);
+                    100);
             },
             error: function() {
                 console.log('Ошибка во время отправки комментария', this);
             }
         });
     }
-</script>
 
-<script>
+
     function openCommentForm(postId) {
         $('#postdiv-' + postId).show();
     }
@@ -192,7 +184,7 @@ else
                         alert('Ваш комментарий ' + '(' + $('#posttext-' + postId).val() + ')' + ' добавлен!!!',
                             data)
                     },
-                    500);
+                    100);
             },
             error: function() {
                 console.log('Ошибка во время отправки комментария', this);
