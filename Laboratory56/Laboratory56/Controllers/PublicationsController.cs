@@ -40,7 +40,10 @@ namespace Laboratory56.Controllers
         // GET: Publications
         public async Task<IActionResult> Index()
         {
-            var sort = await _context.Publications.Include(s => s.User)
+            var user = await _userManager.GetUserAsync(User);
+            var sort = await _context.Publications
+                .Include(s => s.User)
+                .Where(p => p.UserId == user.Id)
                 .OrderByDescending(s => s.Id)
                 .ToListAsync();
 
