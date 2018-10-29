@@ -210,6 +210,34 @@ namespace Laboratory56.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Subscriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PostIdSub = table.Column<int>(nullable: false),
+                    PostSubId = table.Column<int>(nullable: true),
+                    UserIdSub = table.Column<string>(nullable: true),
+                    UserSubId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscriptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subscriptions_Publications_PostSubId",
+                        column: x => x.PostSubId,
+                        principalTable: "Publications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Subscriptions_AspNetUsers_UserSubId",
+                        column: x => x.UserSubId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -263,6 +291,16 @@ namespace Laboratory56.Migrations
                 name: "IX_Publications_UserId",
                 table: "Publications",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subscriptions_PostSubId",
+                table: "Subscriptions",
+                column: "PostSubId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subscriptions_UserSubId",
+                table: "Subscriptions",
+                column: "UserSubId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -284,6 +322,9 @@ namespace Laboratory56.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Subscriptions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

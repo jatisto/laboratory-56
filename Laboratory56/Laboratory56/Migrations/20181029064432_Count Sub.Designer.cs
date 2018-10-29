@@ -11,8 +11,8 @@ using System;
 namespace Laboratory56.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181029051038_init")]
-    partial class init
+    [Migration("20181029064432_Count Sub")]
+    partial class CountSub
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -115,8 +115,6 @@ namespace Laboratory56.Migrations
 
                     b.Property<int>("Like");
 
-                    b.Property<int>("Subscription");
-
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
@@ -124,6 +122,30 @@ namespace Laboratory56.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Publications");
+                });
+
+            modelBuilder.Entity("Laboratory56.Models.Subscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("PostIdSub");
+
+                    b.Property<int?>("PostSubId");
+
+                    b.Property<int>("SubscriptionCount");
+
+                    b.Property<string>("UserIdSub");
+
+                    b.Property<string>("UserSubId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostSubId");
+
+                    b.HasIndex("UserSubId");
+
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -251,6 +273,17 @@ namespace Laboratory56.Migrations
                     b.HasOne("Laboratory56.Models.ApplicationUser", "User")
                         .WithMany("PublicationsList")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Laboratory56.Models.Subscription", b =>
+                {
+                    b.HasOne("Laboratory56.Models.Publication", "PostSub")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("PostSubId");
+
+                    b.HasOne("Laboratory56.Models.ApplicationUser", "UserSub")
+                        .WithMany()
+                        .HasForeignKey("UserSubId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

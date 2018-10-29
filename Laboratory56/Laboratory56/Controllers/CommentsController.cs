@@ -244,9 +244,6 @@ namespace Laboratory56.Controllers
                     ImageUrl = publ?.ImageUrl,
                     CommentDate = DateTime.Now
                 };
-
-                ViewBag.Comment = comm; 
-
                 comm.UserId = user.Id;
                 _context.Add(comm);
                 await _context.SaveChangesAsync();

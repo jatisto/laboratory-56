@@ -15,10 +15,6 @@
             <th>
                 Нравиться
             </th>
-            <th>
-                Подписки
-            </th>
-
         </tr>
     </thead>
 
@@ -40,15 +36,34 @@
             <td>
                 @Html.DisplayFor(modelItem => Model.Like)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.Subscription)
-            </td>
         </tr>
 
     </tbody>
 
 </table>
+<hr/>
 
+@*
+@if (Model.Subscriptions.Count <= 0)
+{
+    <tr>
+        <td>
+            No Comment
+        </td>
+    </tr>
+}
+else
+{
+    foreach (var item in Model.Subscriptions)
+    {
+        <a asp-controller="ApplicationUsers"
+           asp-action="Details"
+           asp-route-id="@item.Id">@item.UserIdSub:</a><p>@item.UserSub</p>
+    }
+}
+*@
+
+<hr/>
 <hr />
 
 @if (Model.CommentsList.Count <= 0)

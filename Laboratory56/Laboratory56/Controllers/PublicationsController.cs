@@ -321,19 +321,36 @@ namespace Laboratory56.Controllers
 
         #region SubscriptionMethod
 
-        public ActionResult SubscriptionMethod(string userId, int postId)
+        public async Task<ActionResult> SubscriptionMethod(string userId, int postId, Subscription subscription)
         {
-            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+//            var user = _userManager.GetUserAsync(User);
+            /*var userLike = _context.Publications
+                .Where(u => u.Subscription == 0)
+                .FirstOrDefault(u => u.Id == postId);*/
+
             if (ModelState.IsValid)
             {
-                if (userLike != null)
+                var user = await _userManager.GetUserAsync(User);
+                var sub = new Subscription
+                {
+                    PostIdSub = postId,
+                    UserIdSub = userId
+                };
+                sub.UserIdSub = user.Id;
+                sub.SubscriptionCount = sub.SubscriptionCount + 1;
+
+
+                _context.Update(sub);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+                /*if (userLike != null)
                 {
                     userLike.Subscription = userLike.Subscription + 1;
 
                     _context.Update(userLike);
-                    _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
-                }
+                }*/
             }
 
             return View();
@@ -343,19 +360,30 @@ namespace Laboratory56.Controllers
 
         #region UnSubscriptionMethod
 
-        public ActionResult UnSubscriptionMethod(string userId, int postId)
+        public async Task<ActionResult> UnSubscriptionMethod(string userId, int postId, Subscription subscription)
         {
-            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+            var subscrab = _context.Subscriptions.FirstOrDefaultAsync(s => s.Id == subscription.Id);
+
+            /*var userLike = _context.Publications
+                .Where(u => u.Subscription != 0)
+                .Include(u => u.Subscriptions)
+                .FirstOrDefault(u => u.Id == postId);*/
+
+            var user = await _userManager.GetUserAsync(User);
+
             if (ModelState.IsValid)
             {
-                if (userLike != null)
+                
+                var sub = new Subscription
                 {
-                    userLike.Subscription = userLike.Subscription - 1;
+                    PostIdSub = postId,
+                    UserIdSub = userId
+                };
+                sub.UserIdSub = user.Id;
 
-                    _context.Update(userLike);
-                    _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
+                _context.Update(sub);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
 
             return View();

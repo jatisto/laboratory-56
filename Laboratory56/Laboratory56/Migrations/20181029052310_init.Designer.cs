@@ -11,9 +11,10 @@ using System;
 namespace Laboratory56.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181029052310_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,6 +115,8 @@ namespace Laboratory56.Migrations
 
                     b.Property<int>("Like");
 
+                    b.Property<int>("Subscription");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
@@ -131,8 +134,6 @@ namespace Laboratory56.Migrations
                     b.Property<int>("PostIdSub");
 
                     b.Property<int?>("PostSubId");
-
-                    b.Property<int>("SubscriptionCount");
 
                     b.Property<string>("UserIdSub");
 
