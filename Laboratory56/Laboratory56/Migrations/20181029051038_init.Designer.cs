@@ -11,7 +11,7 @@ using System;
 namespace Laboratory56.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181027170105_init")]
+    [Migration("20181029051038_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
