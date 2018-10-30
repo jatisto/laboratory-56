@@ -207,6 +207,7 @@ namespace Laboratory56.Controllers
                 ImageUrl = imageUrlContent,
                 Description = publication.Description
             };
+
             return pub;
         }
 
@@ -273,20 +274,6 @@ namespace Laboratory56.Controllers
 
         public ActionResult LikeMethod(string userId, int postId)
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> 558261af83635a367ef93c3229125673a87b0574
-            //            var users = await _userManager.GetUserAsync(User);
-
-=======
->>>>>>> 5bf64463721f994a9938ee5b067dca0ebcbcb701
-<<<<<<< HEAD
->>>>>>> 558261af83635a367ef93c3229125673a87b0574
-=======
->>>>>>> 558261af83635a367ef93c3229125673a87b0574
             var userLike = _context.Publications
                 .Where(l => l.Like == 0)
                 .FirstOrDefault(u => u.Id == postId);
@@ -335,26 +322,37 @@ namespace Laboratory56.Controllers
 
         #region SubscriptionMethod
 
-        public ActionResult SubscriptionMethod(string userId, int postId)
+        public async Task<ActionResult> SubscriptionMethod(string userId)
         {
-            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+            var subTest = _context.Subscriptions
+                .Where(s => s.SubCount != 0)
+                .FirstOrDefault(s => s.SubscribedId != userId);
+
             if (ModelState.IsValid)
             {
-                if (userLike != null)
-                {
-                    userLike.Subscription = userLike.Subscription + 1;
+                var user = await _userManager.GetUserAsync(User);
 
-                    _context.Update(userLike);
-                    _context.SaveChangesAsync();
+                if (subTest == null)
+                {
+                    var sub = new Subscription
+                    {
+                        SubscribedId = userId, // кто подписалься
+                        SubscribersId = user.Id // на кого подписались
+                    };
+                    sub.SubCount = sub.SubCount + 1;
+                    _context.Update(sub);
+                    await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
             }
 
             return View();
         }
+    }
 
-        #endregion
+    #endregion
 
+/*
         #region UnSubscriptionMethod
 
         public ActionResult UnSubscriptionMethod(string userId, int postId)
@@ -375,6 +373,6 @@ namespace Laboratory56.Controllers
             return View();
         }
 
-        #endregion
-    }
+        #endregion*/
 }
+

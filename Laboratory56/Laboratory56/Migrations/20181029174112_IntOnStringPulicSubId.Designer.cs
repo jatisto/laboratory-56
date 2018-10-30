@@ -11,9 +11,10 @@ using System;
 namespace Laboratory56.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181029174112_IntOnStringPulicSubId")]
+    partial class IntOnStringPulicSubId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,9 +115,15 @@ namespace Laboratory56.Migrations
 
                     b.Property<int>("Like");
 
+                    b.Property<string>("PublicSubId");
+
+                    b.Property<int?>("PublicSubSubscriptionId");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PublicSubSubscriptionId");
 
                     b.HasIndex("UserId");
 
@@ -265,6 +272,10 @@ namespace Laboratory56.Migrations
 
             modelBuilder.Entity("Laboratory56.Models.Publication", b =>
                 {
+                    b.HasOne("Laboratory56.Models.Subscription", "PublicSub")
+                        .WithMany()
+                        .HasForeignKey("PublicSubSubscriptionId");
+
                     b.HasOne("Laboratory56.Models.ApplicationUser", "User")
                         .WithMany("PublicationsList")
                         .HasForeignKey("UserId");

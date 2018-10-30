@@ -245,8 +245,6 @@ namespace Laboratory56.Controllers
                     CommentDate = DateTime.Now
                 };
 
-                ViewBag.Comment = comm; 
-
                 comm.UserId = user.Id;
                 _context.Add(comm);
                 await _context.SaveChangesAsync();

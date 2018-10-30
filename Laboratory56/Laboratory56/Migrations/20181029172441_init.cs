@@ -158,6 +158,33 @@ namespace Laboratory56.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Subscriptions",
+                columns: table => new
+                {
+                    SubscriptionId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    SubCount = table.Column<int>(nullable: false),
+                    SubscribedId = table.Column<string>(nullable: true),
+                    SubscribersId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscriptions", x => x.SubscriptionId);
+                    table.ForeignKey(
+                        name: "FK_Subscriptions_AspNetUsers_SubscribedId",
+                        column: x => x.SubscribedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Subscriptions_AspNetUsers_SubscribersId",
+                        column: x => x.SubscribersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Publications",
                 columns: table => new
                 {
@@ -167,12 +194,18 @@ namespace Laboratory56.Migrations
                     Description = table.Column<string>(nullable: true),
                     ImageUrl = table.Column<string>(nullable: true),
                     Like = table.Column<int>(nullable: false),
-                    Subscription = table.Column<int>(nullable: false),
+                    PublicSubId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Publications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Publications_Subscriptions_PublicSubId",
+                        column: x => x.PublicSubId,
+                        principalTable: "Subscriptions",
+                        principalColumn: "SubscriptionId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Publications_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -260,9 +293,24 @@ namespace Laboratory56.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Publications_PublicSubId",
+                table: "Publications",
+                column: "PublicSubId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Publications_UserId",
                 table: "Publications",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subscriptions_SubscribedId",
+                table: "Subscriptions",
+                column: "SubscribedId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subscriptions_SubscribersId",
+                table: "Subscriptions",
+                column: "SubscribersId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -290,6 +338,9 @@ namespace Laboratory56.Migrations
 
             migrationBuilder.DropTable(
                 name: "Publications");
+
+            migrationBuilder.DropTable(
+                name: "Subscriptions");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
