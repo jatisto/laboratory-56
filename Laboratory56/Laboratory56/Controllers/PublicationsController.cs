@@ -322,25 +322,29 @@ namespace Laboratory56.Controllers
 
         #region SubscriptionMethod
 
-        public async Task<ActionResult> SubscriptionMethod(string userId)
+        public async Task<ActionResult> SubscriptionMethod(string userId, int postId, Subscription subscription)
         {
-            var subTest = _context.Subscriptions
-                .Where(s => s.SubCount != 0)
-                .FirstOrDefault(s => s.SubscribedId != userId);
+            var countSub = _context.Publications.FirstOrDefault(c => c.Id == postId);
+
+            var SearchUser = _context.Subscriptions
+                .Where(s => s.SubscribedId != userId); // userId тот кто сделал публикацию
+                
 
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
 
-                if (subTest == null)
+                if (countSub != null)
                 {
                     var sub = new Subscription
                     {
                         SubscribedId = userId, // кто подписалься
-                        SubscribersId = user.Id // на кого подписались
+                        SubscribersId = user.Id, // на кого подписались
+                        SubImageUrl = countSub.ImageUrl
                     };
-                    sub.SubCount = sub.SubCount + 1;
-                    _context.Update(sub);
+                    countSub.SubCount = countSub.SubCount + 1;
+
+                    await _context.AddAsync(sub);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -375,4 +379,3 @@ namespace Laboratory56.Controllers
 
         #endregion*/
 }
-

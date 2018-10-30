@@ -16,7 +16,6 @@ namespace Laboratory56.Models
         public string SubscribedId { get; set; }
         public ApplicationUser Subscribed { get; set; } // Тот кто подписалься
 
-        [Display(Name = "Количество подписчиков!")]
-        public int SubCount { get; set; }
+        public string  SubImageUrl { get; set; }
     }
 }

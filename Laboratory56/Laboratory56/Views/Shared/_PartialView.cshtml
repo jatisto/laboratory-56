@@ -43,6 +43,26 @@
 
 </table>
 
+@*
+@if (Model.CommentsList.Count <= 0)
+{
+    <tr>
+        <td>
+            No Comment
+        </td>
+    </tr>
+}
+else
+{
+    foreach (var item in Model.CommentsList)
+    {
+        <a asp-controller="ApplicationUsers"
+           asp-action="Details"
+           asp-route-id="@item.User.Id">@item.User.Name:</a><p>@item.Content</p>
+    }
+}
+*@
+
 <hr />
 
 @if (Model.CommentsList.Count <= 0)
@@ -81,18 +101,18 @@ else
 <br />
 
 <div id="postdiv-@Model.Id">
- 
+
     <form>
         <input id="LikeId" type="button" value="Like" class="btn btn-default" onclick="sendLike('@Model.UserId', '@Model.Id')"
-               style="color: aliceblue; background-color: darksalmon;"/>
+               style="color: aliceblue; background-color: darksalmon;" />
         <input id="DisLikeId" type="button" value="Dislike" class="btn btn-default" onclick="sendDislike('@Model.UserId', '@Model.Id')"
-               style="color: aliceblue; background-color: darksalmon;"/>
+               style="color: aliceblue; background-color: darksalmon;" />
 
-        <input id="subscribers-@Model.User" type="button" value="Subscribers" class="btn btn-default" onclick="SubScribers('@Model.UserId')"
-               style="color: aliceblue; background-color: cadetblue;"/>
+        <input id="subscribers-@Model.User" type="button" value="Subscribers" class="btn btn-default" onclick="SubScribers('@Model.UserId', '@Model.Id')"
+               style="color: aliceblue; background-color: cadetblue;" />
 
         @*<input id="unsubscribers-@Model.User" type="button" value="UnSubscribers" class="btn btn-default" onclick="UnSubScribers('@Model.UserId', '@Model.Id')"
-               style="color: aliceblue; background-color: cadetblue;"/>*@
+            style="color: aliceblue; background-color: cadetblue;"/>*@
     </form>
 
 </div>
@@ -101,11 +121,11 @@ else
 
 
 <script>
-    function SubScribers(userId) {
+    function SubScribers(userId, postId) {
         $.ajax({
             url: '@Url.Action("SubscriptionMethod", "Publications")',
             type: 'POST',
-            data: { 'userId': userId},
+            data: { 'userId': userId, 'postId': postId},
             success: function(data) {
                 setTimeout(function() {
                         alert('Вы подписались :)', data)},
