@@ -326,22 +326,38 @@ namespace Laboratory56.Controllers
         {
             var countSub = _context.Publications.FirstOrDefault(c => c.Id == postId);
 
+<<<<<<< HEAD
             var searchUser = _context.Subscriptions
                 .FirstOrDefault(s => s.SubscribersId == userId);
+=======
+            
+>>>>>>> 48df3dcaec470f45cf8091f3d40ae95ee352d627
 
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
 
+<<<<<<< HEAD
                 if (searchUser == null)
                 {
                     var sub = new Subscription
                     {
                         SubscribersId = userId, //На кого подписываються
                         SubscribedId = user.Id, // Кто подписалься
+=======
+                var searchUser = _context.Subscriptions// userId тот кто сделал публикацию
+                    .SingleOrDefaultAsync(s => s.SubscribersId != user.Id);
+
+                if (searchUser != null)
+                {
+                    var sub = new Subscription
+                    {
+                        SubscribedId = userId, // кто подписалься
+                        SubscribersId = user.Id, // на кого подписались
+>>>>>>> 48df3dcaec470f45cf8091f3d40ae95ee352d627
                         SubImageUrl = countSub?.ImageUrl
                     };
-                    countSub.SubCount = countSub.SubCount + 1;
+                    if (countSub != null) countSub.SubCount = countSub.SubCount + 1;
 
                     await _context.AddAsync(sub);
                     await _context.SaveChangesAsync();
