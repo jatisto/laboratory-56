@@ -11,8 +11,8 @@ using System;
 namespace Laboratory56.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181030115023_change property")]
-    partial class changeproperty
+    [Migration("20181031033130_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -115,6 +115,8 @@ namespace Laboratory56.Migrations
 
                     b.Property<int>("Like");
 
+                    b.Property<int>("SubCount");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
@@ -129,7 +131,7 @@ namespace Laboratory56.Migrations
                     b.Property<int>("SubscriptionId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("SubCount");
+                    b.Property<string>("SubImageUrl");
 
                     b.Property<string>("SubscribedId");
 

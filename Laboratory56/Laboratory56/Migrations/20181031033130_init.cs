@@ -158,12 +158,36 @@ namespace Laboratory56.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Publications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ComentCount = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    ImageUrl = table.Column<string>(nullable: true),
+                    Like = table.Column<int>(nullable: false),
+                    SubCount = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Publications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Publications_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Subscriptions",
                 columns: table => new
                 {
                     SubscriptionId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    SubCount = table.Column<int>(nullable: false),
+                    SubImageUrl = table.Column<string>(nullable: true),
                     SubscribedId = table.Column<string>(nullable: true),
                     SubscribersId = table.Column<string>(nullable: true)
                 },
@@ -179,36 +203,6 @@ namespace Laboratory56.Migrations
                     table.ForeignKey(
                         name: "FK_Subscriptions_AspNetUsers_SubscribersId",
                         column: x => x.SubscribersId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Publications",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ComentCount = table.Column<int>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    ImageUrl = table.Column<string>(nullable: true),
-                    Like = table.Column<int>(nullable: false),
-                    PublicSubId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Publications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Publications_Subscriptions_PublicSubId",
-                        column: x => x.PublicSubId,
-                        principalTable: "Subscriptions",
-                        principalColumn: "SubscriptionId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Publications_AspNetUsers_UserId",
-                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -293,11 +287,6 @@ namespace Laboratory56.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Publications_PublicSubId",
-                table: "Publications",
-                column: "PublicSubId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Publications_UserId",
                 table: "Publications",
                 column: "UserId");
@@ -334,13 +323,13 @@ namespace Laboratory56.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "Subscriptions");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Publications");
-
-            migrationBuilder.DropTable(
-                name: "Subscriptions");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
