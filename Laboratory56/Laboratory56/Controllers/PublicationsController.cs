@@ -326,38 +326,22 @@ namespace Laboratory56.Controllers
         {
             var countSub = _context.Publications.FirstOrDefault(c => c.Id == postId);
 
-<<<<<<< HEAD
             var searchUser = _context.Subscriptions
                 .FirstOrDefault(s => s.SubscribersId == userId);
-=======
-            
->>>>>>> 48df3dcaec470f45cf8091f3d40ae95ee352d627
 
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
 
-<<<<<<< HEAD
                 if (searchUser == null)
                 {
                     var sub = new Subscription
                     {
                         SubscribersId = userId, //На кого подписываються
                         SubscribedId = user.Id, // Кто подписалься
-=======
-                var searchUser = _context.Subscriptions// userId тот кто сделал публикацию
-                    .SingleOrDefaultAsync(s => s.SubscribersId != user.Id);
-
-                if (searchUser != null)
-                {
-                    var sub = new Subscription
-                    {
-                        SubscribedId = userId, // кто подписалься
-                        SubscribersId = user.Id, // на кого подписались
->>>>>>> 48df3dcaec470f45cf8091f3d40ae95ee352d627
                         SubImageUrl = countSub?.ImageUrl
                     };
-                    if (countSub != null) countSub.SubCount = countSub.SubCount + 1;
+                    countSub.SubCount = countSub.SubCount + 1;
 
                     await _context.AddAsync(sub);
                     await _context.SaveChangesAsync();
@@ -367,30 +351,30 @@ namespace Laboratory56.Controllers
 
             return View();
         }
-    }
 
-    #endregion
+        #endregion
 
-/*
-        #region UnSubscriptionMethod
+        /*
+                #region UnSubscriptionMethod
 
-        public ActionResult UnSubscriptionMethod(string userId, int postId)
-        {
-            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
-            if (ModelState.IsValid)
-            {
-                if (userLike != null)
+                public ActionResult UnSubscriptionMethod(string userId, int postId)
                 {
-                    userLike.Subscription = userLike.Subscription - 1;
+                    var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+                    if (ModelState.IsValid)
+                    {
+                        if (userLike != null)
+                        {
+                            userLike.Subscription = userLike.Subscription - 1;
 
-                    _context.Update(userLike);
-                    _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                            _context.Update(userLike);
+                            _context.SaveChangesAsync();
+                            return RedirectToAction(nameof(Index));
+                        }
+                    }
+
+                    return View();
                 }
-            }
 
-            return View();
-        }
-
-        #endregion*/
+                #endregion*/
+    }
 }
