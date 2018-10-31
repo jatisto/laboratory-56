@@ -322,25 +322,24 @@ namespace Laboratory56.Controllers
 
         #region SubscriptionMethod
 
-        public async Task<ActionResult> SubscriptionMethod(string userId, int postId, Subscription subscription)
+        public async Task<ActionResult> SubscriptionMethod(string userId, int postId)
         {
             var countSub = _context.Publications.FirstOrDefault(c => c.Id == postId);
 
-            var SearchUser = _context.Subscriptions
-                .Where(s => s.SubscribedId != userId); // userId тот кто сделал публикацию
-                
+            var searchUser = _context.Subscriptions
+                .FirstOrDefault(s => s.SubscribersId == userId);
 
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
 
-                if (countSub != null)
+                if (searchUser == null)
                 {
                     var sub = new Subscription
                     {
-                        SubscribedId = userId, // кто подписалься
-                        SubscribersId = user.Id, // на кого подписались
-                        SubImageUrl = countSub.ImageUrl
+                        SubscribersId = userId, //На кого подписываються
+                        SubscribedId = user.Id, // Кто подписалься
+                        SubImageUrl = countSub?.ImageUrl
                     };
                     countSub.SubCount = countSub.SubCount + 1;
 
