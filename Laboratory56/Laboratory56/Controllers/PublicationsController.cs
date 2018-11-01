@@ -207,6 +207,7 @@ namespace Laboratory56.Controllers
                 ImageUrl = imageUrlContent,
                 Description = publication.Description
             };
+
             return pub;
         }
 
@@ -321,74 +322,101 @@ namespace Laboratory56.Controllers
 
         #region SubscriptionMethod
 
-        public async Task<ActionResult> SubscriptionMethod(string userId, int postId, Subscription subscription)
+        #region AsyncMethod
+
+        /*public async Task<ActionResult> SubscriptionMethod(string userId, int postId)
         {
-//            var user = _userManager.GetUserAsync(User);
-            /*var userLike = _context.Publications
-                .Where(u => u.Subscription == 0)
-                .FirstOrDefault(u => u.Id == postId);*/
+            var countSub = _context.Publications.FirstOrDefault(c => c.Id == postId);
+
+            var searchUser = _context.Subscriptions
+                .FirstOrDefault(s => s.SubscribersId == userId);
 
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
-                var sub = new Subscription
+
+                if (searchUser == null)
                 {
-                    PostIdSub = postId,
-                    UserIdSub = userId
-                };
-                sub.UserIdSub = user.Id;
-                sub.SubscriptionCount = sub.SubscriptionCount + 1;
+                    var sub = new Subscription
+                    {
+                        SubscribersId = userId, //На кого подписываються
+                        SubscribedId = user.Id, // Кто подписалься
+                        SubImageUrl = countSub?.ImageUrl
+                    };
+                    countSub.SubCount = countSub.SubCount + 1;
 
-
-                _context.Update(sub);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-                /*if (userLike != null)
-                {
-                    userLike.Subscription = userLike.Subscription + 1;
-
-                    _context.Update(userLike);
+                    await _context.AddAsync(sub);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
-                }*/
+                }
             }
 
             return View();
-        }
+        }*/
 
         #endregion
 
-        #region UnSubscriptionMethod
 
-        public async Task<ActionResult> UnSubscriptionMethod(string userId, int postId, Subscription subscription)
+
+        #region No Async
+
+        public ActionResult SubscriptionMethod(string userId, int postId)
         {
-            var subscrab = _context.Subscriptions.FirstOrDefaultAsync(s => s.Id == subscription.Id);
+            var countSub = _context.Publications.FirstOrDefault(c => c.Id == postId);
 
-            /*var userLike = _context.Publications
-                .Where(u => u.Subscription != 0)
-                .Include(u => u.Subscriptions)
-                .FirstOrDefault(u => u.Id == postId);*/
-
-            var user = await _userManager.GetUserAsync(User);
+            
 
             if (ModelState.IsValid)
             {
-                
-                var sub = new Subscription
-                {
-                    PostIdSub = postId,
-                    UserIdSub = userId
-                };
-                sub.UserIdSub = user.Id;
+                var user = _userManager.GetUserId(User);
+                var searchUser = _context.Subscriptions
+                    .FirstOrDefault(s => s.SubscribersId == userId && s.SubscribedId == user);
 
-                _context.Update(sub);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (searchUser == null)
+                {
+                    var sub = new Subscription
+                    {
+                        SubscribersId = userId, //На кого подписываються
+                        SubscribedId = user, // Кто подписалься
+                        SubImageUrl = countSub?.ImageUrl
+                    };
+                    countSub.SubCount = countSub.SubCount + 1;
+
+                    _context.Add(sub);
+                    _context.Update(countSub);
+                    _context.SaveChanges();
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
             return View();
         }
 
         #endregion
+
+        #endregion
+
+        /*
+                #region UnSubscriptionMethod
+
+                public ActionResult UnSubscriptionMethod(string userId, int postId)
+                {
+                    var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+                    if (ModelState.IsValid)
+                    {
+                        if (userLike != null)
+                        {
+                            userLike.Subscription = userLike.Subscription - 1;
+
+                            _context.Update(userLike);
+                            _context.SaveChangesAsync();
+                            return RedirectToAction(nameof(Index));
+                        }
+                    }
+
+                    return View();
+                }
+
+                #endregion*/
     }
 }

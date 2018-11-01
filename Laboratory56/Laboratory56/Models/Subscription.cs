@@ -8,14 +8,14 @@ namespace Laboratory56.Models
 {
     public class Subscription
     {
-        public int Id { get; set; }
+        [Key] public int SubscriptionId { get; set; }
 
-        public string UserIdSub { get; set; }
-        public ApplicationUser UserSub { get; set; }
+        public string SubscribersId { get; set; }
+        public ApplicationUser Subscribers { get; set; } // тот на кого подписались
 
-        public int PostIdSub { get; set; }
-        public Publication PostSub { get; set; }
+        public string SubscribedId { get; set; }
+        public ApplicationUser Subscribed { get; set; } // Тот кто подписалься
 
-        [Display(Name = "Подписка!")] public int SubscriptionCount { get; set; }
+        public string  SubImageUrl { get; set; }
     }
 }
