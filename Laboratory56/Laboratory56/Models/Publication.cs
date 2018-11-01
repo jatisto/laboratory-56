@@ -28,7 +28,7 @@ namespace Laboratory56.Models
         public int SubCount { get; set; }
 
         public List<Comment> CommentsList { get; set; }
-//        public List<Subscription> SubscriptionsList { get; set; }
+        public List<Subscription> SubscriptionsList { get; set; }
 
     }
 }

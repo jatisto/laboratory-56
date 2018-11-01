@@ -328,43 +328,42 @@ namespace Laboratory56.Controllers
         {
             var countSub = _context.Publications.FirstOrDefault(c => c.Id == postId);
 
-            var searchUser = _context.Subscriptions
-                .FirstOrDefault(s => s.SubscribersId == userId);
-
             if (ModelState.IsValid)
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = _userManager.GetUserId(User);
+                var searchUser = _context.Subscriptions
+                    .FirstOrDefault(s => s.SubscribersId == userId && s.SubscribedId == user);
 
                 if (searchUser == null)
                 {
                     var sub = new Subscription
                     {
                         SubscribersId = userId, //На кого подписываються
-                        SubscribedId = user.Id, // Кто подписалься
+                        SubscribedId = user, // Кто подписалься
                         SubImageUrl = countSub?.ImageUrl
                     };
-                    countSub.SubCount = countSub.SubCount + 1;
+                    if (countSub != null)
+                    {
+                        countSub.SubCount = countSub.SubCount + 1;
 
-                    await _context.AddAsync(sub);
-                    await _context.SaveChangesAsync();
+                       await _context.Add(sub);
+                       await _context.UpdateAsync(countSub);
+                    }
+
+                    _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-            }
 
             return View();
         }*/
 
         #endregion
 
-
-
         #region No Async
 
         public ActionResult SubscriptionMethod(string userId, int postId)
         {
             var countSub = _context.Publications.FirstOrDefault(c => c.Id == postId);
-
-            
 
             if (ModelState.IsValid)
             {
@@ -380,10 +379,14 @@ namespace Laboratory56.Controllers
                         SubscribedId = user, // Кто подписалься
                         SubImageUrl = countSub?.ImageUrl
                     };
-                    countSub.SubCount = countSub.SubCount + 1;
+                    if (countSub != null)
+                    {
+                        countSub.SubCount = countSub.SubCount + 1;
 
-                    _context.Add(sub);
-                    _context.Update(countSub);
+                        _context.Add(sub);
+                        _context.Update(countSub);
+                    }
+
                     _context.SaveChanges();
                     return RedirectToAction(nameof(Index));
                 }
@@ -396,9 +399,9 @@ namespace Laboratory56.Controllers
 
         #endregion
 
-        /*
-                #region UnSubscriptionMethod
+        #region UnSubscriptionMethod
 
+        /*
                 public ActionResult UnSubscriptionMethod(string userId, int postId)
                 {
                     var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
@@ -416,7 +419,8 @@ namespace Laboratory56.Controllers
 
                     return View();
                 }
+                */
 
-                #endregion*/
+        #endregion
     }
 }
