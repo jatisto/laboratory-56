@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Laboratory56.Data;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Laboratory56.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace Laboratory56.Controllers
 {
@@ -15,17 +17,23 @@ namespace Laboratory56.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IStringLocalizer _localizer;
 
         public HomeController(
             ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IStringLocalizer localizer)
         {
             _context = context;
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
         {
+            ViewData["Title"] = _localizer["Header"];
+            ViewData["Message"] = _localizer["Message"];
+
             var user = await _userManager.GetUserAsync(User);
 
             if (user != null)
@@ -119,6 +127,20 @@ namespace Laboratory56.Controllers
                 .Where(u => u.Id == id).ToList();
 
             return View(userInfo);
+        }
+
+        #endregion
+
+        #region Culture
+
+        public string GetCulture(string code = "")
+        {
+            if (!String.IsNullOrEmpty(code))
+            {
+                CultureInfo.CurrentCulture = new CultureInfo(code);
+                CultureInfo.CurrentUICulture = new CultureInfo(code);
+            }
+            return $"CurrentCulture:{CultureInfo.CurrentCulture.Name}, CurrentUICulture:{CultureInfo.CurrentUICulture.Name}";
         }
 
         #endregion

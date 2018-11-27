@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<Laboratory56.Models.Publication>
 @{
-    ViewData["Title"] = "Home Page";
+//    ViewData["Title"] = "Home Page";
+    <h1>@ViewData["Title"]</h1>
+    <h3>@ViewData["Message"]</h3>
 }
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
@@ -106,6 +108,7 @@
     </div>
 </div>
 <a asp-area="" asp-controller="Publications" asp-action="Create"><h4>Создать пост</h4></a>
+
 
 @foreach (var item in Model)
 {

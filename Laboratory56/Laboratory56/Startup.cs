@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Laboratory56.Data;
 using Laboratory56.Models;
 using Laboratory56.Services;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
 
 namespace Laboratory56
 {
@@ -43,6 +46,7 @@ namespace Laboratory56
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<FileUploadService>();
+            services.AddTransient<IStringLocalizer, CustomStringLocalizer>();
 
             services.AddMvc();
         }
@@ -60,6 +64,38 @@ namespace Laboratory56
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en"),
+                new CultureInfo("ru"),
+                new CultureInfo("de")
+            };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("ru"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
+
+            /*var supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("en-GB"),
+                new CultureInfo("en"),
+                new CultureInfo("ru-RU"),
+                new CultureInfo("ru"),
+                new CultureInfo("de-DE"),
+                new CultureInfo("de")
+            };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("ru-RU"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });*/
+
+            //            app.UseCulture();
 
             app.UseStaticFiles();
 
