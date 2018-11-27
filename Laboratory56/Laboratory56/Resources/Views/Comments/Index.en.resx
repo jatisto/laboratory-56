@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Back_to_List" xml:space="preserve">
+    <value>Back_to_List</value>
+  </data>
   <data name="Create" xml:space="preserve">
     <value>Create</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="Like" xml:space="preserve">
-    <value>Like it</value>
+    <value>Like it!</value>
   </data>
   <data name="Изображение" xml:space="preserve">
     <value>Image</value>
@@ -129,8 +141,14 @@
   <data name="Имя" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="Комментарии" xml:space="preserve">
+    <value>Comment</value>
+  </data>
   <data name="Комментарий2" xml:space="preserve">
     <value>Add Comment</value>
+  </data>
+  <data name="Нравиться" xml:space="preserve">
+    <value>Like it!</value>
   </data>
   <data name="Описание" xml:space="preserve">
     <value>Description</value>
@@ -138,7 +156,10 @@
   <data name="Отправить" xml:space="preserve">
     <value>Send</value>
   </data>
+  <data name="Подписчики" xml:space="preserve">
+    <value>Subscription</value>
+  </data>
   <data name="Публикации" xml:space="preserve">
-    <value>Publish</value>
+    <value>All Publications</value>
   </data>
 </root>

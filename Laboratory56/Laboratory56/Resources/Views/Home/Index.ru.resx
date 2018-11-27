@@ -117,10 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Application_uses" xml:space="preserve">
+    <value>&lt;h3&gt;Польза преминения&lt;/h3&gt;</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Создать пост</value>
+  </data>
   <data name="Header" xml:space="preserve">
     <value>Добро пожаловать  из resx</value>
   </data>
+  <data name="How_to" xml:space="preserve">
+    <value>&lt;h3&gt;Как это делаеться&lt;/h3&gt;</value>
+  </data>
   <data name="Message" xml:space="preserve">
     <value>Привет Мир!</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Перейти на следующую</value>
+  </data>
+  <data name="Overview" xml:space="preserve">
+    <value>&lt;h3&gt;Общее представление&lt;/h3&gt;</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Перейти на предыдущую</value>
+  </data>
+  <data name="Run_Deploy" xml:space="preserve">
+    <value>&lt;h3&gt;Запуск и развёртывание&lt;/h3&gt;</value>
   </data>
 </root>

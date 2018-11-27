@@ -1,69 +1,71 @@
 ﻿@model Laboratory56.Models.Publication
-
+@inject IViewLocalizer Localizer
 <table class="table table-bordered">
     <thead>
-        <tr>
-            <th>
-                Изображение
-            </th>
-            <th>
-                Имя
-            </th>
-            <th>
-                Описание
-            </th>
-            <th>
-                Нравиться
-            </th>
+    <tr>
+        <th>
+            @Localizer["Изображение"]
+        </th>
+        <th>
+            @Localizer["Имя"]
+        </th>
+        <th>
+            @Localizer["Описание"]
+        </th>
+        <th>
+            @Localizer["Like"]
+        </th>
 
-        </tr>
+    </tr>
+
+    
     </thead>
 
     <tbody>
-        <tr>
-            <td>
-                <a href="#" data-toggle="popover" data-trigger="hover" id="@Model.Id">
-                    <img src="~/@Model.ImageUrl" width="700" height="450" />
-                </a>
-            </td>
-            <td>
+    <tr>
+        <td>
+            <a href="#" data-toggle="popover" data-trigger="hover" id="@Model.Id">
+                <img src="~/@Model.ImageUrl" width="700" height="450"/>
+            </a>
+        </td>
+        <td>
 
-                <a asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@Model.User.Id" data-toggle="popover" data-trigger="hover" id="@Model.Id">@Model.User.Name</a>
-                @* <a href="#" data-toggle="popover" data-trigger="hover" id="@Model.Id">@Model.User.Name</a> *@
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.Like)
-            </td>
-        </tr>
+            <a asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@Model.User.Id" data-toggle="popover" data-trigger="hover" id="@Model.Id">@Model.User.Name</a>
+            @* <a href="#" data-toggle="popover" data-trigger="hover" id="@Model.Id">@Model.User.Name</a> *@
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.Like)
+        </td>
+    </tr>
 
     </tbody>
 
 </table>
 
 @*
-@if (Model.CommentsList.Count <= 0)
-{
-    <tr>
-        <td>
-            No Comment
-        </td>
-    </tr>
-}
-else
-{
-    foreach (var item in Model.CommentsList)
+    @if (Model.CommentsList.Count <= 0)
     {
-        <a asp-controller="ApplicationUsers"
-           asp-action="Details"
-           asp-route-id="@item.User.Id">@item.User.Name:</a><p>@item.Content</p>
+        <tr>
+            <td>
+                No Comment
+            </td>
+        </tr>
     }
-}
+    else
+    {
+        foreach (var item in Model.CommentsList)
+        {
+            <a asp-controller="ApplicationUsers"
+               asp-action="Details"
+               asp-route-id="@item.User.Id">@item.User.Name:</a><p>@item.Content</p>
+        }
+    }
 *@
 
-<hr />
+<hr/>
 
 @if (Model.CommentsList.Count <= 0)
 {
@@ -79,45 +81,47 @@ else
     {
         <a asp-controller="ApplicationUsers"
            asp-action="Details"
-           asp-route-id="@item.User.Id">@item.User.Name:</a><p>@item.Content</p>
+           asp-route-id="@item.User.Id">
+            @item.User.Name:
+        </a>
+        <p>@item.Content</p>
     }
 }
-
 
 
 <table>
     <tbody>
-        <div class="row">
-            <div class="col-lg-12">
-                <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer; color: darkslategray;">Оставить комментарий</a>
-            </div>
-            <div class="col-md-12" id="postdiv-@Model.Id" style="display: none; color: darkslategray;">
-                <textarea id="posttext-@Model.Id"></textarea> <br />
-                <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.UserId')" value="Отправить" />
-            </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer; color: darkslategray;">@Localizer["Оставить_комментарий"]</a>
         </div>
+        <div class="col-md-12" id="postdiv-@Model.Id" style="display: none; color: darkslategray;">
+            <textarea id="posttext-@Model.Id"></textarea> <br/>
+            <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.UserId')" value=@Localizer["Отправить"]/>
+        </div>
+    </div>
     </tbody>
 </table>
-<br />
+<br/>
 
 <div id="postdiv-@Model.Id">
 
     <form>
         <input id="LikeId" type="button" value="Like" class="btn btn-default" onclick="sendLike('@Model.UserId', '@Model.Id')"
-               style="color: aliceblue; background-color: darksalmon;" />
+               style="color: aliceblue; background-color: darksalmon;"/>
         <input id="DisLikeId" type="button" value="Dislike" class="btn btn-default" onclick="sendDislike('@Model.UserId', '@Model.Id')"
-               style="color: aliceblue; background-color: darksalmon;" />
+               style="color: aliceblue; background-color: darksalmon;"/>
 
         <input id="subscribers-@Model.User" type="button" value="Subscribers" class="btn btn-default" onclick="SubScribers('@Model.UserId', '@Model.Id')"
-               style="color: aliceblue; background-color: cadetblue;" />
+               style="color: aliceblue; background-color: cadetblue;"/>
 
         @*<input id="unsubscribers-@Model.User" type="button" value="UnSubscribers" class="btn btn-default" onclick="UnSubScribers('@Model.UserId', '@Model.Id')"
             style="color: aliceblue; background-color: cadetblue;"/>*@
     </form>
 
 </div>
-<hr />
-<br />
+<hr/>
+<br/>
 
 
 <script>
@@ -125,10 +129,11 @@ else
         $.ajax({
             url: '@Url.Action("SubscriptionMethod", "Publications")',
             type: 'POST',
-            data: { 'userId': userId, 'postId': postId},
+            data: { 'userId': userId, 'postId': postId },
             success: function(data) {
                 setTimeout(function() {
-                        alert('Вы подписались :)', data)},
+                        alert('Вы подписались :)', data)
+                    },
                     100);
             },
             error: function() {
@@ -161,7 +166,8 @@ else
             data: { 'postId': postId, 'userId': userId },
             success: function(data) {
                 setTimeout(function() {
-                        alert('Вы поставили Like!', data)},
+                        alert('Вы поставили Like!', data)
+                    },
                     100);
             },
             error: function() {
@@ -177,7 +183,8 @@ else
             data: { 'postId': postId, 'userId': userId },
             success: function(data) {
                 setTimeout(function() {
-                        alert('Вы поставили Disike!', data)},
+                        alert('Вы поставили Disike!', data)
+                    },
                     100);
             },
             error: function() {

@@ -2,11 +2,11 @@
 
 @model IEnumerable<Laboratory56.Models.Publication>
 @{
-    //    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home Page";
     @*<h1>@ViewData["Title"]</h1>
-    <h3>@ViewData["Message"]</h3>*@
+    <h3>@ViewData["Message"]</h3>*@@*
     <h1>@Localizer["Header"]</h1>
-    <h3>@Localizer["Message"]</h3>
+    <h3>@Localizer["Message"]</h3>*@
 }
 
 
@@ -67,24 +67,24 @@
     </div>
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
+        <span class="sr-only">@Localizer["Previous"]</span>
     </a>
     <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
+        <span class="sr-only">@Localizer["Next"]</span>
     </a>
 </div>
 
 <div class="row">
     <div class="col-md-3">
-        <h2>Application uses</h2>
+        @Localizer["Application_uses"]
         <ul>
             <li>Sample pages using ASP.NET Core MVC</li>
             <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
         </ul>
     </div>
     <div class="col-md-3">
-        <h2>How to</h2>
+        @Localizer["How_to"]
         <ul>
             <li>
                 <a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a>
@@ -104,7 +104,7 @@
         </ul>
     </div>
     <div class="col-md-3">
-        <h2>Overview</h2>
+        @Localizer["Overview"]
         <ul>
             <li>
                 <a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a>
@@ -130,7 +130,7 @@
         </ul>
     </div>
     <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
+        @Localizer["Run_Deploy"]
         <ul>
             <li>
                 <a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a>
@@ -145,7 +145,7 @@
     </div>
 </div>
 <a asp-area="" asp-controller="Publications" asp-action="Create">
-    <h4>Создать пост</h4>
+    <h4>@Localizer["Create"]</h4>
 </a>
 
 

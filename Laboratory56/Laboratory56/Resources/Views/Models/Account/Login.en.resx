@@ -117,28 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Create" xml:space="preserve">
-    <value>Create</value>
+  <data name="Log" xml:space="preserve">
+    <value>Log in</value>
   </data>
-  <data name="Like" xml:space="preserve">
-    <value>Like it</value>
+  <data name="Register" xml:space="preserve">
+    <value>Register as a new user?</value>
   </data>
-  <data name="Изображение" xml:space="preserve">
-    <value>Image</value>
+  <data name="Remember" xml:space="preserve">
+    <value>Remember me?</value>
   </data>
   <data name="Имя" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="Комментарий2" xml:space="preserve">
-    <value>Add Comment</value>
+  <data name="Пароль" xml:space="preserve">
+    <value>Password</value>
   </data>
-  <data name="Описание" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Отправить" xml:space="preserve">
-    <value>Send</value>
-  </data>
-  <data name="Публикации" xml:space="preserve">
-    <value>Publish</value>
+  <data name="Почта" xml:space="preserve">
+    <value>Email</value>
   </data>
 </root>

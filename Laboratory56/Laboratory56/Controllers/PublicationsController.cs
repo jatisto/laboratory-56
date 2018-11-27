@@ -56,7 +56,7 @@ namespace Laboratory56.Controllers
                     .OrderByDescending(s => s.Id)
                     .ToListAsync();
 
-                return View(_localizer[sort.ToString()]);
+                return View(sort);
             }
             else
             {

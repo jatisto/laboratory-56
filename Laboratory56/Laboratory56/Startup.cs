@@ -14,6 +14,7 @@ using Laboratory56.Models;
 using Laboratory56.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 
 namespace Laboratory56
 {
@@ -52,8 +53,21 @@ namespace Laboratory56
 
             services.AddMvc()
                 .AddDataAnnotationsLocalization()
-                .AddViewLocalization();// добавляем локализацию представлений
+                .AddViewLocalization(); // добавляем локализацию представлений
             //services.AddMvc();; 
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en"),
+                    new CultureInfo("ru")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture("ru");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,7 +84,10 @@ namespace Laboratory56
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            var supportedCultures = new[]
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
+
+            /*var supportedCultures = new[]
             {
                 new CultureInfo("en"),
                 new CultureInfo("de"),
@@ -81,7 +98,7 @@ namespace Laboratory56
                 DefaultRequestCulture = new RequestCulture("de"),
                 SupportedCultures = supportedCultures,
                 SupportedUICultures = supportedCultures
-            });
+            });*/
 
             /*var supportedCultures = new[]
             {
