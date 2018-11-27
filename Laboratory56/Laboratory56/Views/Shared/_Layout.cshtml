@@ -1,9 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@inject IViewLocalizer Localizer
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Laboratory56</title>
+
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -26,15 +28,45 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Laboratory56</a>
-                
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">@Localizer["Laboratory56"]</a>
+
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Publications" asp-action="Index">Мои публикации</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Searching">Поиск</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="UsersList">Все пользователи</a></li>
-                    <li><a asp-area="" asp-controller="Comments" asp-action="Index">Мои комментарии</a></li>
+                    @*<li><a asp-area="" asp-controller="Publications" asp-action="Index">Мои публикации</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Searching">Поиск</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="UsersList">Все пользователи</a></li>
+                        <li><a asp-area="" asp-controller="Comments" asp-action="Index">Мои комментарии</a></li>*@
+
+                    <li>
+                        <a asp-area="" asp-controller="Publications" asp-action="Index">@Localizer["Публикации"]</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Searching"> @Localizer["Поиск"]</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="UsersList"> @Localizer["Пользователи"]</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Comments" asp-action="Index"> @Localizer["Комментарии"]</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="GetCulture"> @Localizer["GetCulture"]</a>
+                    </li>
+
+                    @*<li>
+                            <a href="/Publications/Index?culture=en">EN</a>
+                        </li>
+                        <li>
+                            <a href="/Publications/Index?culture=ru">RU</a>
+                        </li>*@
+                    @*
+                        <li>@Html.ActionLink(Laboratory56.Resources.HomeResurce.Мои_публикации, "Index", "Publications")</li>
+                        <li>@Html.ActionLink(Laboratory56.Resources.HomeResurce.Поиск, "Searching", "Home")</li>
+                        <li>@Html.ActionLink(Laboratory56.Resources.HomeResurce.Все_пользователи, "UsersList", "Home")</li>
+                        <li>@Html.ActionLink(Laboratory56.Resources.HomeResurce.Мои_комментарии, "Index", "Comments")</li>*@
+
+
 
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
@@ -43,9 +75,12 @@
     </nav>
     <div class="container body-content">
 
+        <div>
+            @await Html.PartialAsync("_SelectLanguagePartial") <br/> <hr/>
+        </div>
         @RenderBody()
         <hr />
-        
+
         <footer>
             <p>&copy; 2018 - Laboratory56</p>
         </footer>

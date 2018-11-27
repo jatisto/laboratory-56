@@ -1,25 +1,24 @@
 ﻿@model Laboratory56.Models.Publication
-
+@inject IViewLocalizer Localizer
 <table class="table table-bordered">
     <thead>
     <tr>
         <th>
-            Изображение
+            @Localizer["Изображение"]
         </th>
         <th>
-            Имя
+            @Localizer["Имя"]
         </th>
         <th>
-            Описание
+            @Localizer["Описание"]
         </th>
         <th>
-            Нравиться
+            @Localizer["Like"]
         </th>
-        <th>
-            Подписки
-        </th>
-   
+
     </tr>
+
+    
     </thead>
 
     <tbody>
@@ -40,51 +39,89 @@
         <td>
             @Html.DisplayFor(modelItem => Model.Like)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => Model.Subscription)
-        </td>
     </tr>
 
     </tbody>
 
 </table>
 
-@*@foreach (var item in ViewBag.Comment) 
+@*
+    @if (Model.CommentsList.Count <= 0)
+    {
+        <tr>
+            <td>
+                No Comment
+            </td>
+        </tr>
+    }
+    else
+    {
+        foreach (var item in Model.CommentsList)
+        {
+            <a asp-controller="ApplicationUsers"
+               asp-action="Details"
+               asp-route-id="@item.User.Id">@item.User.Name:</a><p>@item.Content</p>
+        }
+    }
+*@
+
+<hr/>
+
+@if (Model.CommentsList.Count <= 0)
 {
-    <p >@item</p>  
-}*@
+    <tr>
+        <td>
+            No Comment
+        </td>
+    </tr>
+}
+else
+{
+    foreach (var item in Model.CommentsList)
+    {
+        <a asp-controller="ApplicationUsers"
+           asp-action="Details"
+           asp-route-id="@item.User.Id">
+            @item.User.Name:
+        </a>
+        <p>@item.Content</p>
+    }
+}
+
 
 <table>
     <tbody>
     <div class="row">
         <div class="col-lg-12">
-            <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer; color: darkslategray;">Оставить комментарий</a>
+            <a onclick="openCommentForm(@Model.Id)" style="cursor: pointer; color: darkslategray;">@Localizer["Оставить_комментарий"]</a>
         </div>
         <div class="col-md-12" id="postdiv-@Model.Id" style="display: none; color: darkslategray;">
             <textarea id="posttext-@Model.Id"></textarea> <br/>
-            <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.UserId')" value="Отправить"/>
+            <input type="button" id="postComment" onclick="sendComment('@Model.Id', '@Model.UserId')" value=@Localizer["Отправить"]/>
         </div>
     </div>
     </tbody>
 </table>
-
 <br/>
+
 <div id="postdiv-@Model.Id">
+
     <form>
         <input id="LikeId" type="button" value="Like" class="btn btn-default" onclick="sendLike('@Model.UserId', '@Model.Id')"
                style="color: aliceblue; background-color: darksalmon;"/>
         <input id="DisLikeId" type="button" value="Dislike" class="btn btn-default" onclick="sendDislike('@Model.UserId', '@Model.Id')"
                style="color: aliceblue; background-color: darksalmon;"/>
+
         <input id="subscribers-@Model.User" type="button" value="Subscribers" class="btn btn-default" onclick="SubScribers('@Model.UserId', '@Model.Id')"
                style="color: aliceblue; background-color: cadetblue;"/>
-        <input id="unsubscribers-@Model.User" type="button" value="UnSubscribers" class="btn btn-default" onclick="UnSubScribers('@Model.UserId', '@Model.Id')"
-               style="color: aliceblue; background-color: cadetblue;"/>
+
+        @*<input id="unsubscribers-@Model.User" type="button" value="UnSubscribers" class="btn btn-default" onclick="UnSubScribers('@Model.UserId', '@Model.Id')"
+            style="color: aliceblue; background-color: cadetblue;"/>*@
     </form>
 
 </div>
-<br/>
 <hr/>
-
+<br/>
 
 
 <script>
@@ -92,21 +129,19 @@
         $.ajax({
             url: '@Url.Action("SubscriptionMethod", "Publications")',
             type: 'POST',
-            data: { 'postId': postId, 'userId': userId },
+            data: { 'userId': userId, 'postId': postId },
             success: function(data) {
                 setTimeout(function() {
                         alert('Вы подписались :)', data)
                     },
-                    500);
+                    100);
             },
             error: function() {
                 console.log('Ошибка во время отправки комментария', this);
             }
         });
     }
-</script>
 
-<script>
     function UnSubScribers(userId, postId) {
         $.ajax({
             url: '@Url.Action("UnSubscriptionMethod", "Publications")',
@@ -116,16 +151,14 @@
                 setTimeout(function() {
                         alert('Вы отписались :(', data)
                     },
-                    500);
+                    100);
             },
             error: function() {
                 console.log('Ошибка во время отправки комментария', this);
             }
         });
     }
-</script>
 
-<script>
     function sendLike(userId, postId) {
         $.ajax({
             url: '@Url.Action("LikeMethod", "Publications")',
@@ -135,16 +168,14 @@
                 setTimeout(function() {
                         alert('Вы поставили Like!', data)
                     },
-                    500);
+                    100);
             },
             error: function() {
                 console.log('Ошибка во время отправки комментария', this);
             }
         });
     }
-</script>
 
-<script>
     function sendDislike(userId, postId) {
         $.ajax({
             url: '@Url.Action("DisLikeMethod", "Publications")',
@@ -154,16 +185,15 @@
                 setTimeout(function() {
                         alert('Вы поставили Disike!', data)
                     },
-                    500);
+                    100);
             },
             error: function() {
                 console.log('Ошибка во время отправки комментария', this);
             }
         });
     }
-</script>
 
-<script>
+
     function openCommentForm(postId) {
         $('#postdiv-' + postId).show();
     }
@@ -178,7 +208,7 @@
                         alert('Ваш комментарий ' + '(' + $('#posttext-' + postId).val() + ')' + ' добавлен!!!',
                             data)
                     },
-                    500);
+                    100);
             },
             error: function() {
                 console.log('Ошибка во время отправки комментария', this);

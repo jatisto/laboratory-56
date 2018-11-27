@@ -1,28 +1,26 @@
-﻿@model IEnumerable<Laboratory56.Models.Publication>
+﻿@inject IViewLocalizer Localizer
+@model IEnumerable<Laboratory56.Models.Publication>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Все публикации</h2>
-<a asp-area="" asp-controller="Publications" asp-action="Create"><h4>Создать пост</h4></a>
+<h2>@Localizer["Публикации"]</h2>
+<a asp-area="" asp-controller="Publications" asp-action="Create"><h4>@Localizer["Create"]</h4></a>
 <table class="table" width="350">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
+                @Localizer[@Html.DisplayNameFor(model => model.ImageUrl)]
             </th>
             <th>
-                Имя
+                @Localizer["Имя"]
             </th>
             <th>
-                Описание
+                @Localizer["Описание"]
             </th>
             <th>
-                Like
-            </th>
-            <th>
-                Подписки
+                @Localizer["Like"]
             </th>
             <th></th>
         </tr>
@@ -35,34 +33,50 @@
                     <img src="~/@item.ImageUrl" width="700" height="450" />
                 </td>
                 <td>
-
                     <a asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.User.Id" data-toggle="popover" data-trigger="hover" id="@item.Id">@item.User.Name</a>
 
                     @* <a href="#" data-toggle="popover" data-trigger="hover" id="@item.Id">@item.User.Name</a> *@
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                  @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Like)
                 </td>
+                
                 <td>
-                    @Html.DisplayFor(modelItem => item.Subscription)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a> <br />
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        @Localizer["Details"]
+                    </a>  <br />
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a onclick="openCommentForm(@item.Id)" style="cursor: pointer; color: darkslategray;">@Localizer["Комментарий2"]</a>
+                        </div>
+                        <div class="col-md-12" id="postdiv-@item.Id" style="display: none; color: darkslategray;">
+                            <textarea id="posttext-@item.Id"></textarea> <br />
+                            <input type="button" id="postComment" onclick="sendComment('@item.Id', '@item.UserId')" value=@Localizer["Отправить"] />
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+
         }
     </tbody>
 
 </table>
 
+
+
 @section Scripts{
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('[data-toggle="popover"]').popover({
                 title: setData,
                 html: true,
@@ -78,13 +92,37 @@
                     method: "post",
                     async: false,
                     data: { id: id },
-                    success: function(data) {
+                    success: function (data) {
                         set_data = data;
                     }
                 });
                 return set_data;
             }
         });
+    </script>
+
+    <script>
+    function openCommentForm(postId) {
+        $('#postdiv-' + postId).show();
+    }
+
+    function sendComment(postId, userId) {
+        $.ajax({
+            url: '@Url.Action("Comment", "Comments")',
+            type: 'POST',
+            data: { 'postId': postId, 'userId': userId, 'content': $('#posttext-' + postId).val() },
+            success: function(data) {
+                setTimeout(function() {
+                        alert('Ваш комментарий ' + '(' + $('#posttext-' + postId).val() + ')' + ' добавлен!!!',
+                            data);
+                    },
+                    500);
+            },
+            error: function() {
+                console.log('Ошибка во время отправки комментария', this);
+            }
+        });
+    }
     </script>
 }
 

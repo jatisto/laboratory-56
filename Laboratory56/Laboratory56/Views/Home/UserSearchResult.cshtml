@@ -13,9 +13,7 @@
             <th>
                 Аватар
             </th>
-            @* <th> *@
-            @*     Id *@
-            @* </th> *@
+           
             <th>
                 Имя
             </th>
@@ -30,12 +28,8 @@
         {
             <tr>
                 <td>
-                    <img src="~/@item.AvatarImages" width="350" height="250" />
+                    <img src="~/@item.AvatarImages" width="250" height="250" />
                 </td>
-                @* *@
-                @* <td> *@
-                @*     @Html.DisplayFor(modelItem => item.Id) *@
-                @* </td> *@
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>

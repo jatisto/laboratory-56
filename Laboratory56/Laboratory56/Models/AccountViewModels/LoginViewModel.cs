@@ -22,7 +22,7 @@ namespace Laboratory56.Models.AccountViewModels
         [Display(Name = "Пароль")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Remember")]
         public bool RememberMe { get; set; }
     }
 }

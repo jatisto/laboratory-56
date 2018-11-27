@@ -11,9 +11,10 @@ using System;
 namespace Laboratory56.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181031033130_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,8 +131,6 @@ namespace Laboratory56.Migrations
                     b.Property<int>("SubscriptionId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("PublicationId");
-
                     b.Property<string>("SubImageUrl");
 
                     b.Property<string>("SubscribedId");
@@ -139,8 +138,6 @@ namespace Laboratory56.Migrations
                     b.Property<string>("SubscribersId");
 
                     b.HasKey("SubscriptionId");
-
-                    b.HasIndex("PublicationId");
 
                     b.HasIndex("SubscribedId");
 
@@ -278,10 +275,6 @@ namespace Laboratory56.Migrations
 
             modelBuilder.Entity("Laboratory56.Models.Subscription", b =>
                 {
-                    b.HasOne("Laboratory56.Models.Publication")
-                        .WithMany("SubscriptionsList")
-                        .HasForeignKey("PublicationId");
-
                     b.HasOne("Laboratory56.Models.ApplicationUser", "Subscribed")
                         .WithMany()
                         .HasForeignKey("SubscribedId");

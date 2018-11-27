@@ -13,16 +13,22 @@ namespace Laboratory56.Models
 
         [Display(Name = "Изображение")] public string ImageUrl { get; set; }
         [Display(Name = "Описание")] public string Description { get; set; }
-        [Display(Name = "Нравиться!")] public int Like { get; set; }
-        [Display(Name = "Подписка!")] public int Subscription { get; set; }
+        [Display(Name = "Нравиться")] public int Like { get; set; }
 
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
-        [Display(Name = "Количество  комментариев")]
+        /*public string PublicSubId { get; set; }
+        public Subscription PublicSub { get; set; }*/
+
+        [Display(Name = "Комментариии")]
         public int ComentCount { get; set; }
 
+        [Display(Name = "Подписчики")]
+        public int SubCount { get; set; }
+
         public List<Comment> CommentsList { get; set; }
+        public List<Subscription> SubscriptionsList { get; set; }
 
     }
 }

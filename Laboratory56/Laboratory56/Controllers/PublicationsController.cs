@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using Laboratory56.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 
 namespace Laboratory56.Controllers
 {
@@ -20,18 +22,21 @@ namespace Laboratory56.Controllers
         #region Conections and Constructor
 
         public PublicationsController(ApplicationDbContext context, IHostingEnvironment environment,
-            FileUploadService fileUploadService, UserManager<ApplicationUser> userManager)
+            FileUploadService fileUploadService, UserManager<ApplicationUser> userManager,
+            IStringLocalizer<HomeController> localizer)
         {
             _context = context;
             _environment = environment;
             _fileUploadService = fileUploadService;
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment _environment;
         private readonly FileUploadService _fileUploadService;
+        private readonly IStringLocalizer<HomeController> _localizer;
 
         #endregion
 
@@ -40,6 +45,7 @@ namespace Laboratory56.Controllers
         // GET: Publications
         public async Task<IActionResult> Index()
         {
+            ViewData["Publication"] = _localizer["Публикации"];
             var user = await _userManager.GetUserAsync(User);
 
             if (user != null)
@@ -207,6 +213,7 @@ namespace Laboratory56.Controllers
                 ImageUrl = imageUrlContent,
                 Description = publication.Description
             };
+
             return pub;
         }
 
@@ -273,7 +280,10 @@ namespace Laboratory56.Controllers
 
         public ActionResult LikeMethod(string userId, int postId)
         {
-            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+            var userLike = _context.Publications
+                .Where(l => l.Like == 0)
+                .FirstOrDefault(u => u.Id == postId);
+
             if (ModelState.IsValid)
             {
                 if (userLike != null)
@@ -281,7 +291,7 @@ namespace Laboratory56.Controllers
                     userLike.Like = userLike.Like + 1;
 
                     _context.Update(userLike);
-                    _context.SaveChangesAsync();
+                    _context.SaveChanges();
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -295,7 +305,9 @@ namespace Laboratory56.Controllers
 
         public ActionResult DisLikeMethod(string userId, int postId)
         {
-            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+            var userLike = _context.Publications
+                .Where(l => l.Like != 0)
+                .FirstOrDefault(u => u.Id == postId);
             if (ModelState.IsValid)
             {
                 if (userLike != null)
@@ -316,17 +328,72 @@ namespace Laboratory56.Controllers
 
         #region SubscriptionMethod
 
-        public ActionResult SubscriptionMethod(string userId, int postId)
+        #region AsyncMethod
+
+        /*public async Task<ActionResult> SubscriptionMethod(string userId, int postId)
         {
-            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+            var countSub = _context.Publications.FirstOrDefault(c => c.Id == postId);
+
             if (ModelState.IsValid)
             {
-                if (userLike != null)
-                {
-                    userLike.Subscription = userLike.Subscription + 1;
+                var user = _userManager.GetUserId(User);
+                var searchUser = _context.Subscriptions
+                    .FirstOrDefault(s => s.SubscribersId == userId && s.SubscribedId == user);
 
-                    _context.Update(userLike);
+                if (searchUser == null)
+                {
+                    var sub = new Subscription
+                    {
+                        SubscribersId = userId, //На кого подписываються
+                        SubscribedId = user, // Кто подписалься
+                        SubImageUrl = countSub?.ImageUrl
+                    };
+                    if (countSub != null)
+                    {
+                        countSub.SubCount = countSub.SubCount + 1;
+
+                       await _context.Add(sub);
+                       await _context.UpdateAsync(countSub);
+                    }
+
                     _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+            return View();
+        }*/
+
+        #endregion
+
+        #region No Async
+
+        public ActionResult SubscriptionMethod(string userId, int postId)
+        {
+            var countSub = _context.Publications.FirstOrDefault(c => c.Id == postId);
+
+            if (ModelState.IsValid)
+            {
+                var user = _userManager.GetUserId(User);
+                var searchUser = _context.Subscriptions
+                    .FirstOrDefault(s => s.SubscribersId == userId && s.SubscribedId == user);
+
+                if (searchUser == null)
+                {
+                    var sub = new Subscription
+                    {
+                        SubscribersId = userId, //На кого подписываються
+                        SubscribedId = user, // Кто подписалься
+                        SubImageUrl = countSub?.ImageUrl
+                    };
+                    if (countSub != null)
+                    {
+                        countSub.SubCount = countSub.SubCount + 1;
+
+                        _context.Add(sub);
+                        _context.Update(countSub);
+                    }
+
+                    _context.SaveChanges();
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -336,25 +403,29 @@ namespace Laboratory56.Controllers
 
         #endregion
 
+        #endregion
+
         #region UnSubscriptionMethod
 
-        public ActionResult UnSubscriptionMethod(string userId, int postId)
-        {
-            var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
-            if (ModelState.IsValid)
-            {
-                if (userLike != null)
+        /*
+                public ActionResult UnSubscriptionMethod(string userId, int postId)
                 {
-                    userLike.Subscription = userLike.Subscription - 1;
+                    var userLike = _context.Publications.FirstOrDefault(u => u.Id == postId);
+                    if (ModelState.IsValid)
+                    {
+                        if (userLike != null)
+                        {
+                            userLike.Subscription = userLike.Subscription - 1;
 
-                    _context.Update(userLike);
-                    _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                            _context.Update(userLike);
+                            _context.SaveChangesAsync();
+                            return RedirectToAction(nameof(Index));
+                        }
+                    }
+
+                    return View();
                 }
-            }
-
-            return View();
-        }
+                */
 
         #endregion
     }
