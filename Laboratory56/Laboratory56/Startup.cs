@@ -50,7 +50,9 @@ namespace Laboratory56
             services.AddScoped<FileUploadService>();
             services.AddTransient<IStringLocalizer, CustomStringLocalizer>();
 
-            services.AddMvc().AddViewLocalization();// добавляем локализацию представлений
+            services.AddMvc()
+                .AddDataAnnotationsLocalization()
+                .AddViewLocalization();// добавляем локализацию представлений
             //services.AddMvc();; 
         }
 

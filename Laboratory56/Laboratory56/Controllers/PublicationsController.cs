@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using Laboratory56.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 
 namespace Laboratory56.Controllers
 {
@@ -20,18 +22,21 @@ namespace Laboratory56.Controllers
         #region Conections and Constructor
 
         public PublicationsController(ApplicationDbContext context, IHostingEnvironment environment,
-            FileUploadService fileUploadService, UserManager<ApplicationUser> userManager)
+            FileUploadService fileUploadService, UserManager<ApplicationUser> userManager,
+            IStringLocalizer<HomeController> localizer)
         {
             _context = context;
             _environment = environment;
             _fileUploadService = fileUploadService;
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment _environment;
         private readonly FileUploadService _fileUploadService;
+        private readonly IStringLocalizer<HomeController> _localizer;
 
         #endregion
 
@@ -40,6 +45,7 @@ namespace Laboratory56.Controllers
         // GET: Publications
         public async Task<IActionResult> Index()
         {
+            ViewData["Publication"] = _localizer["Публикации"];
             var user = await _userManager.GetUserAsync(User);
 
             if (user != null)
@@ -50,7 +56,7 @@ namespace Laboratory56.Controllers
                     .OrderByDescending(s => s.Id)
                     .ToListAsync();
 
-                return View(sort);
+                return View(_localizer[sort.ToString()]);
             }
             else
             {
