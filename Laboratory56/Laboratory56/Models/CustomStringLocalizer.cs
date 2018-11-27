@@ -18,19 +18,19 @@ namespace Laboratory56.Models
             Dictionary<string, string> enDict = new Dictionary<string, string>
             {
                 {HEADER, "Welcome" },
-                {MESSAGE, "Hello World!" }
+                {MESSAGE, "Hello World not resx!" }
             };
             // словарь для русского языка
             Dictionary<string, string> ruDict = new Dictionary<string, string>
             {
                 {HEADER, "Добо пожаловать" },
-                {MESSAGE, "Привет мир!" }
+                {MESSAGE, "Привет мир not resx!" }
             };
             // словарь для немецкого языка
             Dictionary<string, string> deDict = new Dictionary<string, string>
             {
                 {HEADER, "Willkommen" },
-                {MESSAGE, "Hallo Welt!" }
+                {MESSAGE, "Hallo Welt not resx!" }
             };
             // создаем словарь ресурсов
             resources = new Dictionary<string, Dictionary<string, string>>

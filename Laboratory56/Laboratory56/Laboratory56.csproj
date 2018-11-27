@@ -19,31 +19,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\HomeResurce - Копировать - Копировать.Designer.cs">
-      <DependentUpon>HomeResurce.en.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Resources\HomeResurce.en.Designer.cs">
-      <DependentUpon>HomeResurce - Копировать.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Resources\HomeResurce.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>HomeResurce.en.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\HomeResurce.en.resx">
-      <LastGenOutput>HomeResurce.en.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Resources\Controllers.HomeController.de.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\HomeResurce.resx">
+    <EmbeddedResource Update="Resources\Controllers.HomeController.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>HomeResurce - Копировать.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Controllers.HomeController.ru.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Home\Index.ru.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Home\Index.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Home\Index.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
 

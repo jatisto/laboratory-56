@@ -117,16 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Все пользователи" xml:space="preserve">
-    <value>Все пользователи</value>
+  <data name="Header" xml:space="preserve">
+    <value>Добро пожаловать  не из resx</value>
   </data>
-  <data name="Мои комментарии" xml:space="preserve">
-    <value>Мои комментарии</value>
-  </data>
-  <data name="Мои публикации" xml:space="preserve">
-    <value>Мои публикации</value>
-  </data>
-  <data name="Поиск" xml:space="preserve">
-    <value>Поиск</value>
+  <data name="Message" xml:space="preserve">
+    <value>Привет Мир!</value>
   </data>
 </root>

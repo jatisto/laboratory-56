@@ -17,12 +17,12 @@ namespace Laboratory56.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IStringLocalizer _localizer;
+        private readonly IStringLocalizer<HomeController> _localizer;
 
         public HomeController(
             ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
-            IStringLocalizer localizer)
+            IStringLocalizer<HomeController> localizer)
         {
             _context = context;
             _userManager = userManager;

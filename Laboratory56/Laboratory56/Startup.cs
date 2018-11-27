@@ -29,6 +29,8 @@ namespace Laboratory56
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -48,7 +50,8 @@ namespace Laboratory56
             services.AddScoped<FileUploadService>();
             services.AddTransient<IStringLocalizer, CustomStringLocalizer>();
 
-            services.AddMvc();
+            services.AddMvc().AddViewLocalization();// добавляем локализацию представлений
+            //services.AddMvc();; 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,12 +71,12 @@ namespace Laboratory56
             var supportedCultures = new[]
             {
                 new CultureInfo("en"),
-                new CultureInfo("ru"),
-                new CultureInfo("de")
+                new CultureInfo("de"),
+                new CultureInfo("ru")
             };
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
-                DefaultRequestCulture = new RequestCulture("ru"),
+                DefaultRequestCulture = new RequestCulture("de"),
                 SupportedCultures = supportedCultures,
                 SupportedUICultures = supportedCultures
             });
